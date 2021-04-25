@@ -19,7 +19,7 @@ class Wolptinger(DDPG):
 
         self.knn = max(1,  int(args.max_actions * args.k_ratio))
 
-        if action_space in args:
+        if args.action_space is not None:
             # we probably testing on Storm topology
             self.action_space = args.action_space
         else:
@@ -31,7 +31,7 @@ class Wolptinger(DDPG):
     def get_action_space(self):
         return self.action_space
     
-    def select_action(self, s_t, decay_epsilon):
+    def select_action(self, s_t, decay_epsilon=True):
         proto_action = super().select_action(s_t, decay_epsilon=decay_epsilon)
         # print(f"Proto action: {proto_action}, proto action.shape: {proto_action.shape}")
         actions = self.action_space.search_point(proto_action, self.knn)[0]

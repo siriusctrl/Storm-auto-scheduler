@@ -22,8 +22,8 @@ class DDPG():
 
         # Create Actor and Critic Network
         net_cfg = {
-            'hidden1': args.hidden1,
-            'hidden2': args.hidden2,
+            'h1': args.h1,
+            'h2': args.h2,
             'init_w': args.init_w
         }
 
@@ -96,7 +96,8 @@ class DDPG():
         self.random_process.reset_states()
 
     def load_weights(self, output):
-        if output is None: return
+        if output is None:
+            return
 
         self.actor.load_state_dict(
             torch.load(f'{output}/actor.pkl')

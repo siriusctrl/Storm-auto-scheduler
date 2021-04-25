@@ -72,9 +72,9 @@ class Binary_Discrete_space(Space):
     """
         Discrete action space with n dimensions binary values
     """
-
+    # todo: this works fine, however, we need to carefully generate 
     def __init__(self, dim, space=None):
-        super().__init__([0]*dim, [1]*dim, 2**dim)
+        super().__init__([0]*dim, [1]*dim, dim)
         
         if space:
             self._space = space
@@ -98,7 +98,7 @@ def init_uniform_space(low, high, points):
     return np.array(space)
 
 if __name__ == '__main__':
-    # print(init_uniform_space([0]*5, [1]*5, 2**5))
-    b = Binary_Discrete_space(5)
+    print(init_uniform_space([0]*5, [1]*5, 10))
+    # b = Binary_Discrete_space(5)
     # print(b.import_point([0,0,0,0,1]))
-    print(b.export_point(np.array([0., 0., 0., 0., 1.])))
+    # print(b.export_point(np.array([0., 0., 0., 0., 1.])))

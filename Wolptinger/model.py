@@ -6,7 +6,7 @@ import torch.nn.functional as F
 
 def fanin_init(size, fanin=None):
     fanin = fanin or size[0]
-    v = 1. / np.sqrt()
+    v = 1. / np.sqrt(fanin)
     return torch.Tensor(size).uniform_(-v, v)
 
 class Actor(nn.Module):
@@ -20,6 +20,7 @@ class Actor(nn.Module):
         self.init_weights(init_w)
     
     def init_weights(self, init_w):
+        print(self.fc1.weight.data.size())
         self.fc1.weight.data = fanin_init(self.fc1.weight.data.size())
         self.fc2.weight.data = fanin_init(self.fc2.weight.data.size())
         self.fc3.weight.data.uniform_(-init_w, init_w)
@@ -57,3 +58,6 @@ class Critic(nn.Module):
         out = self.relu(out)
         out = self.fc3(out)
         return out
+
+if __name__ == '__main__':
+    a = Actor(1, 4)
