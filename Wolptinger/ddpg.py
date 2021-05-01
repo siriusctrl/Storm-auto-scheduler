@@ -57,6 +57,10 @@ class DDPG():
         self.a_t = None # Most recent action
         self.is_training = True
 
+        # making the training more stable
+        self.total_reward = 0
+        self.total_steps = 1
+
         if USE_CUDA:
             self.cuda()   
 
@@ -169,6 +173,11 @@ class DDPG():
         to the buffer
         """
         if self.is_training:
+            # self.total_reward += r_t
+            # mean_reward = self.total_reward / self.total_steps
+            # r_t -= mean_reward
             self.memory.append(self.s_t, self.a_t, r_t, done)
+            # print(f'current reward is {r_t+mean_reward}, mean reward is {mean_reward}')
             self.s_t = s_t1
+            # self.total_steps += 1
     

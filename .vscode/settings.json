@@ -1,5 +1,7 @@
 {
     "python.analysis.extraPaths": [
-        "./Wolptinger"
-    ]
+        "./Wolptinger",
+        "./Simulator"
+    ],
+    "jupyter.jupyterServerType": "local"
 }
