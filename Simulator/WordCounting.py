@@ -5,7 +5,7 @@ import numpy as np
 
 class WordCountingEnv(gym.Env):
 
-    def __init__(self, n_machines=5, 
+    def __init__(self, n_machines=4, 
                         max_slot  = 10,
                         max_delay = 10,
                         sigma     = 2.,

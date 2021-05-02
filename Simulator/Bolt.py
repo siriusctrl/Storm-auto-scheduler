@@ -1,4 +1,3 @@
-from Topology import Topology
 import numpy as np
 
 class Bolt():
@@ -9,6 +8,7 @@ class Bolt():
 
 
     def __init__(self, name:str,
+                id:int,
                 processing_speed=1e3,
                 grouping='shuffle',
                 random_seed=20200430,
@@ -21,6 +21,9 @@ class Bolt():
         ----------
             name: str
                 The name of the bolt
+            id: int
+                The number to use in order to distinguish this bolt from other
+                replicas
             processing_speed: int
                 The number of tuples that a bolt can process in 1 second
             grouping: str
@@ -30,7 +33,7 @@ class Bolt():
             random_seed: int
                 random seed for reproducibility
         """
-
+        self.id = id
         self.name = name
         self.processing_speed = processing_speed
         self.random_seed = random_seed
@@ -79,12 +82,12 @@ class Bolt():
             raise NotImplementedError
 
     def __repr__(self) -> str:
-        return self.to_red(f'Bolt |{self.name}|')
+        return self.to_red(f'{self.name}{self.id}')
     
     @staticmethod
     def to_red(s):
         return f"\033[91m {s}\033[00m"
 
 if __name__ == '__main__':
-    b = Bolt('test')
+    b = Bolt('test', 1)
     print(b)

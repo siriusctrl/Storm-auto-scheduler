@@ -15,8 +15,7 @@ class Machine():
         
         self.id = id
         self.max_slots = max_slots
-    
-
+        # TODO: add info about CPU capacity later?
     
     def __repr__(self) -> str:
         return f'm{self.id}'
@@ -43,3 +42,6 @@ if __name__ == '__main__':
     # draw the edge labels
     nx.draw_networkx_edge_labels(G, pos, edge_labels=labels)
     plt.show()
+
+    # to get the weight of edge
+    print(G[a][b]['weight'])
