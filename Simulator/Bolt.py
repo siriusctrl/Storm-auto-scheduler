@@ -1,5 +1,7 @@
 import numpy as np
 
+from Topology import Topology
+
 class Bolt():
     """
     This a generic class for representing bolts in any simulated stream 
@@ -67,15 +69,15 @@ class Bolt():
         # TODO: we need to make sure that the model is aware of physical machine overloading
         return nums*1000/self.processing_speed
     
-    def trans(self, topology) -> tuple:
+    def trans(self, topology:Topology) -> tuple:
         dest_list = topology.get_next(self)
         
         if len(dest_list) == 0:
             return 0, None
 
         if self.grouping == 'shuffle':
-            # TODO: we somehow need to know how to retrieve the transimission time
-            pass
+            next_exe = np.random.choice(dest_list)
+            topology.get_trans_delay(self, next_exe)
         elif self.grouping == 'field':
             raise NotImplementedError
         else:
