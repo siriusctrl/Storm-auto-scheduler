@@ -40,6 +40,7 @@ class Topology():
         self.executor_graph = nx.DiGraph()
 
         self.n_machines = n_machines
+        self.machine_list = []
 
         # key: name of the executor, value: [type of executor (in str), number of replicas]
         self.executor_info = executors_info
@@ -50,11 +51,12 @@ class Topology():
 
         np.random.seed(random_seed)
 
-    def update(self):
+    def update(self, assignments):
         """
         This method can update the interal state the executor assignments
         """
-        pass
+        self.reset_assignments()
+        
 
     def round_robin_init(self):
         """
@@ -84,11 +86,16 @@ class Topology():
         # ! this will return either the cost or 0 if both bolt on the same machine
         return self.machine_graph.get_edge_data(source_m, dest_m, default=0)
 
-    def build_machine_graph(self, node, edges):
-        self.machine_graph.add_nodes_from(node)
-        self.machine_graph.add_weighted_edges_from(edges)
+    def build_machine_graph(self, edges):
+        self.machine_graph.add_nodes_from(self.machine_list)
 
-    def add_to_machines(self, executor, machine):
+        h = []
+        for s, d, w in edges:
+            h.append((self.machine_list[s], self.machine_list[d], w))
+
+        self.machine_graph.add_weighted_edges_from(h)
+
+    def add_executor_to_machines(self, executor, machine):
         self.executor_to_machines[executor] = machine
         self.machine_to_executors = self.machine_to_executors.get(machine, []) + [executor]
 
@@ -121,32 +128,51 @@ class Topology():
                 self.create_executor_graph(v[0], v[1:])
             else:
                 raise ValueError('Unknown type of executor')
+    
+    def build_homo_machines(self, capacity=1):
+        """
+        Parameters
+        -----------
+        capacity
+            build n machines all with the same computational capactiy
+        """
+        self.build_heter_machines(capacity_list=[capacity]*self.n_machines)
+
+    def build_heter_machines(self, capacity_list:list):
+        """
+        Parameters
+        -----------
+        capacity_list
+            build n machines with the the corresponding computational capactiy
+            specified in this list
+        """
+        assert(len(capacity_list) == self.n_machines)
+        for i in range(self.n_machines):
+            m = Machine(i, capacity=capacity_list[0])
+            self.machine_list.append(m)
 
     def build_sample(self, debug=False):
-        self._build_sample_graph()
+        self._build_sample_machines()
         self._build_sample_executors()
         if debug:
             print(self.name_to_executors)
-    
-    def _build_sample_graph(self):
-        if self.n_machines == 4:
-            a = Machine(0, 10)
-            b = Machine(1, 10)
-            c = Machine(2, 10)
-            d = Machine(3, 10)
-            edges = [(a,b,2.), (a,c,3.), (a,d,1.5), (b,c,3.5), (b,d,2.5), (c,d,3.5)]
-            self.build_machine_graph([a,b,c,d], edges)
-        else:
-            raise ValueError('The number of machines provided does not match with the sample')
+
+    def _build_sample_machines(self):
+        self.n_machines = 4
+        self.build_homo_machines()
+        edges = [(0,1,2.), (0,2,3.), (0,3,1.5), (1,2,3.5), (1,3,2.5), (2,3,3.5)]
+        self.build_machine_graph(edges)
 
     def _build_sample_executors(self):
         sample_info = {
             'spout':['spout', 1, [1e3]],
-            'SplitSentence':['bolt', 3, {}],
+            'SplitSentence':['bolt', 3, {'processing_speed':20}],
             'WordCount':['bolt', 3, {}],
-            'Database':['bolt', 3, {}],
-            'graph': [
+            'Database':['bolt', 3, {'processing_speed':60}],
+            'graph': [  
+                        # we first define a list of nodes
                         ['spout', 'SplitSentence', 'WordCount', 'Database'], 
+                        # then, we have edge represent in tuples
                         ('spout', 'SplitSentence'), 
                         ('SplitSentence', 'WordCount'), 
                         ('WordCount', 'Database')
@@ -156,7 +182,7 @@ class Topology():
         self.executor_info = sample_info
         
         self.build_executors()
-                
+
     def draw_machines(self):
         pos = nx.kamada_kawai_layout(self.machine_graph)
         # draw edges and weights
@@ -184,13 +210,15 @@ if __name__ == '__main__':
     """
     Graph example
     """
+    # for i in test.machine_list:
+    #     print(i.capacity)
     # test.draw_machines()
     # test.draw_executors()
 
     """
     Name to executor example
     """
-    # print(test.name_to_executors['spout'][0].name)
+    print(test.name_to_executors['SplitSentence'][0].processing_speed)
 
     """
     Get next example

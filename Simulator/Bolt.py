@@ -1,7 +1,5 @@
 import numpy as np
 
-from Topology import Topology
-
 class Bolt():
     """
     This a generic class for representing bolts in any simulated stream 
@@ -11,7 +9,7 @@ class Bolt():
 
     def __init__(self, name:str,
                 id:int,
-                processing_speed=1e3,
+                processing_speed=50,
                 grouping='shuffle',
                 random_seed=20200430,
                 ) -> None:
@@ -27,7 +25,8 @@ class Bolt():
                 The number to use in order to distinguish this bolt from other
                 replicas
             processing_speed: int
-                The number of tuples that a bolt can process in 1 second
+                The number of tuples that a bolt can process in 1 second by utilising
+                1% of CPU capacity
             grouping: str
                 It defines how we select the next bolt.
                 current support shuffle grouping
@@ -45,7 +44,6 @@ class Bolt():
         """
         Perform a processing of one tuple. We are assuming this is the sampled tuple that
         we want to measure in the system.
-        TODO: maybe support processing multiple tuples later if necessary
         
         Parameters
         ----------
@@ -58,8 +56,9 @@ class Bolt():
             returns a tuple where first value is the time, including the processing time and
             tuple transimission time to next bolt. The second value is next bolt we are passing
             the value to, None if this is the end.
-            ! the unit of time here is milisecond (0.001 second)
+            ! the unit of time here is second
         """
+        # TODO: consider adding a overloading issue here
         c_time = self.compute(topology)
         t_time, next_bolt = self.trans(topology)
         
@@ -69,7 +68,7 @@ class Bolt():
         # TODO: we need to make sure that the model is aware of physical machine overloading
         return nums*1000/self.processing_speed
     
-    def trans(self, topology:Topology) -> tuple:
+    def trans(self, topology) -> tuple:
         dest_list = topology.get_next(self)
         
         if len(dest_list) == 0:

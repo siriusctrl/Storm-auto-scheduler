@@ -5,16 +5,28 @@ import numpy as np
 
 class Machine():
     """
-    A class that represent a physical machines on the simulator
+    A class that represents a physical machines on the simulator
     """
 
     def __init__(self,
-                id,
-                max_slots
+                id:int,
+                max_slots=0,
+                capacity=1
             ) -> None:
-        
+        """
+        Parameters
+        ___________
+        id
+            The order of the machine
+        max_slots
+            Number of worker slots for a physical machine
+            ! This does not have any effect yet
+        capacity: float
+            The relative computational capacity that the machine can provide
+        """
         self.id = id
         self.max_slots = max_slots
+        self.capacity = capacity
         # TODO: add info about CPU capacity later?
     
     def __repr__(self) -> str:
