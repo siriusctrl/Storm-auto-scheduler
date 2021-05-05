@@ -6,10 +6,7 @@ import numpy as np
 class WordCountingEnv(gym.Env):
 
     def __init__(self, n_machines=4, 
-                        max_slot  = 10,
-                        max_delay = 10,
-                        sigma     = 2.,
-                        seed      = 20200430,
+                       seed      = 20200430,
                     ) -> None:
         """
         Construct all the necessary attributes for the word couting topology
@@ -18,20 +15,12 @@ class WordCountingEnv(gym.Env):
         Parameters
         ----------
             n_machines: int
-                number of physical machines that is wanted to be simulated in this environments
-            max_slot: int
-                maximum number of executors that each machine can hold
-            max_delay: int
-                The maximum transimission delay between machines
-            sigma: float
-                The variance of transmission delay between machines
+                number of physical machines that are wanted to be simulated in this environments
             seed: int
                 Random seed for controling the reproducibility
         """
         self.n_machines = n_machines
-        self.max_slot = max_slot
-        self.max_delay = max_delay
-        self.sigma = sigma
+
         self.random_seed = seed
 
         self.seed()

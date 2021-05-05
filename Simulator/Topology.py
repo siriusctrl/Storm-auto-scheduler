@@ -10,25 +10,27 @@ from Spout import Spout
 
 class Topology():
     """
-    A class that contain the executor connectivity and assignment information
+    A class that contains the executor connectivity and their assignment information
     TODO: finish this class
     """
 
     def __init__(self,
                 n_machines:int,
                 executors_info:dict,
-                max_slots=10,
-                random_seed=None,
+                random_seed:int=None,
         ) -> None:
         """
         A generic topology constructor in a stream computing system simulator
 
         Parameters
         ----------
-        bolts: list(str)
-            A list of name of the bolts we are going to create
-        replicas: list
-            Number of replicas of each bolt we are going to create
+        n_machines
+            number of machines we have
+        executors_info
+            Each key is the name of the executor and the value is a list contains associated
+            information. Refer to sample for more details
+        random_seed
+            np random seed for reproducibility
         """
 
         # we assume the transmission delay are identical between two same machines
@@ -38,7 +40,6 @@ class Topology():
         self.executor_graph = nx.DiGraph()
 
         self.n_machines = n_machines
-        self.max_slots = max_slots
 
         # key: name of the executor, value: [type of executor (in str), number of replicas]
         self.executor_info = executors_info
