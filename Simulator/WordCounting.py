@@ -29,11 +29,12 @@ class WordCountingEnv(gym.Env):
         self.seed()
         self.build_topology()
     
-    def step():
+    def step(self, new_assignments):
         raise NotImplementedError
 
     def reset(self):
-        raise NotImplementedError
+        self.topology.reset_assignments()
+        self.topology.round_robin_init()
 
     def seed(self):
         # the np_random is the numpy RandomState
@@ -44,7 +45,7 @@ class WordCountingEnv(gym.Env):
     def build_topology(self, debug=False):
         self.topology = Topology(4, {})
         self.topology.build_sample()
-
+        self.topology.round_robin_init()
 
         if debug:
             self.topology.draw_machines()

@@ -2,6 +2,7 @@ from networkx.exception import NetworkXError
 import numpy as np
 import networkx as nx
 import matplotlib.pyplot as plt
+from numpy import random
 from numpy.testing._private.utils import raises
 from Bolt import Bolt
 
@@ -58,11 +59,26 @@ class Topology():
         self.reset_assignments()
         
 
-    def round_robin_init(self):
+    def round_robin_init(self) -> None:
         """
-        TODO: Initialise the resources in a round-robin manner
+        Initialise the resources in a round-robin manner
         """
-        pass
+        assert(self.machine_list is not None)
+        assert(self.machine_list != [])
+
+        exec = []
+
+        for e_list in self.name_to_executors.values():
+            exec += e_list
+        
+        r = len(self.machine_list)
+
+        for i in range(len(exec)):
+            to = i % r
+            self.add_executor_to_machines(exec[i], self.machine_list[to])
+            self.add_machine_to_executors(exec[i], self.machine_list[to])
+        
+            
 
     def get_next(self, source) -> list:
         """
@@ -97,10 +113,9 @@ class Topology():
 
     def add_executor_to_machines(self, executor, machine):
         self.executor_to_machines[executor] = machine
-        self.machine_to_executors = self.machine_to_executors.get(machine, []) + [executor]
-
+        
     def add_machine_to_executors(self, executor, machine):
-        self.executor_to_machines[executor] = machine
+        self.machine_to_executors[machine] = self.machine_to_executors.get(machine, []) + [executor]
 
     def create_spouts(self, n, data_rates):
         assert(len(data_rates) == n)
@@ -218,9 +233,18 @@ if __name__ == '__main__':
     """
     Name to executor example
     """
-    print(test.name_to_executors['SplitSentence'][0].processing_speed)
+    # print(test.name_to_executors['SplitSentence'][0].processing_speed)
 
     """
     Get next example
     """
     # print(test.get_next('SplitSentence'))
+
+    """
+    Test Round Robin init
+    """
+    # print(test.machine_to_executors)
+    # print(test.executor_to_machines)
+    # test.round_robin_init()
+    # print(test.machine_to_executors)
+    # print(test.executor_to_machines)
