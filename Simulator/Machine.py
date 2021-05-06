@@ -1,8 +1,3 @@
-from networkx.drawing.nx_pylab import draw_networkx, draw_networkx_edge_labels
-from networkx.readwrite.edgelist import read_weighted_edgelist
-import numpy as np
-
-
 class Machine():
     """
     A class that represents a physical machines on the simulator
@@ -34,6 +29,8 @@ class Machine():
 if __name__ == '__main__':
     import networkx as nx
     import matplotlib.pyplot as plt
+    from networkx.drawing.nx_pylab import draw_networkx, draw_networkx_edge_labels
+    from networkx.readwrite.edgelist import read_weighted_edgelist
 
     G = nx.Graph()
     a = Machine(0, 10)
@@ -44,15 +41,16 @@ if __name__ == '__main__':
     # the communication delay between machine a and b is 2ms
     G.add_weighted_edges_from([(a, b, 2.), (a,c,3.), (a,d,1.5), (b,c,3.5), (b,d,2.5), (c,d,3.5)])
 
-    # this layout can rescale edge based on edge weight
-    pos = nx.kamada_kawai_layout(G)
-    # draw edges and weights
-    labels = nx.get_edge_attributes(G, 'weight')
-    # draw the graph
-    nx.draw(G, pos, with_labels=True)
-    # draw the edge labels
-    nx.draw_networkx_edge_labels(G, pos, edge_labels=labels)
-    plt.show()
+    # # this layout can rescale edge based on edge weight
+    # pos = nx.kamada_kawai_layout(G)
+    # # draw edges and weights
+    # labels = nx.get_edge_attributes(G, 'weight')
+    # # draw the graph
+    # nx.draw(G, pos, with_labels=True)
+    # # draw the edge labels
+    # nx.draw_networkx_edge_labels(G, pos, edge_labels=labels)
+    # plt.show()
 
+    G[a][b]['object'] = 'example'
     # to get the weight of edge
-    print(G[a][b]['weight'])
+    print(G[a][b])

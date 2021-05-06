@@ -50,18 +50,20 @@ class Topology():
         self.machine_to_executors = {}
         self.name_to_executors = {}
 
+        # ! unit should be in ms
+        self.universal_time = 0
+
         self.random_seed = random_seed
 
         # setup random seed
         if random_seed is not None:
             np.random.seed(random_seed)
 
-    def update(self, assignments):
+    def update(self):
         """
-        This method can update the interal state the executor assignments
+        This method can update the interal state the simulator
         """
-        self.reset_assignments()
-        
+        pass
 
     def round_robin_init(self) -> None:
         """
@@ -81,9 +83,7 @@ class Topology():
             to = i % r
             self.add_executor_to_machines(exec[i], self.machine_list[to])
             self.add_machine_to_executors(exec[i], self.machine_list[to])
-        
             
-
     def get_next(self, source) -> list:
         """
         get a list of downstream bolts of current source
@@ -114,11 +114,12 @@ class Topology():
     def build_machine_graph(self, edges):
         self.machine_graph.add_nodes_from(self.machine_list)
 
-        h = []
         for s, d, w in edges:
-            h.append((self.machine_list[s], self.machine_list[d], w))
-
-        self.machine_graph.add_weighted_edges_from(h)
+            ns = self.machine_list[s]
+            nd = self.machine_list[d]
+            self.machine_graph.add_edge(ns, nd)
+            self.machine_graph[ns][nd]['weight'] = w
+            self.machine_graph[ns][nd]['job_queue'] = []
 
     def add_executor_to_machines(self, executor, machine):
         self.executor_to_machines[executor] = machine
@@ -236,7 +237,7 @@ if __name__ == '__main__':
     """
     # for i in test.machine_list:
     #     print(i.capacity)
-    # test.draw_machines()
+    test.draw_machines()
     # test.draw_executors()
 
     """

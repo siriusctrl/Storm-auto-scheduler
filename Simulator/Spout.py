@@ -14,6 +14,8 @@ class Spout():
         if random_seed is not None:
             self.random_seed = random_seed
             np.random.seed(random_seed)
+        
+        self.job_queue = []
     
     def forward(self, topology) -> tuple:
         """
