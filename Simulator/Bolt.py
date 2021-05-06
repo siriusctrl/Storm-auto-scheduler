@@ -39,6 +39,8 @@ class Bolt():
         self.processing_speed = processing_speed
         self.random_seed = random_seed
         self.grouping = grouping
+
+        self.cache = None
     
     def process(self, topology) -> tuple:
         """

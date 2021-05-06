@@ -30,11 +30,18 @@ class WordCountingEnv(gym.Env):
         self.build_topology()
     
     def step(self, new_assignments):
-        raise NotImplementedError
+        assert(new_assignments is not None)
+        self.topology.update(new_assignments)
+        return self.once()
 
     def reset(self):
         self.topology.reset_assignments()
         self.topology.round_robin_init()
+        return self.once()
+    
+    def once(self):
+        spouts = self.topology.name_to_executors['spout']
+        
 
     def seed(self):
         # the np_random is the numpy RandomState

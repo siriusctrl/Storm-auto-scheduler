@@ -27,7 +27,6 @@ class Machine():
         self.id = id
         self.max_slots = max_slots
         self.capacity = capacity
-        # TODO: add info about CPU capacity later?
     
     def __repr__(self) -> str:
         return f'm{self.id}'

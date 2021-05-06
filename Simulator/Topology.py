@@ -50,7 +50,11 @@ class Topology():
         self.machine_to_executors = {}
         self.name_to_executors = {}
 
-        np.random.seed(random_seed)
+        self.random_seed = random_seed
+
+        # setup random seed
+        if random_seed is not None:
+            np.random.seed(random_seed)
 
     def update(self, assignments):
         """
@@ -85,13 +89,13 @@ class Topology():
         get a list of downstream bolts of current source
         """
         if type(source) is str:
-            successor = list(self.executor_graph.successors(source))[0]
+            successors = list(self.executor_graph.successors(source))[0]
         else:
-            successor = list(self.executor_graph.successors(source.name))[0]
+            successors = list(self.executor_graph.successors(source.name))[0]
     
-        return self.name_to_executors[successor]
+        return self.name_to_executors[successors]
 
-    def get_trans_delay(self, source, destination):
+    def get_trans_delay(self, source, destination, data_size):
         """
         get the transmission delay between source and destination bolt
         """
@@ -100,7 +104,12 @@ class Topology():
         dest_m = self.executor_to_machines[destination]
         # and then retrieve the trans delay between those two machines
         # ! this will return either the cost or 0 if both bolt on the same machine
-        return self.machine_graph.get_edge_data(source_m, dest_m, default=0)
+        cost_per_data = self.machine_graph.get_edge_data(source_m, dest_m, default=0)
+
+        if cost_per_data == 0:
+            return 0
+        else:
+            return data_size*1000 / cost_per_data
 
     def build_machine_graph(self, edges):
         self.machine_graph.add_nodes_from(self.machine_list)
@@ -121,7 +130,7 @@ class Topology():
         assert(len(data_rates) == n)
 
         for i in range(n):
-            new_spout = Spout(i, data_rates[0])
+            new_spout = Spout(i, data_rates[i], self.random_seed)
             self.name_to_executors['spout'] = self.name_to_executors.get('spout', []) + [new_spout]
   
     def create_bolts(self, n, name, **bolt_info):
