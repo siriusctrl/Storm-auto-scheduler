@@ -40,7 +40,9 @@ class Bolt():
         self.random_seed = random_seed
         self.grouping = grouping
 
-        self.job_queue = []
+        # key is the source, value is a list that represent all data coming from that source
+        # in sequence
+        self.job_queue = {}
     
     def process(self, topology) -> tuple:
         """

@@ -31,7 +31,7 @@ class WordCountingEnv(gym.Env):
     
     def step(self, new_assignments):
         assert(new_assignments is not None)
-        self.topology.update(new_assignments)
+        self.topology.update_assignments(new_assignments)
         return self.once()
 
     def reset(self):
@@ -40,7 +40,7 @@ class WordCountingEnv(gym.Env):
         return self.once()
     
     def once(self):
-        spouts = self.topology.name_to_executors['spout']
+        self.topology.update_states(time=1000, track=False)
         
 
     def seed(self):
@@ -50,13 +50,34 @@ class WordCountingEnv(gym.Env):
         return [seed]
 
     def build_topology(self, debug=False):
-        self.topology = Topology(4, {})
-        self.topology.build_sample()
+        exe_info = {
+            'spout':['spout', 2, [1e3, 1e3]],
+            'WordCount':['bolt', 3, {}],
+            'Database':['bolt', 3, {'processing_speed':60}],
+            'graph': [  
+                        # we first define a list of nodes
+                        ['spout', 'WordCount', 'Database'], 
+                        # then, we have edge represent in tuples
+                        ('spout', 'WordCount'),
+                        ('WordCount', 'Database')
+                    ]
+        }
+
+        self.topology = Topology(2, exe_info)
+        self.topology.build_homo_machines()
+        self.topology.build_executors()
+        self.topology.build_machine_graph([(0,1,2.)])
         self.topology.round_robin_init()
 
         if debug:
-            self.topology.draw_machines()
+            # self.topology.draw_machines()
+            # self.topology.draw_executors()
+            print(self.topology.executor_graph.edges(data=True))
+            print(self.topology.machine_to_executors)
+            print(self.topology.executor_to_machines)
 
 
 if __name__ == '__main__':
     env = WordCountingEnv()
+    env.build_topology(debug=False)
+    env.once()

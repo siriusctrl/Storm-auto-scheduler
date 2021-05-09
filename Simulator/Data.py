@@ -1,6 +1,6 @@
 class Data():
 
-    def __init__(self, size:int, enter_time:int, track_id:int) -> None:
+    def __init__(self, size:int, enter_time:int, track_id=None) -> None:
         self.size = size
         self.enter_time = enter_time
 
@@ -14,4 +14,4 @@ class Data():
         self.end = None
     
     def __repr__(self):
-        return f'data size={self.size} start={self.start} end={self.end}'
+        return f'data {self.size} s={self.start} e={self.end}'

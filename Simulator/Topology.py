@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 from numpy import random
 from numpy.testing._private.utils import raises
 from Bolt import Bolt
+from Data import Data
 
 from Machine import Machine
 from Spout import Spout
@@ -18,6 +19,7 @@ class Topology():
     def __init__(self,
                 n_machines:int,
                 executors_info:dict,
+                inter_trans_delay=0.,
                 random_seed:int=None,
         ) -> None:
         """
@@ -37,7 +39,6 @@ class Topology():
         # we assume the transmission delay are identical between two same machines
         # Thus, an graph without direction is used
         self.machine_graph = nx.Graph()
-
         self.executor_graph = nx.DiGraph()
 
         self.n_machines = n_machines
@@ -45,6 +46,8 @@ class Topology():
 
         # key: name of the executor, value: [type of executor (in str), number of replicas]
         self.executor_info = executors_info
+
+        self.inter_trans_delay = inter_trans_delay
 
         self.executor_to_machines = {}
         self.machine_to_executors = {}
@@ -55,15 +58,116 @@ class Topology():
 
         self.random_seed = random_seed
 
+        self.track_counter = 0
+        self.track_datas = {}
+
         # setup random seed
         if random_seed is not None:
             np.random.seed(random_seed)
 
-    def update(self):
+    def update_assignments(self, new_assignments):
+        pass
+
+    def update_states(self, time:int=1000, track=False):
         """
         This method can update the interal state the simulator
+
+        Parameters
+        -----------
+        time
+            fast forward the system about this amount of miliseconds
         """
-        pass
+        
+        # TODO: use FIFO queue to update the state of the system
+        # starting with the spout
+        added = set()
+        # sp = self.name_to_executors['spout']
+
+        # for s in sp:
+        #     s:Spout
+        #     d_size = s.incoming_rate
+        #     s_data = Data(size=d_size, enter_time=self.universal_time)
+
+        #     if track:
+        #         s_data.track_id = self.track_counter
+        #         self.track_counter += 1
+            
+        #     s_data.start = self.universal_time
+        #     s_data.end = self.universal_time + time
+
+        #     self.push_data_to_next(s, s_data)
+            
+        update_queue = ['spout']
+        
+        while len(update_queue) > 0:
+            print('************************************')
+            print(f'added={added}\nupdate_queue={update_queue}')
+            curr = update_queue.pop(0)
+            
+            if type(curr) is Bolt:
+                print(f'get {curr}')
+            elif type(curr) is Spout:
+                curr:Spout
+                d_size = curr.incoming_rate
+                s_data = Data(size=d_size, enter_time=self.universal_time)
+
+                if track:
+                    s_data.track_id = self.track_counter
+                    self.track_counter += 1
+                
+                s_data.start = self.universal_time
+                s_data.end = self.universal_time + time
+
+                self.push_data_to_next(curr, s_data, added, update_queue)
+            elif curr in self.name_to_executors:
+                update_queue = self.name_to_executors[curr] + update_queue
+            else:
+                print(f'get an edge {curr}')
+
+
+    def push_data_to_next(self, source, data:Data, added:set, update_queue:list):
+        successors = self.get_downstreams(source)
+        
+        if type(source) is Spout:
+
+            # TODO: we assume shuffle grouping here, might need to extend it later
+            partition_size = data.size // len(successors)
+
+            for s in successors:
+                s:Bolt
+                source_machine:Machine = self.executor_to_machines[source]
+                target_machine:Machine = self.executor_to_machines[s]
+
+                p_data = Data(partition_size, data.enter_time, track_id=data.track_id)
+                p_data.start = data.start
+                p_data.end = data.end
+            
+                if source_machine != target_machine:
+                    jq:dict = self.machine_graph[source_machine][target_machine]['job_queue']
+                    
+                    # only add to job queue if we never added this edge before
+                    if (source_machine, target_machine) not in added:
+                        update_queue.append((source_machine, target_machine, s, True))
+                        added.add((source_machine, target_machine))
+                    else:
+                        update_queue.append((source_machine, target_machine, s, False))
+
+                    jq[source] = jq.get(source, []) + [p_data]
+                else:
+                    # if two executor host on the same physical machine, we do not need to 
+                    # process the intermediate data anymore
+                    update_queue.append((source_machine, source_machine, s, False))
+                    s.job_queue[source] = s.job_queue.get(source, []) + [p_data]
+                    print(f'job_queue on {s} is {s.job_queue}')
+        
+        elif type(source) is Bolt:
+            pass
+
+        else:
+            raise ValueError(f'Unknown type to push {source}')
+        
+        print(self.machine_graph.edges(data=True))
+            
 
     def round_robin_init(self) -> None:
         """
@@ -84,7 +188,7 @@ class Topology():
             self.add_executor_to_machines(exec[i], self.machine_list[to])
             self.add_machine_to_executors(exec[i], self.machine_list[to])
             
-    def get_next(self, source) -> list:
+    def get_downstreams(self, source) -> list:
         """
         get a list of downstream bolts of current source
         """
@@ -103,9 +207,12 @@ class Topology():
         source_m = self.executor_to_machines[source]
         dest_m = self.executor_to_machines[destination]
         # and then retrieve the trans delay between those two machines
-        # ! this will return either the cost or 0 if both bolt on the same machine
-        cost_per_data = self.machine_graph.get_edge_data(source_m, dest_m, default=0)
 
+        cost_per_data = self.machine_graph.get_edge_data(
+                            source_m, dest_m, default=self.inter_trans_delay
+                        )
+
+        # TODO: add the job to job queue of edges
         if cost_per_data == 0:
             return 0
         else:
@@ -119,7 +226,10 @@ class Topology():
             nd = self.machine_list[d]
             self.machine_graph.add_edge(ns, nd)
             self.machine_graph[ns][nd]['weight'] = w
-            self.machine_graph[ns][nd]['job_queue'] = []
+            # the job queue dict for each edge has the following 
+            # key: the upstream object, value is a list that represent a FIFO queue
+            # which represent all the task coming from that(the key) upstream executor
+            self.machine_graph[ns][nd]['job_queue'] = {}
 
     def add_executor_to_machines(self, executor, machine):
         self.executor_to_machines[executor] = machine
@@ -179,6 +289,7 @@ class Topology():
     def build_sample(self, debug=False):
         self._build_sample_machines()
         self._build_sample_executors()
+        self.round_robin_init()
         if debug:
             print(self.name_to_executors)
 
@@ -190,7 +301,7 @@ class Topology():
 
     def _build_sample_executors(self):
         sample_info = {
-            'spout':['spout', 1, [1e3]],
+            'spout':['spout', 2, [1e3, 1e3]],
             'SplitSentence':['bolt', 3, {'processing_speed':20}],
             'WordCount':['bolt', 3, {}],
             'Database':['bolt', 3, {'processing_speed':60}],
@@ -237,7 +348,7 @@ if __name__ == '__main__':
     """
     # for i in test.machine_list:
     #     print(i.capacity)
-    test.draw_machines()
+    # test.draw_machines()
     # test.draw_executors()
 
     """
@@ -258,3 +369,6 @@ if __name__ == '__main__':
     # test.round_robin_init()
     # print(test.machine_to_executors)
     # print(test.executor_to_machines)
+
+    test.update_states()
+    # print(test.topology.executor_graph.edges(data=True))
