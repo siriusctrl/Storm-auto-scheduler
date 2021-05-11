@@ -138,7 +138,7 @@ class Topology():
                 source_machine:Machine = self.executor_to_machines[source]
                 target_machine:Machine = self.executor_to_machines[s]
 
-                p_data = Data(partition_size, data.enter_time, track_id=data.track_id)
+                p_data = Data(partition_size, data.enter_time, track_id=data.track_id, source=source, target=s)
                 p_data.start = data.start
                 p_data.end = data.end
             
@@ -147,16 +147,17 @@ class Topology():
                     
                     # only add to job queue if we never added this edge before
                     if (source_machine, target_machine) not in added:
-                        update_queue.append((source_machine, target_machine, s, True))
+                        update_queue.append((source_machine, target_machine, True))
                         added.add((source_machine, target_machine))
                     else:
-                        update_queue.append((source_machine, target_machine, s, False))
+                        # duplicate edge found, we just ignore it
+                        pass
 
                     jq[source] = jq.get(source, []) + [p_data]
                 else:
                     # if two executor host on the same physical machine, we do not need to 
                     # process the intermediate data anymore
-                    update_queue.append((source_machine, source_machine, s, False))
+                    update_queue.append((source_machine, source_machine, False))
                     s.job_queue[source] = s.job_queue.get(source, []) + [p_data]
                     print(f'job_queue on {s} is {s.job_queue}')
         
