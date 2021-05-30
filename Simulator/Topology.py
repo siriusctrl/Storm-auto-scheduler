@@ -124,7 +124,7 @@ class Topology():
                 source_machine:Machine = self.executor_to_machines[source]
                 target_machine:Machine = self.executor_to_machines[s]
 
-                p_data = Data(partition_size, data.enter_time, track_id=data.track_id)
+                p_data = Data(partition_size, data.enter_time, track_id=data.track_id, source=source, target=s)
                 p_data.start = data.start
                 p_data.end = data.end
             
@@ -133,7 +133,7 @@ class Topology():
                     edge:Edge = self.machine_graph[source_machine][target_machine]['object']
 
                     if (source_machine, target_machine) not in added:
-                        update_queue.append((source_machine, target_machine, s, True))
+                        update_queue.append((source_machine, target_machine, True))
                         added.add((source_machine, target_machine))
                     else:
                         update_queue.append((source_machine, target_machine, s, False))
@@ -149,7 +149,7 @@ class Topology():
 
                     if debug:
                         print(f'job_queue on {s} is {s.job_queue}')
-        
+
         elif type(source) is Bolt:
             # TODO: to find whether there are edges or this is the end bolt
             pass

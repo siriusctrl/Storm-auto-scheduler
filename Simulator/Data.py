@@ -1,6 +1,9 @@
+from Bolt import Bolt
+
+
 class Data():
 
-    def __init__(self, size:int, enter_time:int, track_id=None) -> None:
+    def __init__(self, size:int, enter_time:int, track_id=None, source=None, target:Bolt=None) -> None:
         self.size = size
         self.enter_time = enter_time
 
@@ -12,6 +15,10 @@ class Data():
         # A starting time and end time for processing/trasmitting this data
         self.start = None
         self.end = None
+
+        self.source = source
+        self.target = target
+        
     
     def __repr__(self):
-        return f'data {self.size} s={self.start} e={self.end}'
+        return f'data {self.size} s={self.start} e={self.end} f={self.source} t={self.target}'
