@@ -1,12 +1,10 @@
-from networkx.exception import NetworkXError
 import numpy as np
 import networkx as nx
 import matplotlib.pyplot as plt
-from numpy import random
-from numpy.testing._private.utils import raises
+
 from Bolt import Bolt
 from Data import Data
-
+from Edge import Edge
 from Machine import Machine
 from Spout import Spout
 
@@ -68,7 +66,7 @@ class Topology():
     def update_assignments(self, new_assignments):
         pass
 
-    def update_states(self, time:int=1000, track=False):
+    def update_states(self, time:int=1000, track=False, debug=False):
         """
         This method can update the interal state the simulator
 
@@ -77,31 +75,15 @@ class Topology():
         time
             fast forward the system about this amount of miliseconds
         """
-        
-        # TODO: use FIFO queue to update the state of the system
-        # starting with the spout
         added = set()
-        # sp = self.name_to_executors['spout']
-
-        # for s in sp:
-        #     s:Spout
-        #     d_size = s.incoming_rate
-        #     s_data = Data(size=d_size, enter_time=self.universal_time)
-
-        #     if track:
-        #         s_data.track_id = self.track_counter
-        #         self.track_counter += 1
-            
-        #     s_data.start = self.universal_time
-        #     s_data.end = self.universal_time + time
-
-        #     self.push_data_to_next(s, s_data)
             
         update_queue = ['spout']
         
         while len(update_queue) > 0:
-            print('************************************')
-            print(f'added={added}\nupdate_queue={update_queue}')
+            if debug:
+                print('************************************')
+                print(f'added={added}\nupdate_queue={update_queue}')
+
             curr = update_queue.pop(0)
             
             if type(curr) is Bolt:
@@ -118,19 +100,23 @@ class Topology():
                 s_data.start = self.universal_time
                 s_data.end = self.universal_time + time
 
-                self.push_data_to_next(curr, s_data, added, update_queue)
+                self.push_data_to_next(curr, s_data, added, update_queue, debug=debug)
             elif curr in self.name_to_executors:
                 update_queue = self.name_to_executors[curr] + update_queue
             else:
-                print(f'get an edge {curr}')
+                if debug:
+                    print(f'get an edge {curr}')
+                
+                if curr[-1] == True:
+                    pass
 
 
-    def push_data_to_next(self, source, data:Data, added:set, update_queue:list):
+    def push_data_to_next(self, source, data:Data, added:set, update_queue:list, debug=False):
         successors = self.get_downstreams(source)
-        
-        if type(source) is Spout:
+        # TODO: we assume shuffle grouping here, might need to extend it later
 
-            # TODO: we assume shuffle grouping here, might need to extend it later
+        if type(source) is Spout:
+            
             partition_size = data.size // len(successors)
 
             for s in successors:
@@ -143,30 +129,36 @@ class Topology():
                 p_data.end = data.end
             
                 if source_machine != target_machine:
-                    jq:dict = self.machine_graph[source_machine][target_machine]['job_queue']
                     
-                    # only add to job queue if we never added this edge before
+                    edge:Edge = self.machine_graph[source_machine][target_machine]['object']
+
                     if (source_machine, target_machine) not in added:
                         update_queue.append((source_machine, target_machine, s, True))
                         added.add((source_machine, target_machine))
                     else:
                         update_queue.append((source_machine, target_machine, s, False))
-
-                    jq[source] = jq.get(source, []) + [p_data]
+                    
+                    edge.job_queue[source] = edge.job_queue.get(source, []) + [p_data]
                 else:
-                    # if two executor host on the same physical machine, we do not need to 
-                    # process the intermediate data anymore
-                    update_queue.append((source_machine, source_machine, s, False))
-                    s.job_queue[source] = s.job_queue.get(source, []) + [p_data]
-                    print(f'job_queue on {s} is {s.job_queue}')
+                    # if the inter-connection cost is 0
+                    if self.inter_trans_delay == 0:
+                        update_queue.append((source_machine, source_machine, s, False))
+                        s.job_queue[source] = s.job_queue.get(source, []) + [p_data]
+                    else:
+                        pass
+
+                    if debug:
+                        print(f'job_queue on {s} is {s.job_queue}')
         
         elif type(source) is Bolt:
+            # TODO: to find whether there are edges or this is the end bolt
             pass
 
         else:
             raise ValueError(f'Unknown type to push {source}')
         
-        print(self.machine_graph.edges(data=True))
+        if debug:
+            print(self.machine_graph.edges(data=True))
             
 
     def round_robin_init(self) -> None:
@@ -225,11 +217,15 @@ class Topology():
             ns = self.machine_list[s]
             nd = self.machine_list[d]
             self.machine_graph.add_edge(ns, nd)
+
+            # initialise the edge object
+            ob = Edge()
+            ob.weight = w
             self.machine_graph[ns][nd]['weight'] = w
             # the job queue dict for each edge has the following 
             # key: the upstream object, value is a list that represent a FIFO queue
             # which represent all the task coming from that(the key) upstream executor
-            self.machine_graph[ns][nd]['job_queue'] = {}
+            self.machine_graph[ns][nd]['object'] = ob
 
     def add_executor_to_machines(self, executor, machine):
         self.executor_to_machines[executor] = machine
@@ -337,6 +333,7 @@ class Topology():
     def reset_assignments(self):
         self.machine_to_executors = {}
         self.executor_to_machines = {}
+        # TODO: should clear any suspending jobs in egde and bout/spout
 
 
 if __name__ == '__main__':

@@ -40,7 +40,7 @@ class WordCountingEnv(gym.Env):
         return self.once()
     
     def once(self):
-        self.topology.update_states(time=1000, track=False)
+        self.topology.update_states(time=1000, track=False, debug=True)
         
 
     def seed(self):

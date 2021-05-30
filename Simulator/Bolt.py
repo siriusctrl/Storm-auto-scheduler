@@ -40,6 +40,9 @@ class Bolt():
         self.random_seed = random_seed
         self.grouping = grouping
 
+        # time budget for job processing in the current round of updates
+        self.budget = 0
+
         # key is the source, value is a list that represent all data coming from that source
         # in sequence
         self.job_queue = {}
