@@ -64,8 +64,8 @@ class WordCountingEnv(gym.Env):
         }
 
         self.topology = Topology(2, exe_info)
-        self.topology.build_homo_machines()
         self.topology.build_executors()
+        self.topology.build_homo_machines()
         self.topology.build_machine_graph([(0,1,2.)])
         self.topology.round_robin_init()
 

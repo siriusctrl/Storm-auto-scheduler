@@ -1,4 +1,8 @@
 import numpy as np
+import simpy
+from simpy import Environment
+
+from Config import Config
 
 class Bolt():
     """
@@ -9,6 +13,7 @@ class Bolt():
 
     def __init__(self, name:str,
                 id:int,
+                env:Environment,
                 processing_speed=50,
                 grouping='shuffle',
                 random_seed=20200430,
@@ -36,58 +41,34 @@ class Bolt():
         """
         self.id = id
         self.name = name
+        self.env = env
         self.processing_speed = processing_speed
         self.random_seed = random_seed
         self.grouping = grouping
 
-        # time budget for job processing in the current round of updates
-        self.budget = 0
-
-        # key is the source, value is a list that represent all data coming from that source
-        # in sequence
-        self.job_queue = {}
-    
-    def process(self, topology) -> tuple:
-        """
-        Perform a processing of one tuple. We are assuming this is the sampled tuple that
-        we want to measure in the system.
+        self.working = False
+        self.queue = []
+        self.action = env.process(self.run())
+        self.debug = Config.debug
         
-        Parameters
-        ----------
-        topolgy: Topology()
-            The current topology info
+    def run(self):
+        # The bolt will run forever
+        while True:
+            if len(self.queue) == 0:
+                self.working = False
 
-        Returns
-        ----------
-        tuple(float, Bolt())
-            returns a tuple where first value is the time, including the processing time and
-            tuple transimission time to next bolt. The second value is next bolt we are passing
-            the value to, None if this is the end.
-            ! the unit of time here is second
-        """
-        # TODO: consider adding a overloading issue here
-        c_time = self.compute(topology)
-        t_time, next_bolt = self.trans(topology)
-        
-        return c_time+t_time, next_bolt
-    
-    def compute(self, topology, nums=1) -> float:
-        # TODO: we need to make sure that the model is aware of physical machine overloading
-        return nums*1000/self.processing_speed
-    
-    def trans(self, topology) -> tuple:
-        dest_list = topology.get_next(self)
-        
-        if len(dest_list) == 0:
-            return 0, None
-
-        if self.grouping == 'shuffle':
-            next_exe = np.random.choice(dest_list)
-            topology.get_trans_delay(self, next_exe)
-        elif self.grouping == 'field':
-            raise NotImplementedError
-        else:
-            raise NotImplementedError
+                try:
+                    if self.debug:
+                        print(self.__repr__(), 'is waiting for job')
+                    yield self.env.timeout(100)
+                except simpy.Interrupt:
+                    if self.debug:
+                        print(self.__repr__(), 'get job at', self.env.now)
+                    self.working = True
+            else:
+                self.working = True
+                # TODO:finish how bolt is going to process data
+                yield self.env.timeout(2)
 
     def __repr__(self) -> str:
         return self.to_red(f'{self.name}{self.id}')

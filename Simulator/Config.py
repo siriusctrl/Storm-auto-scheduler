@@ -1,0 +1,2 @@
+class Config():
+    debug = True
