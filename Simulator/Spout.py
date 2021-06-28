@@ -52,6 +52,7 @@ class Spout():
                 # TODO: add tracking info
                 new = Data(word_list[i], self.env.now)
                 new.target = dest_list[i]
+                new.source = self
                 bridge = self.topology.get_network(self, dest_list[i])
 
                 if self.debug:

@@ -94,6 +94,7 @@ class Bolt():
                             yield self.env.timeout(pt)
                         except simpy.Interrupt:
                             print('The job processing get interrrupt')
+                            # TODO: we need to put the data back to source for re-distribution
                         
                         # TODO: we might need to perform some data transformation here
                         data = self.queue.pop(0)
@@ -101,11 +102,15 @@ class Bolt():
                         if self.downstreams == []:
                             # this is the end bolt on topology
                             # TODO: we should do something for the ending bolt
-                            pass
+                            if self.debug:
+                                print(f'End bolt {self} finish a task {data} at {self.env.now}')
                         else:
                             destination = np.random.choice(self.downstreams)
+
                             # TODO:we should do something for the data tramsformation
                             data.target = destination
+                            data.source = self
+
                             bridge = self.topology.get_network(self, destination)
                             bridge.queue.append(data)
                             if self.debug:
