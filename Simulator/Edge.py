@@ -31,7 +31,6 @@ class Edge():
                 except simpy.Interrupt:
                     if self.debug:
                         print('get something to send')
-                    self.working = True
             else:
                 self.working = True
                 # TODO: Set capacity here later

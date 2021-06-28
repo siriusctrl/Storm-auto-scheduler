@@ -51,7 +51,7 @@ class WordCountingEnv(gym.Env):
 
     def build_topology(self, debug=False):
         exe_info = {
-            'spout':['spout', 2, [1e3, 1e3]],
+            'spout':['spout', 2, [50, 50]],
             'WordCount':['bolt', 3, {}],
             'Database':['bolt', 3, {'processing_speed':60}],
             'graph': [  

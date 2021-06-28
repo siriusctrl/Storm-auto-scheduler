@@ -15,4 +15,4 @@ class Data():
         
     
     def __repr__(self):
-        return f'data {self.size} s={self.start} e={self.end} f={self.source} t={self.target}'
+        return f'data {self.size} {self.enter_time} t={self.target}'

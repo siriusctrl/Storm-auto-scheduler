@@ -47,8 +47,6 @@ class Spout():
 
             dest_list:Bolt = np.random.choice(self.downstreams, size=self.incoming_rate, replace=True)
             word_list = np.random.randint(2, 20, size=self.incoming_rate)
-            if self.debug:
-                print('we generate destination list of', len(dest_list))
             
             for i in range(len(dest_list)):
                 # TODO: add tracking info

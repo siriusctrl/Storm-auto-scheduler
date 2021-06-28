@@ -1,3 +1,6 @@
+import simpy
+
+
 class Machine():
     """
     A class that represents a physical machines on the simulator
@@ -5,8 +8,10 @@ class Machine():
 
     def __init__(self,
                 id:int,
+                topology,
+                env,
                 max_slots=0,
-                capacity=1
+                capacity=1,
             ) -> None:
         """
         Parameters
@@ -20,11 +25,23 @@ class Machine():
             The relative computational capacity that the machine can provide
         """
         self.id = id
+        self.topology = topology
+        self.env = env
         self.max_slots = max_slots
         self.capacity = capacity
+        
+        self.cpu = simpy.Resource(env, capacity=1)
+        # ! memory are not going to be used in here since requring 
+        # ! both cpu and memory asynchonously can potentially incur deadlock
+        # ! therefore, the resource acuqisition should always followed in a seqence
+        # ! e.g. acquire CPU first, then memory
+        self.memory = simpy.Container(env, capacity=capacity*100, init=capacity*100)
+
+        # 50 byte per milisecond if the capacity is 100%
+        self.standard = 100
     
     def __repr__(self) -> str:
-        return f'm{self.id}'
+        return f'm{self.id} cpu:{self.cpu.level}'
 
 if __name__ == '__main__':
     import networkx as nx

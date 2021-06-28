@@ -64,7 +64,13 @@ class Topology():
             np.random.seed(random_seed)
 
     def update_assignments(self, new_assignments):
-        pass
+        self.reset_assignments()
+        ###########################################
+        # Code here to decode the new_assignments #
+        ###########################################
+        for m in self.machine_list:
+            m:Machine
+            m.update_hosting_list()
 
     def update_states(self, time:int=1000, track=False):
         # TODO: use the track and debug flag
@@ -93,10 +99,14 @@ class Topology():
         """
         get a list of downstream bolts of current source
         """
-        if type(source) is str:
-            successors = list(self.executor_graph.successors(source))[0]
-        else:
-            successors = list(self.executor_graph.successors(source.name))[0]
+        try:
+            if type(source) is str:
+                successors = list(self.executor_graph.successors(source))[0]
+            else:
+                successors = list(self.executor_graph.successors(source.name))[0]
+        except IndexError:
+            # this indicate we reached the end bolt
+            return []
     
         return self.name_to_executors[successors]
 
@@ -143,7 +153,7 @@ class Topology():
   
     def create_bolts(self, n, name, **bolt_info):
         for i in range(n):
-            new_bolt = Bolt(name, i, self.env, **bolt_info)
+            new_bolt = Bolt(name, i, self.env, self, **bolt_info)
             self.name_to_executors[name] = self.name_to_executors.get(name, []) + [new_bolt]
 
     def create_executor_graph(self, nodes, edges):
@@ -180,7 +190,7 @@ class Topology():
         """
         assert(len(capacity_list) == self.n_machines)
         for i in range(self.n_machines):
-            m = Machine(i, capacity=capacity_list[0])
+            m = Machine(i, self, self.env, capacity=capacity_list[0])
             self.machine_list.append(m)
 
     def build_sample(self, debug=False):
@@ -199,9 +209,9 @@ class Topology():
     def _build_sample_executors(self):
         sample_info = {
             'spout':['spout', 2, [50, 50]],
-            'SplitSentence':['bolt', 3, {'processing_speed':20}],
-            'WordCount':['bolt', 3, {}],
-            'Database':['bolt', 3, {'processing_speed':60}],
+            'SplitSentence':['bolt', 3, {'processing_speed':50}],
+            'WordCount':['bolt', 3, {'processing_speed':50}],
+            'Database':['bolt', 3, {'processing_speed':50}],
             'graph': [  
                         # we first define a list of nodes
                         ['spout', 'SplitSentence', 'WordCount', 'Database'], 
@@ -268,4 +278,4 @@ if __name__ == '__main__':
 
     # test.update_states()
     # print(test.machine_graph.edges(data=True))
-    test.update_states(time=1.5)
+    test.update_states(time=5)
