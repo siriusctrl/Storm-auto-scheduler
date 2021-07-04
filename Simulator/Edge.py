@@ -14,6 +14,7 @@ class Edge():
         # key is either an executor object
         self.queue = []
         # a bandwidth represent how many byte of data can be tranfer for every milisecond
+        # use 0 to represent no delay
         self.bandwidth = 0
         self.working = False
         self.debug = Config.debug

@@ -53,28 +53,41 @@ class Topology():
         self.machine_to_executors = {}
         self.name_to_executors = {}
 
-        self.random_seed = random_seed
-        self.track_counter = 0
-        self.track_datas = {}
+        # tracking related
+        self.tracking = False
+        self.tracking_counter = 0
+        self.tracking_list = []
 
         self.env = Environment()
 
         # setup random seed
+        self.random_seed = random_seed
         if random_seed is not None:
             np.random.seed(random_seed)
 
     def update_assignments(self, new_assignments):
+        # TODO: before we reset the assignment, we need to stop sending any new jobs and finish
+        # TODO: all the proceeding task 
         self.reset_assignments()
         ###########################################
         # Code here to decode the new_assignments #
         ###########################################
-        for m in self.machine_list:
-            m:Machine
-            m.update_hosting_list()
 
-    def update_states(self, time:int=1000, track=False):
-        # TODO: use the track and debug flag
-        self.env.run(until=time)
+    def update_states(self, time:int=100, track=False):
+        # the time should represent the time interval that we would like to sample data from
+        if track:
+            self.tracking = True
+            next_batch = int(round(self.env.now, 0)) + time
+            self.env.run(next_batch)
+            self.tracking = False
+            reward = 0
+            # TODO: check whether we have full record
+
+            # return the reward and then reset everything
+            return reward
+        else:
+            # This should only use for debug
+            self.env.run(until=time)
 
     def round_robin_init(self) -> None:
         """
@@ -115,6 +128,9 @@ class Topology():
         dm = self.executor_to_machines[target]
         return self.machine_graph[sm][dm]['object']
 
+    def record(self, data:Data) -> None:
+        self.tracking_list.append(data)
+        
     def build_machine_graph(self, edges):
         self.machine_graph.add_nodes_from(self.machine_list)
 
@@ -146,7 +162,6 @@ class Topology():
 
     def create_spouts(self, n, data_rates):
         assert(len(data_rates) == n)
-
         for i in range(n):
             new_spout = Spout(i, data_rates[i], self.env, self, self.random_seed)
             self.name_to_executors['spout'] = self.name_to_executors.get('spout', []) + [new_spout]
@@ -278,4 +293,4 @@ if __name__ == '__main__':
 
     # test.update_states()
     # print(test.machine_graph.edges(data=True))
-    test.update_states(time=5)
+    test.update_states(time=1, track=True)

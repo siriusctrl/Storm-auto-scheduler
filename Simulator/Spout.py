@@ -49,14 +49,19 @@ class Spout():
             word_list = np.random.randint(2, 20, size=self.incoming_rate)
             
             for i in range(len(dest_list)):
-                # TODO: add tracking info
                 new = Data(word_list[i], self.env.now)
+                if self.topology.tracking:
+                    new.tracked = True
+                    self.topology.tracking_counter += 1
                 new.target = dest_list[i]
                 new.source = self
                 bridge = self.topology.get_network(self, dest_list[i])
 
                 if self.debug:
-                    print(self.__repr__(), 'generate data at', self.env.now)
+                    if not self.topology.tracking:
+                        print(self.__repr__(), 'generate data at', self.env.now)
+                    else:
+                        print(f'{self.__repr__()} generate tracked data at {self.env.now} with counter {self.topology.tracking_counter}')
 
                 bridge.queue.append(new)
                 if not bridge.working:
@@ -69,7 +74,6 @@ class Spout():
 
     def __repr__(self) -> str:
         return self.to_yellow(f'Spout{self.id}')
-
 
 if __name__ == '__main__':
     a = Spout(1, 1e4)

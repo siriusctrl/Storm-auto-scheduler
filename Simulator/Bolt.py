@@ -1,4 +1,5 @@
 import numpy as np
+from numpy import random
 import simpy
 from simpy import Environment
 
@@ -55,6 +56,9 @@ class Bolt():
         
         self.debug = Config.debug
         self.downstreams = None
+
+        if random_seed is not None:
+            np.random.seed(self.random_seed)
         
     def run(self):
         # The bolt will run forever
@@ -100,10 +104,13 @@ class Bolt():
                         data = self.queue.pop(0)
                         
                         if self.downstreams == []:
-                            # this is the end bolt on topology
-                            # TODO: we should do something for the ending bolt
+                            # this is the end bolt on topology, do some wrap up
                             if self.debug:
                                 print(f'End bolt {self} finish a task {data} at {self.env.now}')
+
+                            data.finish_time = self.env.now
+                            if data.tracked:
+                                self.topology.record(data)
                         else:
                             destination = np.random.choice(self.downstreams)
 

@@ -3,17 +3,16 @@ from Bolt import Bolt
 
 class Data():
 
-    def __init__(self, size:int, enter_time:int, track_id=None, target:Bolt=None) -> None:
+    def __init__(self, size:int, enter_time:int, tracked=False, target:Bolt=None) -> None:
         self.size = size
         self.enter_time = enter_time
-        
+        self.finish_time = None
         # this will have an id to represent a data that we sample from the 
         # simulator to give a reward to the agent.
         # None if we are not tracking this group of data
-        self.track_id = track_id
+        self.tracked = tracked
         self.target = target
         self.source = None
         
-    
     def __repr__(self):
-        return f'data {self.size} {self.enter_time} s={self.source} t={self.target}'
+        return f'data {self.size} {self.enter_time} s={self.source} t={self.target} {self.tracked}'

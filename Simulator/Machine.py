@@ -31,8 +31,8 @@ class Machine():
         self.capacity = capacity
         
         self.cpu = simpy.Resource(env, capacity=1)
-        # ! memory are not going to be used in here since requring 
-        # ! both cpu and memory asynchonously can potentially incur deadlock
+
+        # ! requring both cpu and memory asynchonously can potentially incur deadlock
         # ! therefore, the resource acuqisition should always followed in a seqence
         # ! e.g. acquire CPU first, then memory
         self.memory = simpy.Container(env, capacity=capacity*100, init=capacity*100)
