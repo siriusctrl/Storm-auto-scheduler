@@ -5,6 +5,7 @@ import simpy
 from simpy import Environment
 
 from Bolt import Bolt
+from Config import Config
 from Data import Data
 from Edge import Edge
 from Machine import Machine
@@ -13,7 +14,6 @@ from Spout import Spout
 class Topology():
     """
     A class that contains the executor connectivity and their assignment information
-    TODO: finish this class
     """
 
     def __init__(self,
@@ -78,12 +78,36 @@ class Topology():
         if track:
             self.tracking = True
             next_batch = int(round(self.env.now, 0)) + time
-            self.env.run(next_batch)
+            self.env.run(until=next_batch)
+
+            if Config.progress_check or Config.debug:
+                print(f'In total {self.tracking_counter} tracked data')
+
             self.tracking = False
             reward = 0
             # TODO: check whether we have full record
 
-            # return the reward and then reset everything
+            while len(self.tracking_list) < self.tracking_counter:
+                if Config.progress_check or Config.debug:
+                    print(f'{len(self.tracking_list)*100/self.tracking_counter:.2f} collected')
+                next_batch = int(round(self.env.now, 0)) + time
+                self.env.run(until=next_batch)
+
+            e_total = 0
+            f_total = 0
+            for d in self.tracking_list:
+                d:Data
+                e_total += d.enter_time
+                f_total += d.finish_time
+            
+            reward = -(f_total - e_total) / self.tracking_counter
+
+            if Config.progress_check or Config.debug:
+                print(f'final reward is {reward}')
+
+            # reset everything and then return the reward
+            self.tracking_counter = 0
+            self.tracking_list = []
             return reward
         else:
             # This should only use for debug
@@ -218,7 +242,7 @@ class Topology():
     def _build_sample_machines(self):
         self.n_machines = 4
         self.build_homo_machines()
-        edges = [(0,1,20), (0,2,30), (0,3,15), (1,2,35), (1,3,25), (2,3,35)]
+        edges = [(0,1,80), (0,2,120), (0,3,60), (1,2,140), (1,3,100), (2,3,140)]
         self.build_machine_graph(edges)
 
     def _build_sample_executors(self):
@@ -293,4 +317,10 @@ if __name__ == '__main__':
 
     # test.update_states()
     # print(test.machine_graph.edges(data=True))
-    test.update_states(time=1, track=True)
+
+    """
+    Tracking info
+    """
+    # print(len(test.tracking_list))
+    # print(test.tracking_counter)
+    test.update_states(time=10, track=True)

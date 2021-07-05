@@ -54,7 +54,6 @@ class Bolt():
         self.queue = []
         self.action = env.process(self.run())
         
-        self.debug = Config.debug
         self.downstreams = None
 
         if random_seed is not None:
@@ -67,18 +66,18 @@ class Bolt():
                 self.working = False
 
                 try:
-                    if self.debug:
+                    if Config.debug:
                         print(self.__repr__(), 'is waiting for job')
                     yield self.env.timeout(100)
                 except simpy.Interrupt:
-                    if self.debug:
+                    if Config.debug:
                         print(self.__repr__(), 'get job at', self.env.now)
             else:
                 self.working = True
 
                 if self.downstreams is None:
                     self.downstreams = self.topology.get_downstreams(self)
-                    if self.debug:
+                    if Config.debug:
                         print(f'{self} has downstreams {self.downstreams}')
 
                 # We need to first requesting the resource from the underlying machine
@@ -93,7 +92,7 @@ class Bolt():
                             job = self.queue[0]
                             processing_speed = m.capacity * m.standard
                             pt = job.size / processing_speed
-                            if self.debug:
+                            if Config.debug:
                                 print(f'{self} is processing job at {self.env.now} last {pt}')
                             yield self.env.timeout(pt)
                         except simpy.Interrupt:
@@ -105,7 +104,7 @@ class Bolt():
                         
                         if self.downstreams == []:
                             # this is the end bolt on topology, do some wrap up
-                            if self.debug:
+                            if Config.debug:
                                 print(f'End bolt {self} finish a task {data} at {self.env.now}')
 
                             data.finish_time = self.env.now
@@ -113,14 +112,12 @@ class Bolt():
                                 self.topology.record(data)
                         else:
                             destination = np.random.choice(self.downstreams)
-
-                            # TODO:we should do something for the data tramsformation
                             data.target = destination
                             data.source = self
 
                             bridge = self.topology.get_network(self, destination)
                             bridge.queue.append(data)
-                            if self.debug:
+                            if Config.debug:
                                 print(f'{self} sending data to {destination}')
                             
                             if not bridge.working:

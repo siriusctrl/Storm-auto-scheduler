@@ -1,2 +1,3 @@
 class Config():
-    debug = True
+    debug = False
+    progress_check = True

@@ -12,7 +12,7 @@ class Spout():
     def __init__(self, id:int,
                     incoming_rate:float,
                     env:Environment,
-                    topology:'topology',
+                    topology,
                     random_seed=None
                 ) -> None:
         
@@ -26,7 +26,6 @@ class Spout():
             np.random.seed(random_seed)
 
         self.topology = topology
-        self.debug = Config.debug
         self.downstreams = None
 
         # I don't think anyone will interrput this process
@@ -40,7 +39,7 @@ class Spout():
             self.downstreams = self.topology.get_downstreams(self)
         interval = 1.0 / self.incoming_rate
 
-        if self.debug:
+        if Config.debug:
             print(self.__repr__(), 'interval=', interval)
 
         while True:
@@ -57,7 +56,7 @@ class Spout():
                 new.source = self
                 bridge = self.topology.get_network(self, dest_list[i])
 
-                if self.debug:
+                if Config.debug:
                     if not self.topology.tracking:
                         print(self.__repr__(), 'generate data at', self.env.now)
                     else:

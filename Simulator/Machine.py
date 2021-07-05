@@ -20,7 +20,6 @@ class Machine():
             The order of the machine
         max_slots
             Number of worker slots for a physical machine
-            ! This does not have any effect yet
         capacity: float
             The relative computational capacity that the machine can provide
         """
@@ -32,13 +31,13 @@ class Machine():
         
         self.cpu = simpy.Resource(env, capacity=1)
 
-        # ! requring both cpu and memory asynchonously can potentially incur deadlock
-        # ! therefore, the resource acuqisition should always followed in a seqence
-        # ! e.g. acquire CPU first, then memory
+        # WARN : requring both cpu and memory asynchonously can potentially incur deadlock
+        # therefore, the resource acuqisition should always followed in a seqence
+        # e.g. acquire CPU first, then memory
         self.memory = simpy.Container(env, capacity=capacity*100, init=capacity*100)
 
-        # 50 byte per milisecond if the capacity is 100%
-        self.standard = 100
+        # 500 byte per milisecond if the capacity is 100%
+        self.standard = 500
     
     def __repr__(self) -> str:
         return f'm{self.id} cpu:{self.cpu.level}'

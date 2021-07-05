@@ -17,7 +17,6 @@ class Edge():
         # use 0 to represent no delay
         self.bandwidth = 0
         self.working = False
-        self.debug = Config.debug
         self.action = env.process(self.run())
 
     def run(self):
@@ -26,15 +25,15 @@ class Edge():
                 self.working = False
 
                 try:
-                    if self.debug:
+                    if Config.debug:
                         print('network is waiting for data')
                     yield self.env.timeout(100)
                 except simpy.Interrupt:
-                    if self.debug:
+                    if Config.debug:
                         print('get something to send')
             else:
                 self.working = True
-                # TODO: Set capacity here later
+                # NOTICE : Assuming unlimited network queue heree
                 data:Data = self.queue.pop(0)
                 
                 if self.bandwidth == 0:
@@ -50,7 +49,7 @@ class Edge():
                 if not target.working:
                     target.action.interrupt()
                 
-                if self.debug:
+                if Config.debug:
                     print('sent one data at', self.env.now)
     
     def __repr__(self) -> str:

@@ -1,3 +1,8 @@
+# Overall TODO
+1. The Processing speed should different across each bolt, instead of only different at machine level
+   - This thing should be adjustable by each application instead of hardcoded into topology or bolt
+2. 
+
 # Assumption List about this Simulator
 
 ### Bolt
