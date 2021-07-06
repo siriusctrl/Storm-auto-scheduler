@@ -53,7 +53,7 @@ class Bolt():
         self.working = False
         self.queue = []
         self.action = env.process(self.run())
-        
+
         self.downstreams = None
 
         if random_seed is not None:
@@ -88,20 +88,18 @@ class Bolt():
                         # waiting for resource acquisition to success
                         yield req
                         # the resources has been acquired from here
-                        try:
-                            job = self.queue[0]
-                            processing_speed = m.capacity * m.standard
-                            pt = job.size / processing_speed
-                            if Config.debug:
-                                print(f'{self} is processing job at {self.env.now} last {pt}')
-                            yield self.env.timeout(pt)
-                        except simpy.Interrupt:
-                            print('The job processing get interrrupt')
-                            # TODO: we need to put the data back to source for re-distribution
+                        job = self.queue[0]
+                        processing_speed = m.capacity * m.standard
+                        pt = job.size / processing_speed
+                        if Config.debug:
+                            print(f'{self} is processing job at {self.env.now} last {pt}')
                         
-                        # TODO: we might need to perform some data transformation here
+                        # the job processing will take place here
+                        yield self.env.timeout(pt)
+
                         data = self.queue.pop(0)
-                        
+                        # TODO: we might need to perform some data transformation here
+
                         if self.downstreams == []:
                             # this is the end bolt on topology, do some wrap up
                             if Config.debug:
@@ -122,9 +120,15 @@ class Bolt():
                             
                             if not bridge.working:
                                 bridge.action.interrupt()
-
                 except simpy.Interrupt:
-                    print('the task get interrupted while waiting for resources')
+                    if Config.debug or Config.update_flag:
+                        print('{self} get interrrupted while doing job')
+
+
+    def clear(self):
+        """
+        clear the tuple and stop doing new task
+        """
 
     def __repr__(self) -> str:
         return self.to_red(f'{self.name}{self.id}')

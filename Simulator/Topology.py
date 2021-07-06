@@ -66,8 +66,7 @@ class Topology():
             np.random.seed(random_seed)
 
     def update_assignments(self, new_assignments):
-        # TODO: before we reset the assignment, we need to stop sending any new jobs and finish
-        # TODO: all the proceeding task 
+        # TODO: pause the spout and clear all the pending task
         self.reset_assignments()
         ###########################################
         # Code here to decode the new_assignments #
@@ -85,13 +84,16 @@ class Topology():
 
             self.tracking = False
             reward = 0
-            # TODO: check whether we have full record
+
+            # a batch counter for debug
+            b_count = 0
 
             while len(self.tracking_list) < self.tracking_counter:
                 if Config.progress_check or Config.debug:
-                    print(f'{len(self.tracking_list)*100/self.tracking_counter:.2f} collected')
-                next_batch = int(round(self.env.now, 0)) + time
+                    print(f'{len(self.tracking_list)*100/self.tracking_counter:.2f} collected {b_count}')
+                next_batch = int(round(self.env.now, 0)) + time*10
                 self.env.run(until=next_batch)
+                b_count += 1
 
             e_total = 0
             f_total = 0
@@ -110,7 +112,8 @@ class Topology():
             self.tracking_list = []
             return reward
         else:
-            # This should only use for debug
+            # This should only use for debug or data collection for cold start
+            # TODO: change to next batch
             self.env.run(until=time)
 
     def round_robin_init(self) -> None:
@@ -242,7 +245,7 @@ class Topology():
     def _build_sample_machines(self):
         self.n_machines = 4
         self.build_homo_machines()
-        edges = [(0,1,80), (0,2,120), (0,3,60), (1,2,140), (1,3,100), (2,3,140)]
+        edges = [(0,1,800), (0,2,1200), (0,3,600), (1,2,1400), (1,3,1000), (2,3,1400)]
         self.build_machine_graph(edges)
 
     def _build_sample_executors(self):
@@ -323,4 +326,5 @@ if __name__ == '__main__':
     """
     # print(len(test.tracking_list))
     # print(test.tracking_counter)
+    test.update_states(time=50, track=False)
     test.update_states(time=10, track=True)
