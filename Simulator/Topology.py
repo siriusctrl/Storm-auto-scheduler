@@ -327,11 +327,16 @@ if __name__ == '__main__':
     # print(test.machine_graph.edges(data=True))
 
     """
-    Tracking info
+    Test new assignment updates
     """
-    # print(len(test.tracking_list))
-    # print(test.tracking_counter)
     test.update_states(time=0.1, track=False)
     # test.update_states(time=10, track=True)
     test.update_assignments(1)
     test.update_states(time=0.105, track=False)
+
+    """
+    Tracking info
+    """
+    # print(len(test.tracking_list))
+    # print(test.tracking_counter)
+    # test.update_states(time=10, track=True)
