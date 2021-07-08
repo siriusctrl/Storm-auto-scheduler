@@ -40,7 +40,7 @@ class Machine():
         self.standard = 500
     
     def __repr__(self) -> str:
-        return f'm{self.id} cpu:{self.cpu.level}'
+        return f'm{self.id} cpu:{self.cpu.capacity}'
 
 if __name__ == '__main__':
     import networkx as nx

@@ -27,12 +27,13 @@ class Spout():
 
         self.topology = topology
         self.downstreams = None
-
+        self.generating = False
         # I don't think anyone will interrput this process
         self.action = env.process(self.generate())
 
         
     def generate(self):
+        # add this line to prevent geting downstreams before the system setup
         yield self.env.timeout(0)
 
         if self.downstreams is None:
@@ -62,7 +63,7 @@ class Spout():
                     else:
                         print(f'{self.__repr__()} generate tracked data at {self.env.now} with counter {self.topology.tracking_counter}')
 
-                bridge.queue.append(new)
+                bridge.queue.append(new) 
                 if not bridge.working:
                     bridge.action.interrupt()
                 

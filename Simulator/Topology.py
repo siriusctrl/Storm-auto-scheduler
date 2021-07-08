@@ -169,6 +169,7 @@ class Topology():
             # initialise the edge object
             ob = Edge(self.env)
             ob.bandwidth = w
+            ob.between = [ns, nd]
             self.machine_graph[ns][nd]['weight'] = w
             self.machine_graph[ns][nd]['object'] = ob
         
@@ -177,6 +178,7 @@ class Topology():
             self.machine_graph.add_edge(m, m)
             ob = Edge(self.env)
             ob.bandwidth = self.inter_trans_delay
+            ob.between = [m, m]
             
             self.machine_graph[m][m]['weight'] = self.inter_trans_delay
             self.machine_graph[m][m]['object'] = ob
@@ -326,5 +328,5 @@ if __name__ == '__main__':
     """
     # print(len(test.tracking_list))
     # print(test.tracking_counter)
-    test.update_states(time=50, track=False)
-    test.update_states(time=10, track=True)
+    test.update_states(time=0.1, track=False)
+    # test.update_states(time=10, track=True)

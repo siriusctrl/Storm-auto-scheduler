@@ -124,11 +124,14 @@ class Bolt():
                     if Config.debug or Config.update_flag:
                         print('{self} get interrrupted while doing job')
 
-
     def clear(self):
         """
         clear the tuple and stop doing new task
         """
+        if Config.update_flag or Config.debug:
+            print(f'{self} is clearing')
+        self.queue = []
+        self.action.interrupt()
 
     def __repr__(self) -> str:
         return self.to_red(f'{self.name}{self.id}')
