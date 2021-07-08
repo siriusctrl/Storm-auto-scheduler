@@ -67,7 +67,13 @@ class Topology():
 
     def update_assignments(self, new_assignments):
         # TODO: pause the spout and clear all the pending task
-        self.reset_assignments()
+
+        for executors in self.name_to_executors.values():
+            print(executors)
+            for e in executors:
+                e.clear()
+
+        # self.reset_assignments()
         ###########################################
         # Code here to decode the new_assignments #
         ###########################################
@@ -287,7 +293,6 @@ class Topology():
     def reset_assignments(self):
         self.machine_to_executors = {}
         self.executor_to_machines = {}
-        # TODO: should clear any suspending jobs in egde and bout/spout
 
 if __name__ == '__main__':
     test = Topology(4, {})
@@ -330,3 +335,5 @@ if __name__ == '__main__':
     # print(test.tracking_counter)
     test.update_states(time=0.1, track=False)
     # test.update_states(time=10, track=True)
+    test.update_assignments(1)
+    test.update_states(time=0.105, track=False)

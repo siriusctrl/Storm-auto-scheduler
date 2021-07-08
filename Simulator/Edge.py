@@ -18,7 +18,7 @@ class Edge():
         self.bandwidth = 0
         self.working = False
         self.action = env.process(self.run())
-        # TODO: add information about which network is this
+        # this will contain information about which two machines the network are connecting
         self.between = []
 
     def run(self):
@@ -28,11 +28,11 @@ class Edge():
 
                 try:
                     if Config.debug:
-                        print(f'{self} is waiting for data')
+                        print(f'{self} is waiting for data at {self.env.now}')
                     yield self.env.timeout(100)
                 except simpy.Interrupt:
                     if Config.debug:
-                        print(f'{self} get something to send')
+                        print(f'{self} get something to send at {self.env.now}')
             else:
                 try:
                     self.working = True
@@ -53,10 +53,10 @@ class Edge():
                         target.action.interrupt()
                     
                     if Config.debug:
-                        print(f'{self} sent one data at', self.env.now)
+                        print(f'{self} sent one data at {self.env.now}')
                 except simpy.Interrupt:
                     if Config.debug or Config.update_flag:
-                        print(f'{self} get interrupted')
+                        print(f'{self} get interrupted at {self.env.now}')
 
     def clear(self):
         """

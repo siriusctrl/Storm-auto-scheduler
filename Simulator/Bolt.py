@@ -67,11 +67,14 @@ class Bolt():
 
                 try:
                     if Config.debug:
-                        print(self.__repr__(), 'is waiting for job')
+                        print(f'{self} is waiting for job at {self.env.now}')
                     yield self.env.timeout(100)
                 except simpy.Interrupt:
                     if Config.debug:
-                        print(self.__repr__(), 'get job at', self.env.now)
+                        if len(self.queue) == 0:
+                            print(f'{self} get interrupted while waiting at {self.env.now}')
+                        else:
+                            print(f'{self} get job at {self.env.now}')
             else:
                 self.working = True
 
@@ -86,7 +89,10 @@ class Bolt():
                 try:
                     with m.cpu.request() as req:
                         # waiting for resource acquisition to success
+                        if Config.debug:
+                            print(f'{self} is waiting for resources')
                         yield req
+
                         # the resources has been acquired from here
                         job = self.queue[0]
                         processing_speed = m.capacity * m.standard
@@ -116,13 +122,13 @@ class Bolt():
                             bridge = self.topology.get_network(self, destination)
                             bridge.queue.append(data)
                             if Config.debug:
-                                print(f'{self} sending data to {destination}')
+                                print(f'{self} sending data to {destination} at {self.env.now}')
                             
                             if not bridge.working:
                                 bridge.action.interrupt()
                 except simpy.Interrupt:
                     if Config.debug or Config.update_flag:
-                        print('{self} get interrrupted while doing job')
+                        print(f'{self} get interrrupted while doing job at {self.env.now}')
 
     def clear(self):
         """
