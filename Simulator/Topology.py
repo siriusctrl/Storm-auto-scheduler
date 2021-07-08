@@ -66,17 +66,15 @@ class Topology():
             np.random.seed(random_seed)
 
     def update_assignments(self, new_assignments):
-        # TODO: pause the spout and clear all the pending task
-
         for executors in self.name_to_executors.values():
             print(executors)
             for e in executors:
                 e.clear()
 
         # self.reset_assignments()
-        ###########################################
-        # Code here to decode the new_assignments #
-        ###########################################
+        ####################################
+        # TODO: decode the new_assignments #
+        ####################################
 
     def update_states(self, time:int=100, track=False):
         # the time should represent the time interval that we would like to sample data from
@@ -119,8 +117,8 @@ class Topology():
             return reward
         else:
             # This should only use for debug or data collection for cold start
-            # TODO: change to next batch
-            self.env.run(until=time)
+            next_batch = int(round(self.env.now, 0)) + time
+            self.env.run(until=next_batch)
 
     def round_robin_init(self) -> None:
         """
