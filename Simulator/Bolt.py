@@ -138,7 +138,7 @@ class Bolt():
     
     @staticmethod
     def to_red(s):
-        return f"\033[91m {s}\033[00m"
+        return f"\033[91m{s}\033[00m"
 
 if __name__ == '__main__':
     b = Bolt('test', 1)

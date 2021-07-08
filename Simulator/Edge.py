@@ -72,6 +72,6 @@ class Edge():
 
     @staticmethod
     def to_Cyan(prt): 
-        return f"\033[96m {prt}\033[00m"
+        return f"\033[96m{prt}\033[00m"
     
 
