@@ -6,10 +6,11 @@ from simpy import Environment
 
 from Bolt import Bolt
 from Config import Config
-from Data import Data
+from Data import Data, IdentityDataTransformation
 from Edge import Edge
 from Machine import Machine
 from Spout import Spout
+
 
 class Topology():
     """
@@ -17,11 +18,11 @@ class Topology():
     """
 
     def __init__(self,
-                n_machines:int,
-                executors_info:dict,
-                inter_trans_delay=0.,
-                random_seed:int=None,
-        ) -> None:
+                 n_machines: int,
+                 executors_info: dict,
+                 inter_trans_delay=0.,
+                 random_seed: int = None,
+                 ) -> None:
         """
         A generic topology constructor in a stream computing system simulator
 
@@ -76,7 +77,7 @@ class Topology():
         # TODO: decode the new_assignments #
         ####################################
 
-    def update_states(self, time:int=100, track=False):
+    def update_states(self, time: int = 100, track=False):
         # the time should represent the time interval that we would like to sample data from
         if track:
             self.tracking = True
@@ -94,7 +95,8 @@ class Topology():
 
             while len(self.tracking_list) < self.tracking_counter:
                 if Config.progress_check or Config.debug:
-                    print(f'{len(self.tracking_list)*100/self.tracking_counter:.2f} collected {b_count}')
+                    print(
+                        f'{len(self.tracking_list)*100/self.tracking_counter:.2f} collected {b_count}')
                 next_batch = int(round(self.env.now, 0)) + time*10
                 self.env.run(until=next_batch)
                 b_count += 1
@@ -102,10 +104,10 @@ class Topology():
             e_total = 0
             f_total = 0
             for d in self.tracking_list:
-                d:Data
+                d: Data
                 e_total += d.enter_time
                 f_total += d.finish_time
-            
+
             reward = -(f_total - e_total) / self.tracking_counter
 
             if Config.progress_check or Config.debug:
@@ -131,14 +133,14 @@ class Topology():
 
         for e_list in self.name_to_executors.values():
             exec += e_list
-        
+
         r = len(self.machine_list)
 
         for i in range(len(exec)):
             to = i % r
             self.add_executor_to_machines(exec[i], self.machine_list[to])
             self.add_machine_to_executors(exec[i], self.machine_list[to])
-            
+
     def get_downstreams(self, source) -> list:
         """
         get a list of downstream bolts of current source
@@ -147,11 +149,12 @@ class Topology():
             if type(source) is str:
                 successors = list(self.executor_graph.successors(source))[0]
             else:
-                successors = list(self.executor_graph.successors(source.name))[0]
+                successors = list(
+                    self.executor_graph.successors(source.name))[0]
         except IndexError:
             # this indicate we reached the end bolt
             return []
-    
+
         return self.name_to_executors[successors]
 
     def get_network(self, source, target) -> Edge:
@@ -159,9 +162,9 @@ class Topology():
         dm = self.executor_to_machines[target]
         return self.machine_graph[sm][dm]['object']
 
-    def record(self, data:Data) -> None:
+    def record(self, data: Data) -> None:
         self.tracking_list.append(data)
-        
+
     def build_machine_graph(self, edges):
         self.machine_graph.add_nodes_from(self.machine_list)
 
@@ -176,33 +179,37 @@ class Topology():
             ob.between = [ns, nd]
             self.machine_graph[ns][nd]['weight'] = w
             self.machine_graph[ns][nd]['object'] = ob
-        
+
         # create self-loop for communication within the machine
         for m in self.machine_list:
             self.machine_graph.add_edge(m, m)
             ob = Edge(self.env)
             ob.bandwidth = self.inter_trans_delay
             ob.between = [m, m]
-            
+
             self.machine_graph[m][m]['weight'] = self.inter_trans_delay
             self.machine_graph[m][m]['object'] = ob
 
     def add_executor_to_machines(self, executor, machine):
         self.executor_to_machines[executor] = machine
-        
+
     def add_machine_to_executors(self, executor, machine):
-        self.machine_to_executors[machine] = self.machine_to_executors.get(machine, []) + [executor]
+        self.machine_to_executors[machine] = self.machine_to_executors.get(
+            machine, []) + [executor]
 
     def create_spouts(self, n, data_rates):
         assert(len(data_rates) == n)
         for i in range(n):
-            new_spout = Spout(i, data_rates[i], self.env, self, self.random_seed)
-            self.name_to_executors['spout'] = self.name_to_executors.get('spout', []) + [new_spout]
-  
+            new_spout = Spout(i, data_rates[i],
+                              self.env, self, self.random_seed)
+            self.name_to_executors['spout'] = self.name_to_executors.get(
+                'spout', []) + [new_spout]
+
     def create_bolts(self, n, name, **bolt_info):
         for i in range(n):
             new_bolt = Bolt(name, i, self.env, self, **bolt_info)
-            self.name_to_executors[name] = self.name_to_executors.get(name, []) + [new_bolt]
+            self.name_to_executors[name] = self.name_to_executors.get(
+                name, []) + [new_bolt]
 
     def create_executor_graph(self, nodes, edges):
         self.executor_graph.add_nodes_from(nodes)
@@ -218,7 +225,7 @@ class Topology():
                 self.create_executor_graph(v[0], v[1:])
             else:
                 raise ValueError('Unknown type of executor')
-    
+
     def build_homo_machines(self, capacity=1):
         """
         Parameters
@@ -228,7 +235,7 @@ class Topology():
         """
         self.build_heter_machines(capacity_list=[capacity]*self.n_machines)
 
-    def build_heter_machines(self, capacity_list:list):
+    def build_heter_machines(self, capacity_list: list):
         """
         Parameters
         -----------
@@ -251,23 +258,33 @@ class Topology():
     def _build_sample_machines(self):
         self.n_machines = 4
         self.build_homo_machines()
-        edges = [(0,1,800), (0,2,1200), (0,3,600), (1,2,1400), (1,3,1000), (2,3,1400)]
+        edges = [(0, 1, 800), (0, 2, 1200), (0, 3, 600),
+                 (1, 2, 1400), (1, 3, 1000), (2, 3, 1400)]
         self.build_machine_graph(edges)
 
     def _build_sample_executors(self):
         sample_info = {
-            'spout':['spout', 2, [50, 50]],
-            'SplitSentence':['bolt', 3, {'processing_speed':50}],
-            'WordCount':['bolt', 3, {'processing_speed':50}],
-            'Database':['bolt', 3, {'processing_speed':50}],
-            'graph': [  
-                        # we first define a list of nodes
-                        ['spout', 'SplitSentence', 'WordCount', 'Database'], 
-                        # then, we have edge represent in tuples
-                        ('spout', 'SplitSentence'), 
-                        ('SplitSentence', 'WordCount'), 
-                        ('WordCount', 'Database')
-                    ]
+            'spout': ['spout', 2, [50, 50]],
+            'SplitSentence': ['bolt', 3, {
+                    'd_transform': IdentityDataTransformation(),
+                    'processing_speed': 50
+                }],
+            'WordCount': ['bolt', 3, {
+                    'd_transform': IdentityDataTransformation(), 
+                    'processing_speed': 50
+                }],
+            'Database': ['bolt', 3, {
+                    'd_transform': IdentityDataTransformation(),
+                    'processing_speed': 50
+                }],
+            'graph': [
+                # we first define a list of nodes
+                ['spout', 'SplitSentence', 'WordCount', 'Database'],
+                # then, we have edge represent in tuples
+                ('spout', 'SplitSentence'),
+                ('SplitSentence', 'WordCount'),
+                ('WordCount', 'Database')
+            ]
         }
 
         self.executor_info = sample_info
@@ -280,17 +297,19 @@ class Topology():
         # draw the graph
         nx.draw(self.machine_graph, pos, with_labels=True)
         # draw the edge labels
-        nx.draw_networkx_edge_labels(self.machine_graph, pos, edge_labels=labels)
+        nx.draw_networkx_edge_labels(
+            self.machine_graph, pos, edge_labels=labels)
         plt.show()
-    
+
     def draw_executors(self):
         pos = nx.spring_layout(self.executor_graph)
         nx.draw_networkx(self.executor_graph, pos)
         plt.show()
-    
+
     def reset_assignments(self):
         self.machine_to_executors = {}
         self.executor_to_machines = {}
+
 
 if __name__ == '__main__':
     test = Topology(4, {})

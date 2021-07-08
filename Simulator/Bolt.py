@@ -1,5 +1,5 @@
 import numpy as np
-from numpy import random
+import random
 import simpy
 from simpy import Environment
 
@@ -16,6 +16,7 @@ class Bolt():
                 id:int,
                 env:Environment,
                 topology,
+                d_transform,
                 processing_speed=50,
                 grouping='shuffle',
                 random_seed=20200430,
@@ -45,6 +46,7 @@ class Bolt():
         self.name = name
         self.env = env
         self.topology = topology
+        self.d_transform = d_transform
         # define what is a processing speed
         self.processing_speed = processing_speed
         self.random_seed = random_seed
@@ -58,6 +60,7 @@ class Bolt():
 
         if random_seed is not None:
             np.random.seed(self.random_seed)
+            random.seed(self.random_seed)
         
     def run(self):
         # The bolt will run forever
@@ -92,40 +95,50 @@ class Bolt():
                         if Config.debug:
                             print(f'{self} is waiting for resources')
                         yield req
-
                         # the resources has been acquired from here
-                        job = self.queue[0]
+                        
                         processing_speed = m.capacity * m.standard
-                        pt = job.size / processing_speed
+
+                        # TODO: following code need to be changed by data tranformation
+                        job = self.queue[0]
+                        new_data_list, pt = self.d_transform.perform(job, processing_speed)
+
                         if Config.debug:
                             print(f'{self} is processing job at {self.env.now} last {pt}')
                         
                         # the job processing will take place here
                         yield self.env.timeout(pt)
 
-                        data = self.queue.pop(0)
-                        # TODO: we might need to perform some data transformation here
+                        # remove the processed data from the queue
+                        self.queue.pop(0)
+                        # TODO: Until here
 
-                        if self.downstreams == []:
-                            # this is the end bolt on topology, do some wrap up
-                            if Config.debug:
-                                print(f'End bolt {self} finish a task {data} at {self.env.now}')
+                        if job.tracked and (len(new_data_list) > 1):
+                            # we are breaking the tracked data into more pieces
+                            # TODO: check this with Maria
+                            pass
 
-                            data.finish_time = self.env.now
-                            if data.tracked:
-                                self.topology.record(data)
-                        else:
-                            destination = np.random.choice(self.downstreams)
-                            data.target = destination
-                            data.source = self
+                        for data in new_data_list:
+                            if self.downstreams == []:
+                                # this is the end bolt on topology, do some wrap up
+                                if Config.debug:
+                                    print(f'End bolt {self} finish a task {data} at {self.env.now}')
 
-                            bridge = self.topology.get_network(self, destination)
-                            bridge.queue.append(data)
-                            if Config.debug:
-                                print(f'{self} sending data to {destination} at {self.env.now}')
-                            
-                            if not bridge.working:
-                                bridge.action.interrupt()
+                                data.finish_time = self.env.now
+                                if data.tracked:
+                                    self.topology.record(data)
+                            else:
+                                destination = np.random.choice(self.downstreams)
+                                data.target = destination
+                                data.source = self
+
+                                bridge = self.topology.get_network(self, destination)
+                                bridge.queue.append(data)
+                                if Config.debug:
+                                    print(f'{self} sending data to {destination} at {self.env.now}')
+                                
+                                if not bridge.working:
+                                    bridge.action.interrupt()
                 except simpy.Interrupt:
                     if Config.debug or Config.update_flag:
                         print(f'{self} get interrrupted while doing job at {self.env.now}')

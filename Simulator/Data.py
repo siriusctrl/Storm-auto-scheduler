@@ -1,5 +1,7 @@
-from Bolt import Bolt
-
+from __future__ import annotations
+from typing import List, TYPE_CHECKING
+if TYPE_CHECKING:
+    from Bolt import Bolt
 
 class Data():
 
@@ -16,3 +18,16 @@ class Data():
         
     def __repr__(self):
         return f'data {self.size} {self.enter_time} s={self.source} t={self.target} {self.tracked}'
+
+
+class BaseDataTransformation:
+    def perform(self, input:Data, speed) -> List[Data]:
+        """
+        To perform data transformation
+        NOTICE: we assume the total processing time will depend on the output size 
+        """
+        raise NotImplementedError
+
+class IdentityDataTransformation(BaseDataTransformation):
+    def perform(self, input:Data, speed):
+        return [input], input.size/speed
