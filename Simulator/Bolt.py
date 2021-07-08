@@ -1,4 +1,9 @@
 import numpy as np
+from numpy import random
+import simpy
+from simpy import Environment
+
+from Config import Config
 
 class Bolt():
     """
@@ -9,6 +14,8 @@ class Bolt():
 
     def __init__(self, name:str,
                 id:int,
+                env:Environment,
+                topology,
                 processing_speed=50,
                 grouping='shuffle',
                 random_seed=20200430,
@@ -25,8 +32,8 @@ class Bolt():
                 The number to use in order to distinguish this bolt from other
                 replicas
             processing_speed: int
-                The number of tuples that a bolt can process in 1 second by utilising
-                1% of CPU capacity
+                The number of byte that a bolt can process in 1 milisecond by 
+                utilising 100% of CPU capacity
             grouping: str
                 It defines how we select the next bolt.
                 current support shuffle grouping
@@ -36,65 +43,108 @@ class Bolt():
         """
         self.id = id
         self.name = name
+        self.env = env
+        self.topology = topology
+        # define what is a processing speed
         self.processing_speed = processing_speed
         self.random_seed = random_seed
         self.grouping = grouping
 
-        # time budget for job processing in the current round of updates
-        self.budget = 0
+        self.working = False
+        self.queue = []
+        self.action = env.process(self.run())
 
-        # key is the source, value is a list that represent all data coming from that source
-        # in sequence
-        self.job_queue = {}
-    
-    def process(self, topology) -> tuple:
+        self.downstreams = None
+
+        if random_seed is not None:
+            np.random.seed(self.random_seed)
+        
+    def run(self):
+        # The bolt will run forever
+        while True:
+            if len(self.queue) == 0:
+                self.working = False
+
+                try:
+                    if Config.debug:
+                        print(f'{self} is waiting for job at {self.env.now}')
+                    yield self.env.timeout(100)
+                except simpy.Interrupt:
+                    if Config.debug:
+                        if len(self.queue) == 0:
+                            print(f'{self} get interrupted while waiting at {self.env.now}')
+                        else:
+                            print(f'{self} get job at {self.env.now}')
+            else:
+                self.working = True
+
+                if self.downstreams is None:
+                    self.downstreams = self.topology.get_downstreams(self)
+                    if Config.debug:
+                        print(f'{self} has downstreams {self.downstreams}')
+
+                # We need to first requesting the resource from the underlying machine
+                m = self.topology.executor_to_machines[self]
+
+                try:
+                    with m.cpu.request() as req:
+                        # waiting for resource acquisition to success
+                        if Config.debug:
+                            print(f'{self} is waiting for resources')
+                        yield req
+
+                        # the resources has been acquired from here
+                        job = self.queue[0]
+                        processing_speed = m.capacity * m.standard
+                        pt = job.size / processing_speed
+                        if Config.debug:
+                            print(f'{self} is processing job at {self.env.now} last {pt}')
+                        
+                        # the job processing will take place here
+                        yield self.env.timeout(pt)
+
+                        data = self.queue.pop(0)
+                        # TODO: we might need to perform some data transformation here
+
+                        if self.downstreams == []:
+                            # this is the end bolt on topology, do some wrap up
+                            if Config.debug:
+                                print(f'End bolt {self} finish a task {data} at {self.env.now}')
+
+                            data.finish_time = self.env.now
+                            if data.tracked:
+                                self.topology.record(data)
+                        else:
+                            destination = np.random.choice(self.downstreams)
+                            data.target = destination
+                            data.source = self
+
+                            bridge = self.topology.get_network(self, destination)
+                            bridge.queue.append(data)
+                            if Config.debug:
+                                print(f'{self} sending data to {destination} at {self.env.now}')
+                            
+                            if not bridge.working:
+                                bridge.action.interrupt()
+                except simpy.Interrupt:
+                    if Config.debug or Config.update_flag:
+                        print(f'{self} get interrrupted while doing job at {self.env.now}')
+
+    def clear(self):
         """
-        Perform a processing of one tuple. We are assuming this is the sampled tuple that
-        we want to measure in the system.
-        
-        Parameters
-        ----------
-        topolgy: Topology()
-            The current topology info
-
-        Returns
-        ----------
-        tuple(float, Bolt())
-            returns a tuple where first value is the time, including the processing time and
-            tuple transimission time to next bolt. The second value is next bolt we are passing
-            the value to, None if this is the end.
-            ! the unit of time here is second
+        clear the tuple and stop doing new task
         """
-        # TODO: consider adding a overloading issue here
-        c_time = self.compute(topology)
-        t_time, next_bolt = self.trans(topology)
-        
-        return c_time+t_time, next_bolt
-    
-    def compute(self, topology, nums=1) -> float:
-        # TODO: we need to make sure that the model is aware of physical machine overloading
-        return nums*1000/self.processing_speed
-    
-    def trans(self, topology) -> tuple:
-        dest_list = topology.get_next(self)
-        
-        if len(dest_list) == 0:
-            return 0, None
-
-        if self.grouping == 'shuffle':
-            next_exe = np.random.choice(dest_list)
-            topology.get_trans_delay(self, next_exe)
-        elif self.grouping == 'field':
-            raise NotImplementedError
-        else:
-            raise NotImplementedError
+        if Config.update_flag or Config.debug:
+            print(f'{self} is clearing')
+        self.queue = []
+        self.action.interrupt()
 
     def __repr__(self) -> str:
         return self.to_red(f'{self.name}{self.id}')
     
     @staticmethod
     def to_red(s):
-        return f"\033[91m {s}\033[00m"
+        return f"\033[91m{s}\033[00m"
 
 if __name__ == '__main__':
     b = Bolt('test', 1)

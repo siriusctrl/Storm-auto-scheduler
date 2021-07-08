@@ -51,7 +51,7 @@ class WordCountingEnv(gym.Env):
 
     def build_topology(self, debug=False):
         exe_info = {
-            'spout':['spout', 2, [1e3, 1e3]],
+            'spout':['spout', 2, [50, 50]],
             'WordCount':['bolt', 3, {}],
             'Database':['bolt', 3, {'processing_speed':60}],
             'graph': [  
@@ -64,8 +64,8 @@ class WordCountingEnv(gym.Env):
         }
 
         self.topology = Topology(2, exe_info)
-        self.topology.build_homo_machines()
         self.topology.build_executors()
+        self.topology.build_homo_machines()
         self.topology.build_machine_graph([(0,1,2.)])
         self.topology.round_robin_init()
 
