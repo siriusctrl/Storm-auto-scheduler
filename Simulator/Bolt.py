@@ -99,7 +99,7 @@ class Bolt():
                         
                         processing_speed = m.capacity * m.standard
 
-                        # TODO: following code need to be changed by data tranformation
+                        # following code need to be changed by data tranformation
                         job = self.queue[0]
                         new_data_list, pt = self.d_transform.perform(job, processing_speed)
 
@@ -111,7 +111,7 @@ class Bolt():
 
                         # remove the processed data from the queue
                         self.queue.pop(0)
-                        # TODO: Until here
+                        # the transformation end here
 
                         if job.tracked and (len(new_data_list) > 1):
                             # we are breaking the tracked data into more pieces
