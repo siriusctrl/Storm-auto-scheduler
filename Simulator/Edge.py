@@ -44,6 +44,7 @@ class Edge():
                     else:
                         duration = data.size / self.bandwidth
 
+                    # TODO: should support batch sending to reduce the total number of event
                     yield self.env.timeout(duration)
                     # the trans end here
 

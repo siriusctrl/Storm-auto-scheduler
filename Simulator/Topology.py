@@ -21,7 +21,7 @@ class Topology():
                  n_machines: int,
                  executors_info: dict,
                  inter_trans_delay=0.,
-                 random_seed: int = None,
+                 random_seed:int=None,
                  ) -> None:
         """
         A generic topology constructor in a stream computing system simulator
@@ -97,7 +97,7 @@ class Topology():
                 if Config.progress_check or Config.debug:
                     print(
                         f'{len(self.tracking_list)*100/self.tracking_counter:.2f} collected {b_count}')
-                next_batch = int(round(self.env.now, 0)) + time*10
+                next_batch = int(round(self.env.now, 0)) + time*5
                 self.env.run(until=next_batch)
                 b_count += 1
 
@@ -112,6 +112,7 @@ class Topology():
 
             if Config.progress_check or Config.debug:
                 print(f'final reward is {reward}')
+                print(f'simulation end at {self.env.now}')
 
             # reset everything and then return the reward
             self.tracking_counter = 0
@@ -258,13 +259,13 @@ class Topology():
     def _build_sample_machines(self):
         self.n_machines = 4
         self.build_homo_machines()
-        edges = [(0, 1, 800), (0, 2, 1200), (0, 3, 600),
-                 (1, 2, 1400), (1, 3, 1000), (2, 3, 1400)]
+        edges = [(0, 1, 1e4), (0, 2, 1e4), (0, 3, 1e4),
+                 (1, 2, 1e4), (1, 3, 1e4), (2, 3, 1e4)]
         self.build_machine_graph(edges)
 
     def _build_sample_executors(self):
         sample_info = {
-            'spout': ['spout', 2, [50, 50]],
+            'spout': ['spout', 2, [2, 2]],
             'SplitSentence': ['bolt', 3, {
                     'd_transform': IdentityDataTransformation(),
                     'processing_speed': 50
@@ -348,14 +349,15 @@ if __name__ == '__main__':
     """
     Test new assignment updates
     """
-    test.update_states(time=0.1, track=False)
-    # test.update_states(time=10, track=True)
-    test.update_assignments(1)
-    test.update_states(time=0.105, track=False)
+    # test.update_states(time=0.1, track=False)
+    # # test.update_states(time=10, track=True)
+    # test.update_assignments(1)
+    # test.update_states(time=0.105, track=False)
 
     """
     Tracking info
     """
     # print(len(test.tracking_list))
     # print(test.tracking_counter)
-    # test.update_states(time=10, track=True)
+    test.update_states(time=1000, track=False)
+    test.update_states(time=1000, track=True)

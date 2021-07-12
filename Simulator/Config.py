@@ -1,4 +1,4 @@
 class Config():
-    debug = True
-    progress_check = False
-    update_flag = True
+    debug = False
+    progress_check = True
+    update_flag = False

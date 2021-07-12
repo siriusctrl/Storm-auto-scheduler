@@ -38,6 +38,8 @@ class Spout():
 
         if self.downstreams is None:
             self.downstreams = self.topology.get_downstreams(self)
+
+        # TODO: the data income rate can follow some distribution, wrap it
         interval = 1.0 / self.incoming_rate
 
         if Config.debug:

@@ -35,10 +35,11 @@ class Bolt():
             processing_speed: int
                 The number of byte that a bolt can process in 1 milisecond by 
                 utilising 100% of CPU capacity
+                TODO: this has no effect at the moment
             grouping: str
                 It defines how we select the next bolt.
                 current support shuffle grouping
-                todo: add support for field grouping
+                TODO: add support for field grouping
             random_seed: int
                 random seed for reproducibility
         """
@@ -115,9 +116,9 @@ class Bolt():
 
                         if job.tracked and (len(new_data_list) > 1):
                             # we are breaking the tracked data into more pieces
-                            # TODO: check this with Maria
+                            # TODO: we should track all the intermediate generation of data
                             pass
-
+                        
                         for data in new_data_list:
                             if self.downstreams == []:
                                 # this is the end bolt on topology, do some wrap up
@@ -128,6 +129,7 @@ class Bolt():
                                 if data.tracked:
                                     self.topology.record(data)
                             else:
+                                # TODO: define generic rule for output distribution
                                 destination = np.random.choice(self.downstreams)
                                 data.target = destination
                                 data.source = self
@@ -137,6 +139,7 @@ class Bolt():
                                 if Config.debug:
                                     print(f'{self} sending data to {destination} at {self.env.now}')
                                 
+                                # TODO: should support batch processing
                                 if not bridge.working:
                                     bridge.action.interrupt()
                 except simpy.Interrupt:
