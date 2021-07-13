@@ -2,6 +2,7 @@ import numpy as np
 import random
 import simpy
 from simpy import Environment
+from collections import deque
 
 from Config import Config
 
@@ -54,7 +55,7 @@ class Bolt():
         self.grouping = grouping
 
         self.working = False
-        self.queue = []
+        self.queue = deque()
         self.action = env.process(self.run())
 
         self.downstreams = None
@@ -111,7 +112,7 @@ class Bolt():
                         yield self.env.timeout(pt)
 
                         # remove the processed data from the queue
-                        self.queue.pop(0)
+                        self.queue.popleft()
                         # the transformation end here
 
                         if job.tracked and (len(new_data_list) > 1):
@@ -152,7 +153,7 @@ class Bolt():
         """
         if Config.update_flag or Config.debug:
             print(f'{self} is clearing')
-        self.queue = []
+        self.queue = deque()
         self.action.interrupt()
 
     def __repr__(self) -> str:

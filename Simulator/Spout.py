@@ -48,7 +48,9 @@ class Spout():
         while True:
 
             try:
-                dest_list:Bolt = np.random.choice(self.downstreams, size=self.incoming_rate, replace=True)
+                dest_list:Bolt = np.random.choice(self.downstreams, 
+                                                  size=self.incoming_rate, 
+                                                  replace=True)
                 word_list = np.random.randint(2, 20, size=self.incoming_rate)
                 
                 for i in range(len(dest_list)):
@@ -66,7 +68,7 @@ class Spout():
                         else:
                             print(f'{self} generate tracked data at {self.env.now} with counter {self.topology.tracking_counter}')
 
-                    bridge.queue.append(new) 
+                    bridge.queue.append(new)
                     if not bridge.working:
                         bridge.action.interrupt()
                     

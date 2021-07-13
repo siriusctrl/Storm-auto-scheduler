@@ -6,7 +6,7 @@ from simpy import Environment
 
 from Bolt import Bolt
 from Config import Config
-from Data import Data, IdentityDataTransformation
+from Data import Data, IdentityDataTransformer
 from Edge import Edge
 from Machine import Machine
 from Spout import Spout
@@ -22,6 +22,8 @@ class Topology():
                  executors_info: dict,
                  inter_trans_delay=0.,
                  random_seed:int=None,
+                 spout_batch:int=-1,
+                 bolt_batch:int=-1,
                  ) -> None:
         """
         A generic topology constructor in a stream computing system simulator
@@ -65,6 +67,13 @@ class Topology():
         self.random_seed = random_seed
         if random_seed is not None:
             np.random.seed(random_seed)
+        
+        # whether we enable batch processing to increase system performance
+        # -1 for not at all 0 for adaptive
+        # NOTICE: only spout support adaptive batch
+        # TODO: finish this batch processing
+        self.spout_batch = spout_batch
+        self.bolt_batch = bolt_batch
 
     def update_assignments(self, new_assignments):
         for executors in self.name_to_executors.values():
@@ -267,15 +276,15 @@ class Topology():
         sample_info = {
             'spout': ['spout', 2, [2, 2]],
             'SplitSentence': ['bolt', 3, {
-                    'd_transform': IdentityDataTransformation(),
+                    'd_transform': IdentityDataTransformer(),
                     'processing_speed': 50
                 }],
             'WordCount': ['bolt', 3, {
-                    'd_transform': IdentityDataTransformation(), 
+                    'd_transform': IdentityDataTransformer(), 
                     'processing_speed': 50
                 }],
             'Database': ['bolt', 3, {
-                    'd_transform': IdentityDataTransformation(),
+                    'd_transform': IdentityDataTransformer(),
                     'processing_speed': 50
                 }],
             'graph': [
@@ -313,7 +322,8 @@ class Topology():
 
 
 if __name__ == '__main__':
-    test = Topology(4, {})
+    # test = Topology(4, {})
+    test = Topology(4, {}, spout_batch=0)
     test.build_sample(debug=False)
 
     """

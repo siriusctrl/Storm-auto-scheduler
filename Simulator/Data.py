@@ -20,7 +20,7 @@ class Data():
         return f'data {self.size} {self.enter_time} s={self.source} t={self.target} {self.tracked}'
 
 
-class BaseDataTransformation:
+class BaseDataTransformer:
     def perform(self, input:Data, speed) -> List[Data]:
         """
         To perform data transformation
@@ -28,6 +28,6 @@ class BaseDataTransformation:
         """
         raise NotImplementedError
 
-class IdentityDataTransformation(BaseDataTransformation):
+class IdentityDataTransformer(BaseDataTransformer):
     def perform(self, input:Data, speed):
         return [input], input.size/speed
