@@ -39,9 +39,7 @@ class Edge():
                     self.working = True
                     # NOTICE : Assuming unlimited network queue heree
                     # NOTICE : Only pop when the timeout finish
-                    
 
-                    # TODO: should support batch sending to reduce the total number of event
                     curr_list = []
                     cum_size = 0
                     psize = min(self.batch, len(self.queue))
