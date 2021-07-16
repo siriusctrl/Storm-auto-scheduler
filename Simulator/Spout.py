@@ -72,6 +72,10 @@ class Spout():
                             print(f'{self} generate tracked data at {self.env.now} with counter {self.topology.tracking_counter}')
 
                     bridge.queue.append(new)
+                    # NOTICE : interrupt is also a event, instead of function call, so the effect
+                    # of the state chaning (from non-working to working) will be delayed
+                    # without this queue == 1, the program will invoke multiple unnecessary
+                    # interrupt event that may cuase error and slow down the simulation
                     if (not bridge.working) and (len(bridge.queue) == 1):
                         bridge.action.interrupt()
                     
