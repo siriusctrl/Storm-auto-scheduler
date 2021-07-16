@@ -267,8 +267,8 @@ class Topology():
     def _build_sample_machines(self):
         self.n_machines = 4
         self.build_homo_machines()
-        edges = [(0, 1, 1e4, 20), (0, 2, 1e4, 20), (0, 3, 1e4, 20),
-                 (1, 2, 1e4, 20), (1, 3, 1e4, 20), (2, 3, 1e4, 20)]
+        edges = [(0, 1, 1e4, 1e2), (0, 2, 1e4, 1e2), (0, 3, 1e4, 1e2),
+                 (1, 2, 1e4, 1e2), (1, 3, 1e4, 1e2), (2, 3, 1e4, 1e2)]
         self.build_machine_graph(edges)
 
     def _build_sample_executors(self):
@@ -372,5 +372,5 @@ if __name__ == '__main__':
     # print(len(test.tracking_list))
     # print(test.tracking_counter)
     # test.update_states(time=1000, track=False)
-    test.update_states(time=100, track=True)
+    test.update_states(time=1000, track=True)
     # test.update_states(time=1.2, track=False)

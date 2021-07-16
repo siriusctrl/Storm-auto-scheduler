@@ -32,7 +32,6 @@ class Edge():
                         print(f'{self} is waiting for data at {self.env.now}')
                     yield self.env.timeout(100)
                 except simpy.Interrupt:
-                    self.working = True
                     if Config.debug or Config.edge:
                         print(f'{self} get something to send at {self.env.now}')
             else:
@@ -40,22 +39,30 @@ class Edge():
                     self.working = True
                     # NOTICE : Assuming unlimited network queue heree
                     # NOTICE : Only pop when the timeout finish
-                    data:Data = self.queue[0]
                     
-                    if self.bandwidth > 0:
-                        duration = data.size / self.bandwidth
-                        yield self.env.timeout(duration)
 
                     # TODO: should support batch sending to reduce the total number of event
-                    self.queue.pop(0)
-
-                    target = data.target
-                    target.queue.append(data)
-                    if (not target.working) and (len(target.queue) == 1):
-                        target.action.interrupt()
+                    curr_list = []
+                    cum_size = 0
+                    psize = min(self.batch, len(self.queue))
+                    for i in range(psize):
+                        data:Data = self.queue[i]
+                        cum_size += data.size
+                        curr_list.append(data)
                     
-                    if Config.debug or Config.edge:
-                        print(f'{self} sent one data at {self.env.now}')
+                    if self.bandwidth > 0:
+                        yield self.env.timeout(cum_size / self.bandwidth)
+
+                    self.queue = self.queue[psize:]
+                    
+                    for data in curr_list:
+                        target = data.target
+                        target.queue.append(data)
+                        if (not target.working) and (len(target.queue) == 1):
+                            target.action.interrupt()
+                        
+                        if Config.debug or Config.edge:
+                            print(f'{self} sent one data at {self.env.now}')
                 except simpy.Interrupt:
                     if Config.debug or Config.update_flag or Config.edge:
                         print(f'{self} get interrupted at {self.env.now}')
