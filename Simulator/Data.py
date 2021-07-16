@@ -5,9 +5,10 @@ if TYPE_CHECKING:
 
 class Data():
 
-    def __init__(self, size:int, enter_time:int, tracked=False, target:Bolt=None) -> None:
+    def __init__(self, size:int, enter_time:int, id:str, tracked=False, target:Bolt=None) -> None:
         self.size = size
         self.enter_time = enter_time
+        self.id = id
         self.finish_time = None
         # this will have an id to represent a data that we sample from the 
         # simulator to give a reward to the agent.
@@ -17,16 +18,18 @@ class Data():
         self.source = None
         
     def __repr__(self):
-        return f'data {self.size} {self.enter_time} s={self.source} t={self.target} {self.tracked}'
+        # return f'data {self.size} {self.enter_time} s={self.source} t={self.target} {self.tracked}'
+        return f'data {self.id} {self.tracked}'
 
 
 class BaseDataTransformer:
-    def perform(self, input:Data, speed) -> List[Data]:
+    def perform(self, input:Data, speed):
         """
         To perform data transformation
         NOTICE: we assume the total processing time will depend on the output size 
         """
         raise NotImplementedError
+
 
 class IdentityDataTransformer(BaseDataTransformer):
     def perform(self, input:Data, speed):

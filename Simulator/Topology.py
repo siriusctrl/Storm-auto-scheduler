@@ -3,6 +3,7 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import simpy
 from simpy import Environment
+from simpy.core import T
 
 from Bolt import Bolt
 from Config import Config
@@ -22,8 +23,7 @@ class Topology():
                  executors_info: dict,
                  inter_trans_delay=0.,
                  random_seed:int=None,
-                 spout_batch:int=-1,
-                 bolt_batch:int=-1,
+                 spout_batch:int=0,
                  ) -> None:
         """
         A generic topology constructor in a stream computing system simulator
@@ -73,7 +73,6 @@ class Topology():
         # NOTICE: only spout support adaptive batch
         # TODO: finish this batch processing
         self.spout_batch = spout_batch
-        self.bolt_batch = bolt_batch
 
     def update_assignments(self, new_assignments):
         for executors in self.name_to_executors.values():
@@ -110,14 +109,11 @@ class Topology():
                 self.env.run(until=next_batch)
                 b_count += 1
 
-            e_total = 0
-            f_total = 0
+            total_delay = 0
             for d in self.tracking_list:
-                d: Data
-                e_total += d.enter_time
-                f_total += d.finish_time
+                total_delay += d.finish_time - d.enter_time
 
-            reward = -(f_total - e_total) / self.tracking_counter
+            reward = -(total_delay / self.tracking_counter)
 
             if Config.progress_check or Config.debug:
                 print(f'final reward is {reward}')
@@ -174,6 +170,9 @@ class Topology():
 
     def record(self, data: Data) -> None:
         self.tracking_list.append(data)
+
+        if len(self.tracking_list) > self.tracking_counter:
+            raise ValueError('There are more tracking instance accepted than generated')
 
     def build_machine_graph(self, edges):
         self.machine_graph.add_nodes_from(self.machine_list)
@@ -274,18 +273,21 @@ class Topology():
 
     def _build_sample_executors(self):
         sample_info = {
-            'spout': ['spout', 2, [2, 2]],
+            'spout': ['spout', 2, [5, 5]],
             'SplitSentence': ['bolt', 3, {
                     'd_transform': IdentityDataTransformer(),
-                    'processing_speed': 50
+                    'batch':50,
+                    'random_seed':None,
                 }],
             'WordCount': ['bolt', 3, {
-                    'd_transform': IdentityDataTransformer(), 
-                    'processing_speed': 50
+                    'd_transform': IdentityDataTransformer(),
+                    'batch':50,
+                    'random_seed':None,
                 }],
             'Database': ['bolt', 3, {
                     'd_transform': IdentityDataTransformer(),
-                    'processing_speed': 50
+                    'batch':50,
+                    'random_seed':None,
                 }],
             'graph': [
                 # we first define a list of nodes
@@ -371,3 +373,4 @@ if __name__ == '__main__':
     # print(test.tracking_counter)
     test.update_states(time=1000, track=False)
     test.update_states(time=1000, track=True)
+    # test.update_states(time=1.2, track=False)

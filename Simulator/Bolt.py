@@ -18,7 +18,7 @@ class Bolt():
                 env:Environment,
                 topology,
                 d_transform,
-                processing_speed=50,
+                batch=100,
                 grouping='shuffle',
                 random_seed=20200430,
                 ) -> None:
@@ -33,10 +33,13 @@ class Bolt():
             id: int
                 The number to use in order to distinguish this bolt from other
                 replicas
-            processing_speed: int
-                The number of byte that a bolt can process in 1 milisecond by 
-                utilising 100% of CPU capacity
-                TODO: this has no effect at the moment
+            topology: Topology
+                The current Topology instance
+            d_transform: Object
+                The pre-defined data transformation rule
+            batch: int
+                Define how many tuples we can process at once
+                WARN: This value must be greater or equal to 1
             grouping: str
                 It defines how we select the next bolt.
                 current support shuffle grouping
@@ -50,19 +53,22 @@ class Bolt():
         self.topology = topology
         self.d_transform = d_transform
         # define what is a processing speed
-        self.processing_speed = processing_speed
-        self.random_seed = random_seed
         self.grouping = grouping
 
+        # make sure batch is in correct data range 
+        assert(batch >= 1)
+        self.batch = batch
+
         self.working = False
-        self.queue = deque()
+        self.queue = []
         self.action = env.process(self.run())
 
         self.downstreams = None
 
         if random_seed is not None:
-            np.random.seed(self.random_seed)
-            random.seed(self.random_seed)
+            np.random.seed(random_seed)
+            random.seed(random_seed)
+            self.random_seed = random_seed
         
     def run(self):
         # The bolt will run forever
@@ -101,47 +107,60 @@ class Bolt():
                         
                         processing_speed = m.capacity * m.standard
 
-                        # following code need to be changed by data tranformation
-                        job = self.queue[0]
-                        new_data_list, pt = self.d_transform.perform(job, processing_speed)
+                        # FIXME: the batch processing has bug that might miss some data, no idea why
+                        pdata_list = []
+                        cum_time = 0
+                        psize = min(self.batch, len(self.queue))
+                        for i in range(psize):
+                            job = self.queue[i]
+                            new_data_list, pt = self.d_transform.perform(job, processing_speed)
+                            cum_time += pt
+                            pdata_list += new_data_list
 
-                        if Config.debug:
-                            print(f'{self} is processing job at {self.env.now} last {pt}')
-                        
+                        # if Config.debug or Config.bolt:
+                        #     print(f'{self} is processing {psize} job at {self.env.now} last {cum_time}')
+                        #     print(f'{self.queue} before processing')
+
                         # the job processing will take place here
-                        yield self.env.timeout(pt)
+                        yield self.env.timeout(cum_time)
 
+                        if Config.debug or Config.bolt:
+                            print(f'{self} {self.queue} {len(self.queue)} before batch slicing')
                         # remove the processed data from the queue
-                        self.queue.popleft()
-                        # the transformation end here
+                        self.queue = self.queue[psize:]
+
+                        if Config.debug or Config.bolt:
+                            print(f'{self} {self.queue} {len(self.queue)} after batch slicing')
 
                         if job.tracked and (len(new_data_list) > 1):
                             # we are breaking the tracked data into more pieces
                             # TODO: we should track all the intermediate generation of data
                             pass
                         
-                        for data in new_data_list:
+                        assert(len(pdata_list) == psize)
+
+                        for data in pdata_list:
                             if self.downstreams == []:
                                 # this is the end bolt on topology, do some wrap up
-                                if Config.debug:
+                                if Config.debug or Config.bolt:
                                     print(f'End bolt {self} finish a task {data} at {self.env.now}')
 
                                 data.finish_time = self.env.now
                                 if data.tracked:
                                     self.topology.record(data)
                             else:
-                                # TODO: define generic rule for output distribution
+                                # TODO: define generic rule for output destination
                                 destination = np.random.choice(self.downstreams)
                                 data.target = destination
                                 data.source = self
 
                                 bridge = self.topology.get_network(self, destination)
                                 bridge.queue.append(data)
-                                if Config.debug:
+                                if Config.debug or Config.bolt:
                                     print(f'{self} sending data to {destination} at {self.env.now}')
                                 
                                 # TODO: should support batch processing
-                                if not bridge.working:
+                                if (not bridge.working) and (len(bridge.queue) == 1):
                                     bridge.action.interrupt()
                 except simpy.Interrupt:
                     if Config.debug or Config.update_flag:
@@ -153,7 +172,7 @@ class Bolt():
         """
         if Config.update_flag or Config.debug:
             print(f'{self} is clearing')
-        self.queue = deque()
+        self.queue = []
         self.action.interrupt()
 
     def __repr__(self) -> str:

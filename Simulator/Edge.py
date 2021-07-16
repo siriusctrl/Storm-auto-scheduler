@@ -27,17 +27,19 @@ class Edge():
                 self.working = False
 
                 try:
-                    if Config.debug:
+                    if Config.debug or Config.edge:
                         print(f'{self} is waiting for data at {self.env.now}')
                     yield self.env.timeout(100)
                 except simpy.Interrupt:
-                    if Config.debug:
+                    self.working = True
+                    if Config.debug or Config.edge:
                         print(f'{self} get something to send at {self.env.now}')
             else:
                 try:
                     self.working = True
                     # NOTICE : Assuming unlimited network queue heree
-                    data:Data = self.queue.pop(0)
+                    # NOTICE : Only pop when it finish the timeout 
+                    data:Data = self.queue[0]
                     
                     if self.bandwidth == 0:
                         duration = 0
@@ -48,22 +50,24 @@ class Edge():
                     yield self.env.timeout(duration)
                     # the trans end here
 
+                    self.queue.pop(0)
+
                     target = data.target
                     target.queue.append(data)
-                    if not target.working:
+                    if (not target.working) and (len(target.queue) == 1):
                         target.action.interrupt()
                     
-                    if Config.debug:
+                    if Config.debug or Config.edge:
                         print(f'{self} sent one data at {self.env.now}')
                 except simpy.Interrupt:
-                    if Config.debug or Config.update_flag:
+                    if Config.debug or Config.update_flag or Config.edge:
                         print(f'{self} get interrupted at {self.env.now}')
 
     def clear(self):
         """
         clear the tuple and stop doing new task
         """
-        if Config.update_flag or Config.debug:
+        if Config.update_flag or Config.debug or Config.edge:
             print(f'{self} is clearing')
         self.queue = []
         self.action.interrupt()

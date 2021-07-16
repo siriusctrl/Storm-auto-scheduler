@@ -28,6 +28,8 @@ class Spout():
 
         self.topology = topology
         self.downstreams = None
+        self.generate_counter = 0
+
         # I don't think anyone will interrput this process
         self.action = env.process(self.generate())
 
@@ -54,7 +56,8 @@ class Spout():
                 word_list = np.random.randint(2, 20, size=self.incoming_rate)
                 
                 for i in range(len(dest_list)):
-                    new = Data(word_list[i], self.env.now)
+                    new = Data(word_list[i], self.env.now, f'{self.id}.{self.generate_counter}')
+                    self.generate_counter += 1
                     if self.topology.tracking:
                         new.tracked = True
                         self.topology.tracking_counter += 1
@@ -69,7 +72,7 @@ class Spout():
                             print(f'{self} generate tracked data at {self.env.now} with counter {self.topology.tracking_counter}')
 
                     bridge.queue.append(new)
-                    if not bridge.working:
+                    if (not bridge.working) and (len(bridge.queue) == 1):
                         bridge.action.interrupt()
                     
                     yield self.env.timeout(interval)
