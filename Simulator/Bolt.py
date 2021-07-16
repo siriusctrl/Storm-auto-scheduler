@@ -107,7 +107,6 @@ class Bolt():
                         
                         processing_speed = m.capacity * m.standard
 
-                        # FIXME: the batch processing has bug that might miss some data, no idea why
                         pdata_list = []
                         cum_time = 0
                         psize = min(self.batch, len(self.queue))
@@ -159,7 +158,6 @@ class Bolt():
                                 if Config.debug or Config.bolt:
                                     print(f'{self} sending data to {destination} at {self.env.now}')
                                 
-                                # TODO: should support batch processing
                                 if (not bridge.working) and (len(bridge.queue) == 1):
                                     bridge.action.interrupt()
                 except simpy.Interrupt:

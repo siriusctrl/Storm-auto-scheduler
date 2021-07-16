@@ -9,9 +9,10 @@ class Edge():
     
     """
 
-    def __init__(self, env:Environment) -> None:        
+    def __init__(self, env:Environment, batch:int=20) -> None:        
         self.env = env
-        # key is either an executor object
+        assert(batch >= 1)
+        self.batch = batch
         self.queue = []
         # a bandwidth represent how many byte of data can be tranfer for every milisecond
         # use 0 to represent no delay
@@ -38,18 +39,14 @@ class Edge():
                 try:
                     self.working = True
                     # NOTICE : Assuming unlimited network queue heree
-                    # NOTICE : Only pop when it finish the timeout 
+                    # NOTICE : Only pop when the timeout finish
                     data:Data = self.queue[0]
                     
-                    if self.bandwidth == 0:
-                        duration = 0
-                    else:
+                    if self.bandwidth > 0:
                         duration = data.size / self.bandwidth
+                        yield self.env.timeout(duration)
 
                     # TODO: should support batch sending to reduce the total number of event
-                    yield self.env.timeout(duration)
-                    # the trans end here
-
                     self.queue.pop(0)
 
                     target = data.target

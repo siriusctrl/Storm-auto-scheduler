@@ -1,6 +1,7 @@
 import numpy as np
 from simpy import Environment
 import simpy
+
 from Bolt import Bolt
 from Config import Config
 from Data import Data

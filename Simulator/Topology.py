@@ -177,13 +177,13 @@ class Topology():
     def build_machine_graph(self, edges):
         self.machine_graph.add_nodes_from(self.machine_list)
 
-        for s, d, w in edges:
+        for s, d, w, b in edges:
             ns = self.machine_list[s]
             nd = self.machine_list[d]
             self.machine_graph.add_edge(ns, nd)
 
             # initialise the edge object
-            ob = Edge(self.env)
+            ob = Edge(self.env, b)
             ob.bandwidth = w
             ob.between = [ns, nd]
             self.machine_graph[ns][nd]['weight'] = w
@@ -267,26 +267,26 @@ class Topology():
     def _build_sample_machines(self):
         self.n_machines = 4
         self.build_homo_machines()
-        edges = [(0, 1, 1e4), (0, 2, 1e4), (0, 3, 1e4),
-                 (1, 2, 1e4), (1, 3, 1e4), (2, 3, 1e4)]
+        edges = [(0, 1, 1e4, 20), (0, 2, 1e4, 20), (0, 3, 1e4, 20),
+                 (1, 2, 1e4, 20), (1, 3, 1e4, 20), (2, 3, 1e4, 20)]
         self.build_machine_graph(edges)
 
     def _build_sample_executors(self):
         sample_info = {
-            'spout': ['spout', 2, [5, 5]],
+            'spout': ['spout', 2, [20, 20]],
             'SplitSentence': ['bolt', 3, {
                     'd_transform': IdentityDataTransformer(),
-                    'batch':50,
+                    'batch':100,
                     'random_seed':None,
                 }],
             'WordCount': ['bolt', 3, {
                     'd_transform': IdentityDataTransformer(),
-                    'batch':50,
+                    'batch':100,
                     'random_seed':None,
                 }],
             'Database': ['bolt', 3, {
                     'd_transform': IdentityDataTransformer(),
-                    'batch':50,
+                    'batch':100,
                     'random_seed':None,
                 }],
             'graph': [
@@ -371,6 +371,6 @@ if __name__ == '__main__':
     """
     # print(len(test.tracking_list))
     # print(test.tracking_counter)
-    test.update_states(time=1000, track=False)
-    test.update_states(time=1000, track=True)
+    # test.update_states(time=1000, track=False)
+    test.update_states(time=100, track=True)
     # test.update_states(time=1.2, track=False)
