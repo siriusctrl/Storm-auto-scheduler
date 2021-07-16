@@ -1,6 +1,7 @@
 import numpy as np
 from simpy import Environment
 import simpy
+import random
 
 from Bolt import Bolt
 from Config import Config
@@ -12,9 +13,10 @@ class Spout():
     """
     
     def __init__(self, id:int,
-                    incoming_rate:float,
                     env:Environment,
                     topology,
+                    incoming_rate:float,
+                    batch:int,
                     random_seed=None
                 ) -> None:
         
@@ -26,9 +28,13 @@ class Spout():
         if random_seed is not None:
             self.random_seed = random_seed
             np.random.seed(random_seed)
+            random.seed(random_seed)
 
         self.topology = topology
         self.downstreams = None
+        assert(batch >= 1)
+        self.batch = batch
+
         self.generate_counter = 0
 
         # I don't think anyone will interrput this process
@@ -43,7 +49,7 @@ class Spout():
             self.downstreams = self.topology.get_downstreams(self)
 
         # TODO: the data income rate can follow some distribution, wrap it
-        interval = 1.0 / self.incoming_rate
+        interval = 1.0*self.batch / self.incoming_rate
 
         if Config.debug:
             print(self.__repr__(), 'interval=', interval)
@@ -51,36 +57,40 @@ class Spout():
         while True:
 
             try:
-                dest_list:Bolt = np.random.choice(self.downstreams, 
-                                                  size=self.incoming_rate, 
-                                                  replace=True)
-                word_list = np.random.randint(2, 20, size=self.incoming_rate)
+                word_list = np.random.poisson(4.7, size=self.batch)
+                word_list = word_list[word_list > 1]
+                dest:Bolt = random.choice(self.downstreams)
                 
-                for i in range(len(dest_list)):
-                    new = Data(word_list[i], self.env.now, f'{self.id}.{self.generate_counter}')
+                new_word_list = []
+                for w in word_list:
+                    new = Data(w, self.env.now, f'{self.id}.{self.generate_counter}')
                     self.generate_counter += 1
+
                     if self.topology.tracking:
                         new.tracked = True
                         self.topology.tracking_counter += 1
-                    new.target = dest_list[i]
-                    new.source = self
-                    bridge = self.topology.get_network(self, dest_list[i])
-
-                    if Config.debug:
-                        if not self.topology.tracking:
-                            print(self, 'generate data at', self.env.now)
-                        else:
-                            print(f'{self} generate tracked data at {self.env.now} with counter {self.topology.tracking_counter}')
-
-                    bridge.queue.append(new)
-                    # NOTICE : interrupt is also a event, instead of function call, so the effect
-                    # of the state chaning (from non-working to working) will be delayed
-                    # without this queue == 1, the program will invoke multiple unnecessary
-                    # interrupt event that may cuase error and slow down the simulation
-                    if (not bridge.working) and (len(bridge.queue) == 1):
-                        bridge.action.interrupt()
                     
-                    yield self.env.timeout(interval)
+                    new.target = dest
+                    new.source = self
+                    new_word_list.append(new)
+
+                bridge = self.topology.get_network(self, dest)
+
+                if Config.debug:
+                    if not self.topology.tracking:
+                        print(self, 'generate data at', self.env.now)
+                    else:
+                        print(f'{self} generate tracked data at {self.env.now} with counter {self.topology.tracking_counter}')
+
+                bridge.queue += new_word_list
+                # NOTICE : interrupt is also a event, instead of function call, so the effect
+                # of the state chaning (from non-working to working) will be delayed
+                # without this queue == 1, the program will invoke multiple unnecessary
+                # interrupt event that may cuase error and slow down the simulation
+                if (not bridge.working) and (len(bridge.queue) == len(new_word_list)):
+                    bridge.action.interrupt()
+
+                yield self.env.timeout(interval)
             except simpy.Interrupt:
                 if Config.update_flag or Config.debug:
                     print(f'{self} get interrupted, start again')

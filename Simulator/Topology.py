@@ -206,11 +206,12 @@ class Topology():
         self.machine_to_executors[machine] = self.machine_to_executors.get(
             machine, []) + [executor]
 
-    def create_spouts(self, n, data_rates):
-        assert(len(data_rates) == n)
+    def create_spouts(self, n, param):
+        assert(len(param) == n)
         for i in range(n):
-            new_spout = Spout(i, data_rates[i],
-                              self.env, self, self.random_seed)
+            # new_spout = Spout(i, data_rates[i],
+            #                   self.env, self, self.random_seed)
+            new_spout = Spout(i, self.env, self, random_seed=self.random_seed, **(param[i]))
             self.name_to_executors['spout'] = self.name_to_executors.get(
                 'spout', []) + [new_spout]
 
@@ -267,13 +268,16 @@ class Topology():
     def _build_sample_machines(self):
         self.n_machines = 4
         self.build_homo_machines()
-        edges = [(0, 1, 1e4, 1e2), (0, 2, 1e4, 1e2), (0, 3, 1e4, 1e2),
-                 (1, 2, 1e4, 1e2), (1, 3, 1e4, 1e2), (2, 3, 1e4, 1e2)]
+        edges = [(0, 1, 1e4, 100), (0, 2, 1e4, 100), (0, 3, 1e4, 100),
+                 (1, 2, 1e4, 100), (1, 3, 1e4, 100), (2, 3, 1e4, 100)]
         self.build_machine_graph(edges)
 
     def _build_sample_executors(self):
         sample_info = {
-            'spout': ['spout', 2, [20, 20]],
+            'spout': ['spout', 2, [
+                {"incoming_rate":20, "batch":20}, 
+                {"incoming_rate":20, "batch":20}]
+            ],
             'SplitSentence': ['bolt', 3, {
                     'd_transform': IdentityDataTransformer(),
                     'batch':100,
@@ -371,6 +375,6 @@ if __name__ == '__main__':
     """
     # print(len(test.tracking_list))
     # print(test.tracking_counter)
-    # test.update_states(time=1000, track=False)
+    test.update_states(time=1000, track=False)
     test.update_states(time=1000, track=True)
     # test.update_states(time=1.2, track=False)

@@ -121,7 +121,7 @@ class Bolt():
                         #     print(f'{self.queue} before processing')
 
                         # the job processing will take place here
-                        yield self.env.timeout(cum_time, 4)
+                        yield self.env.timeout(cum_time)
 
                         if Config.debug or Config.bolt:
                             print(f'{self} {self.queue} {len(self.queue)} before batch slicing')
