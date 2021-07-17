@@ -51,7 +51,9 @@ class Edge():
                     if self.bandwidth > 0:
                         yield self.env.timeout(cum_size / self.bandwidth)
 
-                    self.queue = self.queue[psize:]
+                    # self.queue = self.queue[psize:]
+                    # del is faster than previous line
+                    del self.queue[:psize]
                     
                     for data in curr_list:
                         target = data.target

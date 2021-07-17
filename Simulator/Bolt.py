@@ -116,9 +116,8 @@ class Bolt():
                             cum_time += pt
                             pdata_list += new_data_list
 
-                        # if Config.debug or Config.bolt:
-                        #     print(f'{self} is processing {psize} job at {self.env.now} last {cum_time}')
-                        #     print(f'{self.queue} before processing')
+                        if Config.debug or Config.bolt:
+                            print(f'{self} is processing {psize} job at {self.env.now} last {cum_time}')
 
                         # the job processing will take place here
                         yield self.env.timeout(cum_time)
@@ -126,7 +125,7 @@ class Bolt():
                         if Config.debug or Config.bolt:
                             print(f'{self} {self.queue} {len(self.queue)} before batch slicing')
                         # remove the processed data from the queue
-                        self.queue = self.queue[psize:]
+                        del self.queue[:psize]
 
                         if Config.debug or Config.bolt:
                             print(f'{self} {self.queue} {len(self.queue)} after batch slicing')
