@@ -1,5 +1,6 @@
 import numpy as np
 import random
+from random import choice, choices
 import simpy
 from simpy import Environment
 from collections import deque
@@ -107,8 +108,7 @@ class Bolt():
                         
                         processing_speed = m.capacity * m.standard
 
-                        pdata_list = []
-                        cum_time = 0
+                        pdata_list, cum_time = [], 0
                         psize = min(self.batch, len(self.queue))
                         for i in range(psize):
                             job = self.queue[i]
@@ -125,6 +125,8 @@ class Bolt():
                         if Config.debug or Config.bolt:
                             print(f'{self} {self.queue} {len(self.queue)} before batch slicing')
                         # remove the processed data from the queue
+                        # self.queue = self.queue[psize:]
+                        # same action but del is faster
                         del self.queue[:psize]
 
                         if Config.debug or Config.bolt:
@@ -148,7 +150,7 @@ class Bolt():
                                     self.topology.record(data)
                             else:
                                 # TODO: define generic rule for output destination
-                                destination = np.random.choice(self.downstreams)
+                                destination = choice(self.downstreams)
                                 data.target = destination
                                 data.source = self
 

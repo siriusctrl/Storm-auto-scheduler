@@ -1,7 +1,9 @@
 import numpy as np
+from numpy.core.fromnumeric import size
 from simpy import Environment
 import simpy
 import random
+from random import choice
 
 from Bolt import Bolt
 from Config import Config
@@ -29,6 +31,9 @@ class Spout():
             self.random_seed = random_seed
             np.random.seed(random_seed)
             random.seed(random_seed)
+            self.rng = np.random.default_rng(seed=random_seed)
+        else:
+            self.rng = np.random.default_rng()
 
         self.topology = topology
         self.downstreams = None
@@ -57,9 +62,10 @@ class Spout():
         while True:
 
             try:
-                word_list = np.random.poisson(4.7, size=self.batch)
-                word_list = word_list[word_list > 1]
-                dest:Bolt = random.choice(self.downstreams)
+                # word_list = np.random.poisson(2.7, size=self.batch)
+                word_list = self.rng.poisson(2.7, size=self.batch) + 2
+                # word_list = word_list[word_list > 1]
+                dest:Bolt = choice(self.downstreams)
                 
                 new_word_list = []
                 for w in word_list:
