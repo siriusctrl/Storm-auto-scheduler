@@ -103,6 +103,7 @@ class Bolt():
                         # waiting for resource acquisition to success
                         if Config.debug:
                             print(f'{self} is waiting for resources')
+                        
                         yield req
                         # the resources has been acquired from here
                         
@@ -139,6 +140,7 @@ class Bolt():
                         
                         assert(len(pdata_list) == psize)
 
+                        # TODO: to become faster, consider processing everything in list
                         for data in pdata_list:
                             if self.downstreams == []:
                                 # this is the end bolt on topology, do some wrap up
