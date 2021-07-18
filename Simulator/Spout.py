@@ -43,10 +43,10 @@ class Spout():
         self.generate_counter = 0
 
         # I don't think anyone will interrput this process
-        self.action = env.process(self.generate())
+        self.action = env.process(self.run())
 
         
-    def generate(self):
+    def run(self):
         # add this line to prevent geting downstreams before the system setup
         yield self.env.timeout(0)
 

@@ -275,19 +275,19 @@ class Topology():
     def _build_sample_executors(self):
         sample_info = {
             'spout': ['spout', 5, [ 
-                {"incoming_rate":10, "batch":100}]*5
+                {"incoming_rate":50, "batch":100}]*5
             ],
-            'SplitSentence': ['bolt', 10, {
+            'SplitSentence': ['bolt', 20, {
                     'd_transform': IdentityDataTransformer(),
                     'batch':100,
                     'random_seed':None,
                 }],
-            'WordCount': ['bolt', 10, {
+            'WordCount': ['bolt', 20, {
                     'd_transform': IdentityDataTransformer(),
                     'batch':100,
                     'random_seed':None,
                 }],
-            'Database': ['bolt', 10, {
+            'Database': ['bolt', 20, {
                     'd_transform': IdentityDataTransformer(),
                     'batch':100,
                     'random_seed':None,

@@ -103,7 +103,6 @@ class Bolt():
                         # waiting for resource acquisition to success
                         if Config.debug:
                             print(f'{self} is waiting for resources')
-                        
                         yield req
                         # the resources has been acquired from here
                         
