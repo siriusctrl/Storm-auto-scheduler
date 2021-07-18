@@ -274,20 +274,20 @@ class Topology():
 
     def _build_sample_executors(self):
         sample_info = {
-            'spout': ['spout', 5, [ 
-                {"incoming_rate":50, "batch":100}]*5
+            'spout': ['spout', 20, [
+                {"incoming_rate":20, "batch":100}]*20
             ],
-            'SplitSentence': ['bolt', 20, {
+            'SplitSentence': ['bolt', 30, {
                     'd_transform': IdentityDataTransformer(),
                     'batch':100,
                     'random_seed':None,
                 }],
-            'WordCount': ['bolt', 20, {
+            'WordCount': ['bolt', 30, {
                     'd_transform': IdentityDataTransformer(),
                     'batch':100,
                     'random_seed':None,
                 }],
-            'Database': ['bolt', 20, {
+            'Database': ['bolt', 30, {
                     'd_transform': IdentityDataTransformer(),
                     'batch':100,
                     'random_seed':None,
@@ -374,6 +374,7 @@ if __name__ == '__main__':
     """
     # print(len(test.tracking_list))
     # print(test.tracking_counter)
-    test.update_states(time=1000, track=False)
-    test.update_states(time=1000, track=True)
-    # test.update_states(time=1.2, track=False)
+    # test.update_states(time=1000, track=False)
+    # test.update_states(time=1000, track=False)
+    # test.update_states(time=1000, track=True)
+    test.update_states(time=1.2, track=False)
