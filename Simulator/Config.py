@@ -5,5 +5,6 @@ class Config():
     debug = False
     progress_check = True
     update_flag = False
-    bolt = True
-    edge = True
+    bolt = False
+    edge = False
+    reset = True

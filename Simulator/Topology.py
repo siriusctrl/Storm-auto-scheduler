@@ -55,6 +55,7 @@ class Topology():
         self.executor_to_machines = {}
         self.machine_to_executors = {}
         self.name_to_executors = {}
+        self.executor_groups = []
 
         # tracking related
         self.tracking = False
@@ -74,18 +75,81 @@ class Topology():
         # TODO: finish this batch processing
         self.spout_batch = spout_batch
 
-    def update_assignments(self, new_assignments):
+    def update_assignments(self, new_assignments, assignemt_type='condensed'):
+        self.reset_assignments()
+
         for executors in self.name_to_executors.values():
-            print(executors)
             for e in executors:
                 e.clear()
 
         # self.reset_assignments()
-        ####################################
-        # TODO: decode the new_assignments #
-        ####################################
+        ##############################################################
+        # NOTICE: Assuming the condensed new_assignment will take following form
+        # X = [[0.4, 0.3, 0.4]] shape=(1,3)
+        # first dimension represent bolt, second dimension represent
+        # how many percentage on each machine, this example represent
+        # one type of bolt on three machines
+        ##############################################################
 
-    def update_states(self, time: int = 100, track=False):
+        if assignemt_type == 'condensed':
+            assert(len(new_assignments) == len(self.executor_groups))
+            assert(len(new_assignments[0]) == len(self.machine_list))
+            for i in range(len(new_assignments)):
+                # new assignment example: [0.4 0.3 0.4]
+                num_vec = self.assignment_calibration(len(self.executor_groups[i]), new_assignments[i])
+                prefix = 0
+
+                if Config.debug or Config.reset:
+                    print(self.executor_groups[i], num_vec)
+
+                for j in range(len(num_vec)):
+                    if num_vec[j] == 0:
+                        continue
+                    # print(num_vec[j])
+                    suffix = prefix + num_vec[j]
+                    executors = self.executor_groups[i][prefix:suffix]
+                    # print(executors)
+                    self.add_executor_to_machines(executors, self.machine_list[j])
+                    self.add_machine_to_executors(executors, self.machine_list[j])
+                    prefix += num_vec[j]
+                
+                if Config.debug or Config.reset:
+                    print(self.machine_to_executors)
+
+        elif assignemt_type == 'one-hot':
+            raise ValueError(f'Not yet support one-hot encoding')
+        else:
+            raise ValueError(f'Unknown assignemt type {assignemt_type}')
+
+    def assignment_calibration(self, machine_size, prop_vec):
+        num_vec = list(map(lambda x:round(x*machine_size), prop_vec))
+        # sort the prop_vec based on their weight
+        # in (num_vec idx, weight)
+        prop_order_list = list(sorted(enumerate(prop_vec), key=lambda x:x[1]))
+        diff = sum(num_vec) - machine_size
+        
+        if diff == 0:
+            pass
+        elif diff > 0:
+            # we need to assign less from the slot with less weight
+            idx = 0
+            while diff > 0:
+                vec_idx = prop_order_list[idx][0]
+                num_vec[vec_idx] -= 1
+                idx += 1
+                diff -= 1
+        else:
+            # we need to assign more from the slot with more weight
+            idx = -1
+            while diff < 0:
+                vec_idx = prop_order_list[idx][0]
+                num_vec[vec_idx] += 1
+                idx -= 1
+                diff += 1
+        
+        return num_vec
+
+    def update_states(self, time:int=100, track=False):
         # the time should represent the time interval that we would like to sample data from
         if track:
             self.tracking = True
@@ -200,11 +264,21 @@ class Topology():
             self.machine_graph[m][m]['object'] = ob
 
     def add_executor_to_machines(self, executor, machine):
-        self.executor_to_machines[executor] = machine
+        if type(executor) is list:
+            assert(executor != [])
+            for e in executor:
+                self.add_executor_to_machines(e, machine)
+        else:
+            self.executor_to_machines[executor] = machine
 
     def add_machine_to_executors(self, executor, machine):
-        self.machine_to_executors[machine] = self.machine_to_executors.get(
-            machine, []) + [executor]
+        if type(executor) is list:
+            assert(executor != [])
+            self.machine_to_executors[machine] = self.machine_to_executors.get(
+                machine, []) + executor
+        else:
+            self.machine_to_executors[machine] = self.machine_to_executors.get(
+                machine, []) + [executor]
 
     def create_spouts(self, n, param):
         assert(len(param) == n)
@@ -235,6 +309,8 @@ class Topology():
                 self.create_executor_graph(v[0], v[1:])
             else:
                 raise ValueError('Unknown type of executor')
+        # use this list to unpack the new assignment
+        self.executor_groups = list(self.name_to_executors.values())
 
     def build_homo_machines(self, capacity=1):
         """
@@ -274,20 +350,20 @@ class Topology():
 
     def _build_sample_executors(self):
         sample_info = {
-            'spout': ['spout', 20, [
-                {"incoming_rate":20, "batch":100}]*20
+            'spout': ['spout', 2, [
+                {"incoming_rate":20, "batch":100}]*2
             ],
-            'SplitSentence': ['bolt', 30, {
+            'SplitSentence': ['bolt', 5, {
                     'd_transform': IdentityDataTransformer(),
                     'batch':100,
                     'random_seed':None,
                 }],
-            'WordCount': ['bolt', 30, {
+            'WordCount': ['bolt', 5, {
                     'd_transform': IdentityDataTransformer(),
                     'batch':100,
                     'random_seed':None,
                 }],
-            'Database': ['bolt', 30, {
+            'Database': ['bolt', 5, {
                     'd_transform': IdentityDataTransformer(),
                     'batch':100,
                     'random_seed':None,
@@ -324,6 +400,8 @@ class Topology():
     def reset_assignments(self):
         self.machine_to_executors = {}
         self.executor_to_machines = {}
+        if Config.debug:
+            print('The current config has been reset')
 
 
 if __name__ == '__main__':
@@ -364,10 +442,10 @@ if __name__ == '__main__':
     """
     Test new assignment updates
     """
-    # test.update_states(time=0.1, track=False)
-    # # test.update_states(time=10, track=True)
-    # test.update_assignments(1)
-    # test.update_states(time=0.105, track=False)
+    test.update_states(time=10, track=True)
+    test.update_states(time=0.1, track=False)
+    test.update_assignments([[0.3, 0.3, 0.2, 0.2]]*4)
+    test.update_states(time=0.105, track=False)
 
     """
     Tracking info
@@ -377,4 +455,6 @@ if __name__ == '__main__':
     # test.update_states(time=1000, track=False)
     # test.update_states(time=1000, track=False)
     # test.update_states(time=1000, track=True)
-    test.update_states(time=1.2, track=False)
+    # test.update_states(time=1.2, track=False)
+    # int_vec = test.assignment_calibration(11, [0.3, 0.2, 0.1, 0.4])
+    # print(int_vec, sum(int_vec))

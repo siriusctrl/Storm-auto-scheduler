@@ -78,11 +78,11 @@ class Bolt():
                 self.working = False
 
                 try:
-                    if Config.debug:
+                    if Config.debug or Config.bolt:
                         print(f'{self} is waiting for job at {self.env.now}')
                     yield self.env.timeout(100)
                 except simpy.Interrupt:
-                    if Config.debug:
+                    if Config.debug or Config.bolt:
                         if len(self.queue) == 0:
                             print(f'{self} get interrupted while waiting at {self.env.now}')
                         else:
@@ -92,7 +92,7 @@ class Bolt():
 
                 if self.downstreams is None:
                     self.downstreams = self.topology.get_downstreams(self)
-                    if Config.debug:
+                    if Config.debug or Config.bolt:
                         print(f'{self} has downstreams {self.downstreams}')
 
                 # We need to first requesting the resource from the underlying machine
