@@ -35,7 +35,7 @@ class WordCountingEnv(gym.Env):
 
         self.data_incoming_rate = 20.
         self.topology:Topology = None
-        self.bandwidth = 1e4
+        self.bandwidth = 10000
         self.edge_batch = 100
 
         self.action_space = Box(low=0., high=1., shape=(3, n_machines), dtype=np.float64)
@@ -141,7 +141,7 @@ if __name__ == '__main__':
     """
     state, reward, _, _ = env.reset()
     i = 0
-    while i < 2:
+    while i < 1:
         action = env.action_space.sample()
         state, reward, _, _ = env.step(action)
         i += 1
