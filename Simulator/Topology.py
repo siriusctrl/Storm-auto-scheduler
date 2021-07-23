@@ -62,6 +62,8 @@ class Topology():
 
         self.env = Environment()
 
+        self.assignment_cache = None
+
         # setup random seed
         self.random_seed = random_seed
         if random_seed is not None:
@@ -76,6 +78,7 @@ class Topology():
         
 
     def update_assignments(self, new_assignments, assignemt_type='condensed'):
+        self.assignment_cache = new_assignments
         self.reset_assignments()
 
         for executors in self.name_to_executors.values():
@@ -214,7 +217,6 @@ class Topology():
             to = i % r
             self.add_executor_to_machines(exec[i], self.machine_list[to])
             self.add_machine_to_executors(exec[i], self.machine_list[to])
-
 
     def get_downstreams(self, source) -> list:
         """

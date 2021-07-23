@@ -41,6 +41,7 @@ class Spout():
         self.batch = batch
 
         self.generate_counter = 0
+        self.working = False
 
         # I don't think anyone will interrput this process
         self.action = env.process(self.run())
@@ -60,7 +61,7 @@ class Spout():
             print(self.__repr__(), 'interval=', interval)
 
         while True:
-
+            self.working = True
             try:
                 # word_list = np.random.poisson(2.7, size=self.batch)
                 word_list = self.rng.poisson(2.7, size=self.batch) + 2
@@ -104,7 +105,8 @@ class Spout():
     def clear(self):
         if Config.update_flag or Config.debug:
             print(f'{self} is clearing')
-        self.action.interrupt()
+        if self.working:
+            self.action.interrupt()
 
     @staticmethod
     def to_yellow(prt): 

@@ -2,14 +2,18 @@ from random import random
 import gym
 from gym import spaces, logger
 from gym.utils import seeding
+from gym.spaces import Box
+
 import numpy as np
+from scipy.special import softmax
 from Topology import Topology
 
 from Data import IdentityDataTransformer
 
 class WordCountingEnv(gym.Env):
 
-    def __init__(self, n_machines=10, 
+    def __init__(self, n_machines=10,
+                       n_spouts   =10, 
                        seed      = 20210723,
                     ) -> None:
         """
@@ -24,28 +28,45 @@ class WordCountingEnv(gym.Env):
                 Random seed for controling the reproducibility
         """
         # TODO: finish this two
-        self.action_space = None
-        self.observation_space = None
 
         self.n_machines = n_machines
+        self.n_spouts = n_spouts
         self.random_seed = seed
+
+        self.data_incoming_rate = 20.
         self.topology:Topology = None
         self.bandwidth = 1e4
         self.edge_batch = 100
+
+        self.action_space = Box(low=0., high=1., shape=(3, n_machines), dtype=np.float64)
+        size = 3*n_machines
+        # TODO: we assume fixed data incoming rate here
+        ob_low = np.array([0.]*size + [self.data_incoming_rate]*n_spouts)
+        ob_high = np.array([1.]*size + [self.data_incoming_rate]*n_spouts)
+        self.observation_space = Box(low=ob_low, high=ob_high, dtype=np.float64)
 
         self.seed()
         self.build_topology()
     
     def step(self, new_assignments):
         assert(new_assignments is not None)
+        new_assignments = softmax(new_assignments, axis=1)
+        # print(new_assignments)
         self.topology.update_assignments(new_assignments)
         self.warm()
-        return self.once()
+        reward = self.once()
+        # the observation is the current deployment + data incoming rate
+        new_state = new_assignments.flatten()
+        new_state = np.concatenate((new_state, np.array([self.data_incoming_rate]*self.n_spouts)))
+        
+        return new_state, reward, False, {}
 
     def reset(self):
         self.topology.reset_assignments()
-        self.topology.round_robin_init()
-        return self.once()
+        # self.topology.round_robin_init(shuffle=True)
+        # return self.once()
+        random_action = self.action_space.sample()
+        return self.step(random_action)
     
     def once(self):
         return self.topology.update_states(time=1000, track=True)
@@ -61,8 +82,8 @@ class WordCountingEnv(gym.Env):
 
     def build_topology(self, debug=False):
         exe_info = {
-            'spout': ['spout', 10, [
-                {"incoming_rate":20, "batch":100}]*10
+            'spout': ['spout', self.n_spouts, [
+                {"incoming_rate":self.data_incoming_rate, "batch":100}]*10
             ],
             'WordCount': ['bolt', 30, {
                     'd_transform': IdentityDataTransformer(),
@@ -89,7 +110,7 @@ class WordCountingEnv(gym.Env):
         self.topology.build_executors()
         self.topology.build_homo_machines()
         self.topology.build_machine_graph(edges)
-        self.topology.round_robin_init()
+        self.topology.round_robin_init(shuffle=False)
 
         if debug:
             self.topology.draw_machines()
@@ -103,7 +124,23 @@ class WordCountingEnv(gym.Env):
 
 if __name__ == '__main__':
     env = WordCountingEnv()
-    env.warm()
-    print(env.once())
-    env.warm()
-    print(env.once())
+    # env.warm()
+    # print(env.once())
+    # env.warm()
+    # print(env.once())
+
+    """
+    Test Obs and Action Space
+    """
+    # print(env.observation_space.sample())
+    # print(env.action_space.sample())
+
+    """
+    Mimic Agent Action
+    """
+    state, reward, _, _ = env.reset()
+    i = 0
+    while i < 2:
+        action = env.action_space.sample()
+        state, reward, _, _ = env.step(action)
+        i += 1
