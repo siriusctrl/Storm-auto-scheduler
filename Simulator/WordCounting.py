@@ -9,8 +9,8 @@ from Data import IdentityDataTransformer
 
 class WordCountingEnv(gym.Env):
 
-    def __init__(self, n_machines=4, 
-                       seed      = 20200430,
+    def __init__(self, n_machines=10, 
+                       seed      = 20210723,
                     ) -> None:
         """
         Construct all the necessary attributes for the word couting topology
@@ -23,10 +23,15 @@ class WordCountingEnv(gym.Env):
             seed: int
                 Random seed for controling the reproducibility
         """
+        # TODO: finish this two
+        self.action_space = None
+        self.observation_space = None
+
         self.n_machines = n_machines
         self.random_seed = seed
-
         self.topology:Topology = None
+        self.bandwidth = 1e4
+        self.edge_batch = 100
 
         self.seed()
         self.build_topology()
@@ -56,40 +61,31 @@ class WordCountingEnv(gym.Env):
 
     def build_topology(self, debug=False):
         exe_info = {
-            'spout': ['spout', 2, [
-                {"incoming_rate":20, "batch":100}]*2
+            'spout': ['spout', 10, [
+                {"incoming_rate":20, "batch":100}]*10
             ],
-            'SplitSentence': ['bolt', 5, {
+            'WordCount': ['bolt', 30, {
                     'd_transform': IdentityDataTransformer(),
                     'batch':100,
                     'random_seed':None,
                 }],
-            'WordCount': ['bolt', 5, {
-                    'd_transform': IdentityDataTransformer(),
-                    'batch':100,
-                    'random_seed':None,
-                }],
-            'Database': ['bolt', 5, {
+            'Database': ['bolt', 30, {
                     'd_transform': IdentityDataTransformer(),
                     'batch':100,
                     'random_seed':None,
                 }],
             'graph': [
                 # we first define a list of nodes
-                ['spout', 'SplitSentence', 'WordCount', 'Database'],
+                ['spout', 'WordCount', 'Database'],
                 # then, we have edge represent in tuples
-                ('spout', 'SplitSentence'),
-                ('SplitSentence', 'WordCount'),
+                ('spout', 'WordCount'),
                 ('WordCount', 'Database')
             ]
         }
 
-        machine_size = 5
-        bandwidth = 1e4
-        batch = 100
-        edges = self.build_homo_edge(machine_size, bandwidth, batch)
+        edges = self.build_homo_edge(self.n_machines, self.bandwidth, self.edge_batch)
 
-        self.topology = Topology(machine_size, exe_info, random_seed=20210723)
+        self.topology = Topology(self.n_machines, exe_info, random_seed=self.random_seed)
         self.topology.build_executors()
         self.topology.build_homo_machines()
         self.topology.build_machine_graph(edges)
@@ -107,7 +103,6 @@ class WordCountingEnv(gym.Env):
 
 if __name__ == '__main__':
     env = WordCountingEnv()
-    env.build_topology(debug=False)
     env.warm()
     print(env.once())
     env.warm()

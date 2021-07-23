@@ -22,7 +22,6 @@ class Topology():
                  executors_info: dict,
                  inter_trans_delay=0.,
                  random_seed:int=None,
-                 spout_batch:int=0,
                  ) -> None:
         """
         A generic topology constructor in a stream computing system simulator
@@ -68,6 +67,12 @@ class Topology():
         if random_seed is not None:
             np.random.seed(random_seed)
             random.seed(random_seed)
+
+        
+        print('Building Topology')
+        for k, v in executors_info.items():
+            if k != 'graph':
+                print(k, v[1])
         
 
     def update_assignments(self, new_assignments, assignemt_type='condensed'):
