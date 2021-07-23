@@ -50,6 +50,7 @@ class WordCountingEnv(gym.Env):
     
     def step(self, new_assignments):
         assert(new_assignments is not None)
+        # make sure assigment for each type of bolt sum to approximately 1
         new_assignments = softmax(new_assignments, axis=1)
         # print(new_assignments)
         self.topology.update_assignments(new_assignments)
