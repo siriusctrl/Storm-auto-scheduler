@@ -1,9 +1,8 @@
 import numpy as np
 import networkx as nx
 import matplotlib.pyplot as plt
-import simpy
 from simpy import Environment
-from simpy.core import T
+import random
 
 from Bolt import Bolt
 from Config import Config
@@ -68,12 +67,8 @@ class Topology():
         self.random_seed = random_seed
         if random_seed is not None:
             np.random.seed(random_seed)
+            random.seed(random_seed)
         
-        # whether we enable batch processing to increase system performance
-        # -1 for not at all 0 for adaptive
-        # NOTICE: only spout support adaptive batch
-        # TODO: finish this batch processing
-        self.spout_batch = spout_batch
 
     def update_assignments(self, new_assignments, assignemt_type='condensed'):
         self.reset_assignments()
@@ -192,7 +187,7 @@ class Topology():
             next_batch = int(round(self.env.now, 0)) + time
             self.env.run(until=next_batch)
 
-    def round_robin_init(self) -> None:
+    def round_robin_init(self, shuffle=False) -> None:
         """
         Initialise the resources in a round-robin manner
         """
@@ -203,6 +198,10 @@ class Topology():
 
         for e_list in self.name_to_executors.values():
             exec += e_list
+        
+        if shuffle:
+            # this shuffle is inplaced
+            random.shuffle(exec)
 
         r = len(self.machine_list)
 
@@ -210,6 +209,7 @@ class Topology():
             to = i % r
             self.add_executor_to_machines(exec[i], self.machine_list[to])
             self.add_machine_to_executors(exec[i], self.machine_list[to])
+
 
     def get_downstreams(self, source) -> list:
         """
