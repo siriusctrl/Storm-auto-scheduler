@@ -12,8 +12,8 @@ from Data import IdentityDataTransformer
 
 class WordCountingEnv(gym.Env):
 
-    def __init__(self, n_machines=10,
-                       n_spouts   =10, 
+    def __init__(self, n_machines= 5,
+                       n_spouts  = 2, 
                        seed      = 20210723,
                     ) -> None:
         """
@@ -33,12 +33,12 @@ class WordCountingEnv(gym.Env):
         self.n_spouts = n_spouts
         self.random_seed = seed
 
-        self.data_incoming_rate = 20.
+        self.data_incoming_rate = 10.
         self.topology:Topology = None
         self.bandwidth = 10000
         self.edge_batch = 100
 
-        self.action_space = Box(low=0., high=1., shape=(3, n_machines), dtype=np.float64)
+        self.action_space = Box(low=0., high=1., shape=(3*n_machines,), dtype=np.float64)
         size = 3*n_machines
         # TODO: we assume fixed data incoming rate here
         ob_low = np.array([0.]*size + [self.data_incoming_rate]*n_spouts)
@@ -51,12 +51,13 @@ class WordCountingEnv(gym.Env):
     def step(self, new_assignments):
         assert(new_assignments is not None)
         # make sure assigment for each type of bolt sum to approximately 1
+        new_assignments = new_assignments.reshape((3, self.n_machines))
         new_assignments = softmax(new_assignments, axis=1)
         # print(new_assignments)
         self.topology.update_assignments(new_assignments)
         self.warm()
         reward = self.once()
-        # the observation is the current deployment + data incoming rate
+        # the observation is the current deployment(after softmax) + data incoming rate
         new_state = new_assignments.flatten()
         new_state = np.concatenate((new_state, np.array([self.data_incoming_rate]*self.n_spouts)))
         
@@ -67,7 +68,7 @@ class WordCountingEnv(gym.Env):
         # self.topology.round_robin_init(shuffle=True)
         # return self.once()
         random_action = self.action_space.sample()
-        return self.step(random_action)
+        return self.step(random_action)[0]
     
     def once(self):
         return self.topology.update_states(time=1000, track=True)
@@ -84,14 +85,14 @@ class WordCountingEnv(gym.Env):
     def build_topology(self, debug=False):
         exe_info = {
             'spout': ['spout', self.n_spouts, [
-                {"incoming_rate":self.data_incoming_rate, "batch":100}]*10
+                {"incoming_rate":self.data_incoming_rate, "batch":100}]*self.n_spouts
             ],
-            'WordCount': ['bolt', 30, {
+            'WordCount': ['bolt', 9, {
                     'd_transform': IdentityDataTransformer(),
                     'batch':100,
                     'random_seed':None,
                 }],
-            'Database': ['bolt', 30, {
+            'Database': ['bolt', 9, {
                     'd_transform': IdentityDataTransformer(),
                     'batch':100,
                     'random_seed':None,
@@ -139,9 +140,11 @@ if __name__ == '__main__':
     """
     Mimic Agent Action
     """
-    state, reward, _, _ = env.reset()
+    obs = env.reset()
     i = 0
     while i < 1:
         action = env.action_space.sample()
         state, reward, _, _ = env.step(action)
+        print(reward)
+        print(state.shape, env.observation_space.shape, action.shape)
         i += 1

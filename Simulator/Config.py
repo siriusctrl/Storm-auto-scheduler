@@ -3,8 +3,8 @@ from sys import flags
 
 class Config():
     debug = False
-    progress_check = True
+    progress_check = False
     update_flag = False
     bolt = False
     edge = False
-    reset = True
+    reset = False
