@@ -38,12 +38,12 @@ class WordCountingEnv(gym.Env):
         self.bandwidth = 10000
         self.edge_batch = 100
 
-        self.action_space = Box(low=0., high=1., shape=(3*n_machines,), dtype=np.float64)
+        self.action_space = Box(low=0., high=1., shape=(3*n_machines,))
         size = 3*n_machines
         # TODO: we assume fixed data incoming rate here
         ob_low = np.array([0.]*size + [self.data_incoming_rate]*n_spouts)
         ob_high = np.array([1.]*size + [self.data_incoming_rate]*n_spouts)
-        self.observation_space = Box(low=ob_low, high=ob_high, dtype=np.float64)
+        self.observation_space = Box(low=ob_low, high=ob_high)
 
         self.seed()
         self.build_topology()
@@ -61,7 +61,7 @@ class WordCountingEnv(gym.Env):
         new_state = new_assignments.flatten()
         new_state = np.concatenate((new_state, np.array([self.data_incoming_rate]*self.n_spouts)))
         
-        return new_state, reward, False, {}
+        return new_state, reward, True, {}
 
     def reset(self):
         self.topology.reset_assignments()

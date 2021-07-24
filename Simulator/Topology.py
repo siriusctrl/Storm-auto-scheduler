@@ -111,6 +111,12 @@ class Topology():
                     # print(num_vec[j])
                     suffix = prefix + num_vec[j]
                     executors = self.executor_groups[i][prefix:suffix]
+
+                    # this is only for debug
+                    if executors == []:
+                        print(prefix, suffix)
+                        print(num_vec)
+
                     # print(executors)
                     self.add_executor_to_machines(executors, self.machine_list[j])
                     self.add_machine_to_executors(executors, self.machine_list[j])
@@ -138,6 +144,8 @@ class Topology():
             idx = 0
             while diff > 0:
                 vec_idx = prop_order_list[idx][0]
+                if num_vec[vec_idx] < 1:
+                    continue
                 num_vec[vec_idx] -= 1
                 idx += 1
                 diff -= 1
