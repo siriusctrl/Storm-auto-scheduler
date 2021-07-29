@@ -145,6 +145,7 @@ class Topology():
             while diff > 0:
                 vec_idx = prop_order_list[idx][0]
                 if num_vec[vec_idx] < 1:
+                    idx += 1
                     continue
                 num_vec[vec_idx] -= 1
                 idx += 1
