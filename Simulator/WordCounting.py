@@ -13,7 +13,7 @@ from Data import IdentityDataTransformer
 class WordCountingEnv(gym.Env):
 
     def __init__(self, n_machines= 5,
-                       n_spouts  = 2, 
+                       n_spouts  = 2,
                        seed      = 20210723,
                     ) -> None:
         """
@@ -33,9 +33,9 @@ class WordCountingEnv(gym.Env):
         self.n_spouts = n_spouts
         self.random_seed = seed
 
-        self.data_incoming_rate = 10.
+        self.data_incoming_rate = 50.
         self.topology:Topology = None
-        self.bandwidth = 10000
+        self.bandwidth = 500
         self.edge_batch = 100
 
         self.action_space = Box(low=0., high=1., shape=(3*n_machines,))
@@ -51,7 +51,9 @@ class WordCountingEnv(gym.Env):
     def step(self, new_assignments):
         assert(new_assignments is not None)
         # make sure assigment for each type of bolt sum to approximately 1
-        new_assignments = new_assignments.reshape((3, self.n_machines))
+        if new_assignments.shape != (3, self.n_machines):
+            # print('action reshaped')
+            new_assignments = new_assignments.reshape((3, self.n_machines))
         new_assignments = softmax(new_assignments, axis=1)
         # print(new_assignments)
         self.topology.update_assignments(new_assignments)
@@ -75,7 +77,7 @@ class WordCountingEnv(gym.Env):
         return self.topology.update_states(time=1000, track=True)
     
     def warm(self):
-        self.topology.update_states(time=2000, track=False)
+        self.topology.update_states(time=5000, track=False)
 
     def seed(self):
         # the np_random is the numpy RandomState
@@ -141,11 +143,23 @@ if __name__ == '__main__':
     """
     Mimic Agent Action
     """
-    obs = env.reset()
-    i = 0
-    while i < 1:
-        action = env.action_space.sample()
-        state, reward, _, _ = env.step(action)
-        print(reward)
-        print(state.shape, env.observation_space.shape, action.shape)
-        i += 1
+    # obs = env.reset()
+    # i = 0
+    # while i < 1:
+    #     action = env.action_space.sample()
+    #     state, reward, _, _ = env.step(action)
+    #     print(reward)
+    #     print(state.shape, env.observation_space.shape, action.shape)
+    #     i += 1
+
+    """
+    Test the effect of bad allocations
+    """
+    ac = env.action_space.low.reshape((3, env.n_machines))
+    ac[0:1,0] = 10
+    ac[1:2,1] = 10
+    ac[2:3,2] = 10
+    print(ac)
+    print(env.step(ac))
+    for _ in range(20):
+        print(env.once())
