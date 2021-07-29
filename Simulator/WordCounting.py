@@ -33,9 +33,9 @@ class WordCountingEnv(gym.Env):
         self.n_spouts = n_spouts
         self.random_seed = seed
 
-        self.data_incoming_rate = 50.
+        self.data_incoming_rate = 20.
         self.topology:Topology = None
-        self.bandwidth = 500
+        self.bandwidth = 100
         self.edge_batch = 100
 
         self.action_space = Box(low=0., high=1., shape=(3*n_machines,))
@@ -129,6 +129,7 @@ class WordCountingEnv(gym.Env):
 
 if __name__ == '__main__':
     env = WordCountingEnv()
+    print("data incoming rate is", env.data_incoming_rate)
     # env.warm()
     # print(env.once())
     # env.warm()
@@ -156,9 +157,10 @@ if __name__ == '__main__':
     Test the effect of bad allocations
     """
     ac = env.action_space.low.reshape((3, env.n_machines))
-    ac[0:1,0] = 10
-    ac[1:2,1] = 10
-    ac[2:3,2] = 10
+    # ac[0:1,0] = 10
+    # ac[1:2,1] = 10
+    # ac[2:3,2] = 10
+    # ac[:,0] = 10
     print(ac)
     print(env.step(ac))
     for _ in range(20):
