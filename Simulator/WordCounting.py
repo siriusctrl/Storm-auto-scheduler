@@ -64,7 +64,7 @@ class WordCountingEnv(gym.Env):
         new_state = np.concatenate((new_state, np.array([self.data_incoming_rate]*self.n_spouts)))
         
         # NOTICE: this is different than the original paper where new_state is the state after softmax
-        return new_state, reward, False, {}
+        return new_state, reward, False, {'pre_action':new_assignments}
 
     def reset(self):
         self.topology.reset_assignments()

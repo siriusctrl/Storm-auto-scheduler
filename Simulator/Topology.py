@@ -176,7 +176,7 @@ class Topology():
 
             # a batch counter for debug
             b_count = 0
-
+            # TODO: add something here to prevent the extreme situation
             while len(self.tracking_list) < self.tracking_counter:
                 if Config.progress_check or Config.debug:
                     print(
