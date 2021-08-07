@@ -59,6 +59,7 @@ class Topology():
         self.tracking = False
         self.tracking_counter = 0
         self.tracking_list = []
+        self.collection_counter = 0
 
         self.env = Environment()
 
@@ -164,48 +165,49 @@ class Topology():
     def update_states(self, time:int=100, track=False):
         # the time should represent the time interval that we would like to sample data from
         if track:
+            # reset everything before we start tracking
             self.tracking = True
+            self.tracking_counter = 0
+            self.collection_counter = 0
+            self.tracking_list = []
+
             next_batch = int(round(self.env.now, 0)) + time
             self.env.run(until=next_batch)
 
             if Config.progress_check or Config.debug:
                 print(f'In total {self.tracking_counter} tracked data')
 
+            # turn off tracking as we already generate enough data for tracking
             self.tracking = False
-            reward = 0
 
-            # a batch counter for debug
             b_count = 0
-            # TODO: add something here to prevent the extreme situation
-            while len(self.tracking_list) < self.tracking_counter:
+            # we will only update the system for at most 10*time to prevent extreme situation
+            while b_count != 2:
                 if Config.progress_check or Config.debug:
                     print(
-                        f'{len(self.tracking_list)*100/self.tracking_counter:.2f} collected {b_count}')
+                        f'{self.collection_counter*100/self.tracking_counter:.2f} collected {b_count}')
                 next_batch = int(round(self.env.now, 0)) + time*5
                 self.env.run(until=next_batch)
                 b_count += 1
-                if b_count == 2:
-                    # we already update the system for 10*time but still not get all results
-                    break
 
             total_delay = 0
             for d in self.tracking_list:
-                total_delay += d.finish_time - d.enter_time
+                if d.finish_time is not None:
+                    total_delay += d.finish_time - d.enter_time
 
             reward = -(total_delay / self.tracking_counter)
 
-            # if we did not get all the tracking task, simply add whole trajectary as penalty
-            if len(self.tracking_list) < self.tracking_counter:
-                print("offset reward is", -(time*5*b_count)*(1 - (len(self.tracking_list)/self.tracking_counter)))
-                reward += -(time*5*b_count)*(1 - (len(self.tracking_list)/self.tracking_counter))
+            # if we did not get all the tracking task, simply add whole trajectary 
+            # with proportion to the data we did not received as penalty
+            if self.collection_counter < self.tracking_counter:
+                offset = -(time*5*b_count)*(1 - (self.collection_counter/self.tracking_counter))
+                print(offset)
+                reward += offset
 
             if Config.progress_check or Config.debug:
                 print(f'final reward is {reward}')
                 print(f'simulation end at {self.env.now}')
 
-            # reset everything and then return the reward
-            self.tracking_counter = 0
-            self.tracking_list = []
             return reward
         else:
             # This should only use for debug or data collection for cold start
@@ -257,9 +259,9 @@ class Topology():
         return self.machine_graph[sm][dm]['object']
 
     def record(self, data: Data) -> None:
-        self.tracking_list.append(data)
-
-        if len(self.tracking_list) > self.tracking_counter:
+        # self.tracking_list.append(data)
+        self.collection_counter += 1
+        if self.collection_counter > self.tracking_counter:
             raise ValueError('There are more tracking instance accepted than generated')
 
     def build_machine_graph(self, edges):
@@ -430,7 +432,7 @@ class Topology():
 
 if __name__ == '__main__':
     # test = Topology(4, {})
-    test = Topology(4, {}, spout_batch=0)
+    test = Topology(4, {})
     test.build_sample(debug=False)
 
     """

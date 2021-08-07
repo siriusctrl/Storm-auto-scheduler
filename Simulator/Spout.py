@@ -76,6 +76,7 @@ class Spout():
                     if self.topology.tracking:
                         new.tracked = True
                         self.topology.tracking_counter += 1
+                        self.topology.tracking_list.append(new)
                     
                     new.target = dest
                     new.source = self
