@@ -48,7 +48,7 @@ if __name__ == "__main__":
     parser.add_argument("--policy", default="TD3")                  # Policy name (TD3, DDPG or OurDDPG)
     parser.add_argument("--env", default="stream")               # OpenAI gym environment name
     parser.add_argument("--seed", default=0, type=int)              # Sets Gym, PyTorch and Numpy seeds
-    parser.add_argument("--start_timesteps", default=1e3, type=int)# Time steps initial random policy is used
+    parser.add_argument("--start_timesteps", default=1e2, type=int)# Time steps initial random policy is used
     parser.add_argument("--eval_freq", default=2e3, type=int)       # How often (time steps) we evaluate
     parser.add_argument("--max_timesteps", default=3e4, type=int)   # Max time steps to run environment
     parser.add_argument("--expl_noise", default=0.1)                # Std of Gaussian exploration noise

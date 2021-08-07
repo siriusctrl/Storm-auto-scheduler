@@ -184,12 +184,20 @@ class Topology():
                 next_batch = int(round(self.env.now, 0)) + time*5
                 self.env.run(until=next_batch)
                 b_count += 1
+                if b_count == 2:
+                    # we already update the system for 10*time but still not get all results
+                    break
 
             total_delay = 0
             for d in self.tracking_list:
                 total_delay += d.finish_time - d.enter_time
 
             reward = -(total_delay / self.tracking_counter)
+
+            # if we did not get all the tracking task, simply add whole trajectary as penalty
+            if len(self.tracking_list) < self.tracking_counter:
+                print("offset reward is", -(time*5*b_count)*(1 - (len(self.tracking_list)/self.tracking_counter)))
+                reward += -(time*5*b_count)*(1 - (len(self.tracking_list)/self.tracking_counter))
 
             if Config.progress_check or Config.debug:
                 print(f'final reward is {reward}')
