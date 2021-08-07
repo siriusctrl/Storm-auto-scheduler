@@ -38,7 +38,7 @@ class WordCountingEnv(gym.Env):
         self.bandwidth = 100
         self.edge_batch = 100
 
-        self.action_space = Box(low=0., high=1., shape=(3*n_machines,))
+        self.action_space = Box(low=0.001, high=1., shape=(3*n_machines,))
         size = 3*n_machines
         # TODO: we assume fixed data incoming rate here
         ob_low = np.array([0.]*size + [self.data_incoming_rate]*n_spouts)
@@ -54,7 +54,10 @@ class WordCountingEnv(gym.Env):
         if new_assignments.shape != (3, self.n_machines):
             # print('action reshaped')
             new_assignments = new_assignments.reshape((3, self.n_machines))
-        new_assignments = softmax(new_assignments, axis=1)
+        # new_assignments = softmax(new_assignments, axis=1)
+        # TODO: Test this normalisation
+        totoal = new_assignments.sum(axis=1)
+        new_assignments = (new_assignments.T / totoal).T
         # print(new_assignments)
         self.topology.update_assignments(new_assignments)
         self.warm()
@@ -62,7 +65,6 @@ class WordCountingEnv(gym.Env):
         # the observation is the current deployment(after softmax) + data incoming rate
         new_state = new_assignments.flatten()
         new_state = np.concatenate((new_state, np.array([self.data_incoming_rate]*self.n_spouts)))
-        
         # NOTICE: this is different than the original paper where new_state is the state after softmax
         return new_state, reward, False, {'pre_action':new_assignments}
 
