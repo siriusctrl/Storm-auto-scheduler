@@ -44,6 +44,7 @@ class Topology():
 
         self.n_machines = n_machines
         self.machine_list = []
+        self.edge_list = []
 
         # key: name of the executor, value: [type of executor (in str), number of replicas]
         self.executor_info = executors_info
@@ -85,6 +86,9 @@ class Topology():
         for executors in self.name_to_executors.values():
             for e in executors:
                 e.clear()
+        
+        for e in self.edge_list:
+            e.clear()
 
         # self.reset_assignments()
         ##############################################################
@@ -201,7 +205,7 @@ class Topology():
             # with proportion to the data we did not received as penalty
             if self.collection_counter < self.tracking_counter:
                 offset = -(time*5*b_count)*(1 - (self.collection_counter/self.tracking_counter))
-                print(offset)
+                print(f'{self.collection_counter/self.tracking_counter} collected with offset={offset}')
                 reward += offset
 
             if Config.progress_check or Config.debug:
@@ -278,6 +282,7 @@ class Topology():
             ob.between = [ns, nd]
             self.machine_graph[ns][nd]['weight'] = w
             self.machine_graph[ns][nd]['object'] = ob
+            self.edge_list.append(ob)
 
         # create self-loop for communication within the machine
         for m in self.machine_list:
@@ -288,6 +293,7 @@ class Topology():
 
             self.machine_graph[m][m]['weight'] = self.inter_trans_delay
             self.machine_graph[m][m]['object'] = ob
+            self.edge_list.append(ob)
 
     def add_executor_to_machines(self, executor, machine):
         if type(executor) is list:
@@ -468,7 +474,7 @@ if __name__ == '__main__':
     """
     Test new assignment updates
     """
-    test.update_states(time=10, track=True)
+    # test.update_states(time=10, track=True)
     test.update_states(time=0.1, track=False)
     test.update_assignments([[0.3, 0.3, 0.2, 0.2]]*4)
     test.update_states(time=0.105, track=False)

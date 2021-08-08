@@ -53,7 +53,7 @@ class WordCountingEnv(gym.Env):
         # make sure assigment for each type of bolt sum to approximately 1
         if new_assignments.shape != (3, self.n_machines):
             # print('action reshaped')
-            new_assignments = new_assignments.reshape((3, self.n_machines)).clip(0., 1.)
+            new_assignments = new_assignments.reshape((3, self.n_machines)).clip(0.001, 1.)
         # new_assignments = softmax(new_assignments, axis=1)
         # TODO: Test this normalisation
         totoal = new_assignments.sum(axis=1)

@@ -27,17 +27,21 @@ def eval_policy(policy, env_name, seed, eval_episodes=1):
     # eval_env.seed(seed + 100)
 
     avg_reward = 0.
+    step_count = 0
     for _ in range(eval_episodes):
         state, done = eval_env.reset(), False
         while not done:
             action = policy.select_action(np.array(state))
             state, reward, done, _ = eval_env.step(action)
             avg_reward += reward
+            step_count += 1
+            if (env_name == 'stream') and (step_count >= 20):
+                break
 
     avg_reward /= eval_episodes
 
     print("---------------------------------------")
-    print(f"Evaluation over {eval_episodes} episodes: {avg_reward:.3f}")
+    print(f"Evaluation over {eval_episodes} episodes: {avg_reward:.3f} steps:{avg_reward/step_count:.3f}")
     print("---------------------------------------")
     return avg_reward
 
@@ -48,9 +52,9 @@ if __name__ == "__main__":
     parser.add_argument("--policy", default="TD3")                  # Policy name (TD3, DDPG or OurDDPG)
     parser.add_argument("--env", default="stream")               # OpenAI gym environment name
     parser.add_argument("--seed", default=0, type=int)              # Sets Gym, PyTorch and Numpy seeds
-    parser.add_argument("--start_timesteps", default=1e2, type=int)# Time steps initial random policy is used
-    parser.add_argument("--eval_freq", default=2e3, type=int)       # How often (time steps) we evaluate
-    parser.add_argument("--max_timesteps", default=3e4, type=int)   # Max time steps to run environment
+    parser.add_argument("--start_timesteps", default=200, type=int)# Time steps initial random policy is used
+    parser.add_argument("--eval_freq", default=500, type=int)       # How often (time steps) we evaluate
+    parser.add_argument("--max_timesteps", default=3000, type=int)   # Max time steps to run environment
     parser.add_argument("--expl_noise", default=0.1)                # Std of Gaussian exploration noise
     parser.add_argument("--batch_size", default=256, type=int)      # Batch size for both actor and critic
     parser.add_argument("--discount", default=0.99)                 # Discount factor
@@ -58,7 +62,7 @@ if __name__ == "__main__":
     parser.add_argument("--policy_noise", default=0.2)              # Noise added to target policy during critic update
     parser.add_argument("--noise_clip", default=0.5)                # Range to clip target policy noise
     parser.add_argument("--policy_freq", default=2, type=int)       # Frequency of delayed policy updates
-    parser.add_argument("--save_model", action="store_true")        # Save model and optimizer parameters
+    parser.add_argument("--save_model", action="store_true", default=True)        # Save model and optimizer parameters
     parser.add_argument("--load_model", default="")                 # Model load file name, "" doesn't load, "default" uses file_name
     parser.add_argument("--max_episodic_length", default=150, type=int)              
     args = parser.parse_args()
