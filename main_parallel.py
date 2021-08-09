@@ -138,8 +138,8 @@ if __name__ == "__main__":
             done_bool = done if episode_timesteps < args.max_episodic_length else True
             # Store in replay buffer
             replay_buffer.add(states[index], actions[index], next_state, reward, done_bool)
-            print(info['pre_action'])
-            print(actions[index])
+            # print(info['pre_action'])
+            # print(actions[index])
             episode_reward += reward
             batch_reward += reward
         
