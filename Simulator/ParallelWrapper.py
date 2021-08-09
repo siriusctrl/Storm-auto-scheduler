@@ -25,7 +25,7 @@ class ParalllelWrapper():
 
         p_list = []
         for i in range(len(self.envs)):
-            p = Process(target=self.call_step, args=(self.envs[i], assignments[i],))
+            p = Process(target=self.call_step, args=(self.envs[i], assignments[i], i, ))
             p.start()
             p_list.append(p)
         
@@ -35,18 +35,38 @@ class ParalllelWrapper():
         res = []
         for i in range(len(self.envs)):
             res.append(queue.get())
+
+        res.sort(key=lambda x:x[-1])
+        res = [i[0] for i in res]
+        return res
+    
+    def reset(self):
+        p_list = []
+
+        for i in range(len(self.envs)):
+            p = Process(target=self.call_reset, args=(self.envs[i], i, ))
+            p.start()
+            p_list.append(p)
         
+        for p in p_list:
+            p.join()
+        
+        res = []
+        for i in range(len(self.envs)):
+            res.append(queue.get())
+        
+        res.sort(key=lambda x:x[-1])
+        res = [i[0] for i in res]
+
         return res
             
     @staticmethod
-    def call_step(env, a):
-        queue.put(env.step(a))
-
-    def once_multiple(self,):
-        return self.pool.map(self.call_once, self.envs)
+    def call_step(env, a, index):
+        queue.put((env.step(a), index))
     
-    def call_once(self, env):
-        return env.once()
+    @staticmethod
+    def call_reset(env, index):
+        queue.put((env.reset(), index))
 
 
 
@@ -78,16 +98,6 @@ if __name__ == '__main__':
 
     for i in range(n_envs):
         actions.append(envs[0].action_space.sample())
-
-    print(p.step_multiple(actions))
-
-    # pack = list(zip(envs, actions))
-
-    # p_list = []
-    # for p in pack:
-    #     proc = Process(target=call_step, args=p)
-    #     p_list.append(proc)
-    #     proc.start()
-    
-    # for proc in p_list:
-    #     proc.join()
+    print(actions[1])
+    print(p.step_multiple(actions)[1])
+    # print(p.reset()[0])

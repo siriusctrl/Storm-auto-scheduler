@@ -12,9 +12,9 @@ from Data import IdentityDataTransformer
 
 class WordCountingEnv(gym.Env):
 
-    def __init__(self, n_machines= 10,
-                       n_spouts  = 20,
-                       data_incoming_rate = 5.,
+    def __init__(self, n_machines= 5,
+                       n_spouts  = 2,
+                       data_incoming_rate = 20.,
                        seed      = 20210723,
                     ) -> None:
         """
@@ -42,8 +42,8 @@ class WordCountingEnv(gym.Env):
         self.action_space = Box(low=0.001, high=1., shape=(3*n_machines,))
         size = 3*n_machines
         # TODO: we assume fixed data incoming rate here
-        ob_low = np.array([0.]*size + [self.data_incoming_rate]*n_spouts)
-        ob_high = np.array([1.]*size + [self.data_incoming_rate]*n_spouts)
+        ob_low = np.array([0.]*size + [self.data_incoming_rate/10]*n_spouts)
+        ob_high = np.array([1.]*size + [self.data_incoming_rate/10]*n_spouts)
         self.observation_space = Box(low=ob_low, high=ob_high)
 
         self.seed()
@@ -52,22 +52,19 @@ class WordCountingEnv(gym.Env):
     def step(self, new_assignments):
         assert(new_assignments is not None)
         # make sure assigment for each type of bolt sum to approximately 1
-        if new_assignments.shape != (3, self.n_machines):
-            # print('action reshaped')
-            new_assignments = new_assignments.reshape((3, self.n_machines)).clip(0.001, 1.)
+        reshaped_assignments = new_assignments.reshape((3, self.n_machines)).clip(0.001, 1.)
         # new_assignments = softmax(new_assignments, axis=1)
-        # TODO: Test this normalisation
-        totoal = new_assignments.sum(axis=1)
-        new_assignments = (new_assignments.T / totoal).T
+        totoal = reshaped_assignments.sum(axis=1)
+        reshaped_assignments = (reshaped_assignments.T / totoal).T
         # print(new_assignments)
-        self.topology.update_assignments(new_assignments)
+        self.topology.update_assignments(reshaped_assignments)
         self.warm()
-        reward = self.once()
+        reward, metrics = self.once()
         # the observation is the current deployment(after softmax) + data incoming rate
-        new_state = new_assignments.flatten()
+        new_state = reshaped_assignments.flatten()
         new_state = np.concatenate((new_state, np.array([self.data_incoming_rate]*self.n_spouts)))
-        # NOTICE: this is different than the original paper where new_state is the state after softmax
-        return new_state, reward, False, {'pre_action':new_assignments}
+        # NOTICE: this is different than the original paper where new_state is the state after normalization
+        return new_state, reward, False, {'pre_action':new_assignments, **metrics}
 
     def reset(self):
         self.topology.reset_assignments()
@@ -93,12 +90,12 @@ class WordCountingEnv(gym.Env):
             'spout': ['spout', self.n_spouts, [
                 {"incoming_rate":self.data_incoming_rate, "batch":100}]*self.n_spouts
             ],
-            'WordCount': ['bolt', 40, {
+            'WordCount': ['bolt', 9, {
                     'd_transform': IdentityDataTransformer(),
                     'batch':100,
                     'random_seed':None,
                 }],
-            'Database': ['bolt', 40, {
+            'Database': ['bolt', 9, {
                     'd_transform': IdentityDataTransformer(),
                     'batch':100,
                     'random_seed':None,
@@ -131,7 +128,8 @@ class WordCountingEnv(gym.Env):
         return [(i, j, bandwidth, batch) for i in range(num) for j in range(num)]
 
 if __name__ == '__main__':
-    env = WordCountingEnv(n_machines=10, n_spouts=20, data_incoming_rate=5)
+    # env = WordCountingEnv(n_machines=10, n_spouts=20, data_incoming_rate=5)
+    env = WordCountingEnv()
     print("data incoming rate is", env.data_incoming_rate)
     # env.warm()
     # print(env.once())

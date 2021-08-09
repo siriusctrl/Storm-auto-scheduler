@@ -19,8 +19,8 @@ class Actor(nn.Module):
             nn.ReLU(),
             nn.Linear(256, action_dim),
             # NOTICE: we would like the output to be (0,1) in our simulator
-            # nn.Sigmoid()
-            nn.Tanh()
+            nn.Sigmoid()
+            # nn.Tanh()
         )
         
         self.max_action = max_action

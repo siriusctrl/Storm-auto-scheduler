@@ -174,6 +174,7 @@ class Topology():
             self.tracking_counter = 0
             self.collection_counter = 0
             self.tracking_list = []
+            metrics = {}
 
             next_batch = int(round(self.env.now, 0)) + time
             self.env.run(until=next_batch)
@@ -212,7 +213,7 @@ class Topology():
                 print(f'final reward is {reward}')
                 print(f'simulation end at {self.env.now}')
 
-            return reward
+            return reward, metrics
         else:
             # This should only use for debug or data collection for cold start
             next_batch = int(round(self.env.now, 0)) + time

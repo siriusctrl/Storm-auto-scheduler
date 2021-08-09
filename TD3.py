@@ -87,6 +87,7 @@ class TD3(object):
         self.critic_optimizer = torch.optim.Adam(self.critic.parameters(), lr=3e-4)
 
         self.max_action = max_action
+        self.min_action = -max_action
         self.discount = discount
         self.tau = tau
         self.policy_noise = policy_noise
@@ -115,7 +116,7 @@ class TD3(object):
             
             next_action = (
                 self.actor_target(next_state) + noise
-            ).clamp(-self.max_action, self.max_action)
+            ).clamp(self.min_action, self.max_action)
 
             # Compute the target Q value
             target_Q1, target_Q2 = self.critic_target(next_state, next_action)
