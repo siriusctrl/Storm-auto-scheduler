@@ -35,7 +35,7 @@ def eval_policy(policy, env_name, seed, eval_episodes=1):
             state, reward, done, _ = eval_env.step(action)
             avg_reward += reward
             step_count += 1
-            if (env_name == 'stream') and (step_count >= 20):
+            if (env_name == 'stream') and (step_count >= 10):
                 break
 
     avg_reward /= eval_episodes

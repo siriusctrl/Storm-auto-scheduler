@@ -12,8 +12,9 @@ from Data import IdentityDataTransformer
 
 class WordCountingEnv(gym.Env):
 
-    def __init__(self, n_machines= 5,
-                       n_spouts  = 2,
+    def __init__(self, n_machines= 10,
+                       n_spouts  = 20,
+                       data_incoming_rate = 5.,
                        seed      = 20210723,
                     ) -> None:
         """
@@ -33,7 +34,7 @@ class WordCountingEnv(gym.Env):
         self.n_spouts = n_spouts
         self.random_seed = seed
 
-        self.data_incoming_rate = 20.
+        self.data_incoming_rate = data_incoming_rate
         self.topology:Topology = None
         self.bandwidth = 100
         self.edge_batch = 100
@@ -92,12 +93,12 @@ class WordCountingEnv(gym.Env):
             'spout': ['spout', self.n_spouts, [
                 {"incoming_rate":self.data_incoming_rate, "batch":100}]*self.n_spouts
             ],
-            'WordCount': ['bolt', 9, {
+            'WordCount': ['bolt', 40, {
                     'd_transform': IdentityDataTransformer(),
                     'batch':100,
                     'random_seed':None,
                 }],
-            'Database': ['bolt', 9, {
+            'Database': ['bolt', 40, {
                     'd_transform': IdentityDataTransformer(),
                     'batch':100,
                     'random_seed':None,
@@ -130,7 +131,7 @@ class WordCountingEnv(gym.Env):
         return [(i, j, bandwidth, batch) for i in range(num) for j in range(num)]
 
 if __name__ == '__main__':
-    env = WordCountingEnv()
+    env = WordCountingEnv(n_machines=10, n_spouts=20, data_incoming_rate=5)
     print("data incoming rate is", env.data_incoming_rate)
     # env.warm()
     # print(env.once())
@@ -158,7 +159,8 @@ if __name__ == '__main__':
     """
     Test the effect of bad allocations
     """
-    ac = env.action_space.low.reshape((3, env.n_machines))
+    ac = env.action_space.high.reshape((3, env.n_machines))
+    # ac[:,-1] = 0
     # ac[0:1,0] = 10
     # ac[1:2,1] = 10
     # ac[2:3,2] = 10
