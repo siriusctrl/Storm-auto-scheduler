@@ -115,8 +115,9 @@ if __name__ == "__main__":
     episode_timesteps = 0
     episode_num = 0
 
-    for t in range(int(args.max_timesteps) // args.n_env):
-        episode_timesteps += t*args.n_env
+    for t in range(int(args.max_timesteps // args.n_env)):
+        # episode_timesteps += t*args.n_env
+        episode_timesteps += 1
 
         actions = []
         if t*args.n_env < args.start_timesteps:
@@ -136,14 +137,16 @@ if __name__ == "__main__":
             next_state, reward, done, info = res[index]
             next_states.append(next_state)
             done_bool = done if episode_timesteps < args.max_episodic_length else True
+            # if done_bool == True:
+            #     print(episode_timesteps, args.max_episodic_length)
             # Store in replay buffer
             replay_buffer.add(states[index], actions[index], next_state, reward, done_bool)
             # print(info['pre_action'])
             # print(actions[index])
             episode_reward += reward
             batch_reward += reward
-        
-        print(f'batch:{t} avg reward is {batch_reward/args.n_env}')
+
+        print(f'batch:{t+1}/{int(args.max_timesteps // args.n_env)} avg reward is {batch_reward/args.n_env}')
 
         # Train agent after collecting sufficient data
         if (t*args.n_env) >= args.start_timesteps:
@@ -152,13 +155,13 @@ if __name__ == "__main__":
                 policy.train(replay_buffer, args.batch_size)
         
         if done_bool:
-            print(f"Total T: {t+1} Episode Num: {episode_num+1} Episode T: {episode_timesteps} Reward: {episode_reward:.3f}")
+            print(f"Total T: {t*args.n_env+1} Episode Num: {episode_num+1} Episode T: {episode_timesteps} Reward: {episode_reward:.3f}")
             states, done = parallel_env.reset(), False
             episode_reward = 0
             episode_timesteps = 0
             episode_num += 1
 
-        if (t+1) % args.eval_freq == 0:
+        if (t+1) % int(args.eval_freq/args.n_env) == 0:
             evaluations.append(eval_policy(policy, eval_env))
             # np.save(f"./results/{file_name}", evaluations)
             if args.save_model:
