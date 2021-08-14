@@ -55,6 +55,7 @@ class Topology():
         self.machine_to_executors = {}
         self.name_to_executors = {}
         self.executor_groups = []
+        self.executor_flat = []
 
         # tracking related
         self.tracking = False
@@ -117,7 +118,7 @@ class Topology():
                     suffix = prefix + num_vec[j]
                     executors = self.executor_groups[i][prefix:suffix]
 
-                    # this is only for debug
+                    # this is only for debug, this shouldn't be printed at all
                     if executors == []:
                         print(prefix, suffix)
                         print(num_vec)
@@ -131,7 +132,13 @@ class Topology():
                     print(self.machine_to_executors)
 
         elif assignemt_type == 'one-hot':
-            raise ValueError(f'Not yet support one-hot encoding')
+            assert(len(new_assignments) == len(self.executor_flat))
+            assert(len(new_assignments[0]) == len(self.machine_list))
+
+            for i in range(len(new_assignments)):
+                index = np.argmax(new_assignments[i])
+                self.add_executor_to_machines(self.executor_flat[i], self.machine_list[index])
+                self.add_machine_to_executors(self.executor_flat[i], self.machine_list[index])
         else:
             raise ValueError(f'Unknown assignemt type {assignemt_type}')
 
@@ -342,8 +349,10 @@ class Topology():
                 self.create_executor_graph(v[0], v[1:])
             else:
                 raise ValueError('Unknown type of executor')
-        # use this list to unpack the new assignment
+        # use this list to unpack the condensed new assignment
         self.executor_groups = list(self.name_to_executors.values())
+        # a flatten version to unpack the one-hot assignment
+        self.executor_flat = [i for e in self.executor_groups for i in e]
 
     def build_homo_machines(self, capacity=1):
         """
@@ -441,6 +450,7 @@ if __name__ == '__main__':
     # test = Topology(4, {})
     test = Topology(4, {})
     test.build_sample(debug=False)
+    
 
     """
     Graph example
@@ -476,9 +486,9 @@ if __name__ == '__main__':
     Test new assignment updates
     """
     # test.update_states(time=10, track=True)
-    test.update_states(time=0.1, track=False)
-    test.update_assignments([[0.3, 0.3, 0.2, 0.2]]*4)
-    test.update_states(time=0.105, track=False)
+    # test.update_states(time=0.1, track=False)
+    # test.update_assignments([[0.3, 0.3, 0.2, 0.2]]*4)
+    # test.update_states(time=0.105, track=False)
 
     """
     Tracking info
@@ -491,3 +501,21 @@ if __name__ == '__main__':
     # test.update_states(time=1.2, track=False)
     # int_vec = test.assignment_calibration(11, [0.3, 0.2, 0.1, 0.4])
     # print(int_vec, sum(int_vec))
+
+    """
+    Test one-hot unpacking
+    """
+    # n_executors = len(test.executor_flat)
+    # n_machines = len(test.machine_list)
+    # value = np.random.randn(n_executors, n_machines)
+    # col = np.argmax(value, axis=1)
+    # row = np.array(range(n_executors))
+    # new_ass = np.zeros(value.shape)
+    # new_ass[row, col] = 1
+    # print(test.machine_list)
+    # print(test.executor_flat)
+    # print(col)
+    # print(test.machine_to_executors)
+    # test.update_assignments(new_ass, assignemt_type='one-hot')
+    # print('--------------------------')
+    # print(test.machine_to_executors)

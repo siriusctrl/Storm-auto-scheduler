@@ -1,9 +1,5 @@
 from multiprocessing import Pool, Queue, Process
-import os
-import time
 import gym
-
-from WordCounting import WordCountingEnv
 
 queue = Queue()
 
@@ -91,13 +87,15 @@ if __name__ == '__main__':
     """
     Parallel ENV test
     """
+    # from WordCounting import WordCountingEnv
+    from WordCounting_Wolpertinger import WordCountingEnv
     n_envs = 6
     envs = [WordCountingEnv() for _ in range(n_envs)]
     p = ParalllelWrapper(envs, n_envs)
     actions = []
 
     for i in range(n_envs):
-        actions.append(envs[0].action_space.sample())
+        actions.append(envs[0].random_action())
     print(actions[1])
     print(p.step_multiple(actions)[1])
     # print(p.reset()[0])

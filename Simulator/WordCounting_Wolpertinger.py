@@ -35,41 +35,40 @@ class WordCountingEnv(gym.Env):
 
         self.data_incoming_rate = data_incoming_rate
         self.topology:Topology = None
-        self.bandwidth = 100
+        self.bandwidth = 200
         self.edge_batch = 100
-
-        self.action_space = Box(low=0.001, high=1., shape=(3*n_machines,))
-        size = 3*n_machines
-        # TODO: we assume fixed data incoming rate here
-        ob_low = np.array([0.]*size + [self.data_incoming_rate]*n_spouts)
-        ob_high = np.array([1.]*size + [self.data_incoming_rate]*n_spouts)
-        self.observation_space = Box(low=ob_low, high=ob_high)
 
         self.seed()
         self.build_topology()
+
+        # TODO: change this to wolpertinger architecture
+        size = n_machines*len(self.topology.executor_flat)
+        self.action_space = Box(low=0.001, high=1., shape=(size,))
+        # NOTICE: we are assuming a easier fixed incoming rate here
+        ob_low = np.array([0.]*size + [self.data_incoming_rate/10]*n_spouts)
+        ob_high = np.array([1.]*size + [self.data_incoming_rate/10]*n_spouts)
+        self.observation_space = Box(low=ob_low, high=ob_high)
+
+
     
     def step(self, new_assignments):
+        # TODO: change this to suit Wolpertinger architecture
         assert(new_assignments is not None)
         # make sure assigment for each type of bolt sum to approximately 1
-        reshaped_assignments = new_assignments.reshape((3, self.n_machines)).clip(0.001, 1.)
-        # new_assignments = softmax(new_assignments, axis=1)
-        totoal = reshaped_assignments.sum(axis=1)
-        reshaped_assignments = (reshaped_assignments.T / totoal).T
-        # print(new_assignments)
-        self.topology.update_assignments(reshaped_assignments)
+        assert(new_assignments.size == (len(self.topology.executor_flat)*self.n_machines))
+        reshaped_assignments = new_assignments.reshape((len(self.topology.executor_flat), self.n_machines))
+        self.topology.update_assignments(reshaped_assignments, 'one-hot')
         self.warm()
         reward, metrics = self.once()
         # the observation is the current deployment(after softmax) + data incoming rate
-        new_state = reshaped_assignments.flatten()
-        new_state = np.concatenate((new_state, np.array([self.data_incoming_rate]*self.n_spouts)))
-        # NOTICE: this is different than the original paper where new_state is the state after normalization
+        new_state = np.concatenate(((new_assignments.flatten()), np.array([self.data_incoming_rate]*self.n_spouts)))
         return new_state, reward, False, {'pre_action':new_assignments, **metrics}
 
     def reset(self):
         self.topology.reset_assignments()
         # self.topology.round_robin_init(shuffle=True)
         # return self.once()
-        random_action = self.action_space.sample()
+        random_action = self.random_action()[0]
         return self.step(random_action)[0]
     
     def once(self):
@@ -77,6 +76,14 @@ class WordCountingEnv(gym.Env):
     
     def warm(self):
         self.topology.update_states(time=5000, track=False)
+
+    def random_action(self):
+        random_proto = np.random.randn(len(self.topology.executor_flat), self.n_machines).clip(0,1)
+        action = np.zeros(random_proto.shape)
+        col = np.argmax(random_proto, axis=1)
+        row = np.array(range(action.shape[0]))
+        action[row, col] = 1
+        return action.flatten(), random_proto.flatten()
 
     def seed(self):
         # the np_random is the numpy RandomState
@@ -156,13 +163,13 @@ if __name__ == '__main__':
     """
     Test the effect of bad allocations
     """
-    ac = env.action_space.high.reshape((3, env.n_machines))
+    ac = env.random_action()
     # ac[:,-1] = 0
     # ac[0:1,0] = 10
     # ac[1:2,1] = 10
     # ac[2:3,2] = 10
     # ac[:,0] = 10
-    print(ac)
+    # print(ac)
     print(env.step(ac))
-    for _ in range(20):
+    for _ in range(1):
         print(env.once())
