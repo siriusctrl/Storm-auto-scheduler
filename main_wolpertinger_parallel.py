@@ -189,10 +189,10 @@ if __name__ == "__main__":
         if (t+1) % int(args.eval_freq/args.n_env) == 0:
             evaluations.append(eval_policy(policy, eval_env))
             # np.save(f"./results/{file_name}", evaluations)
-            # with open(f"./results/{file_name}_step.pkl", 'wb') as f:
-            #     pickle.dump(total_step_collection, f)
-            # with open(f"./results/{file_name}_eval.pkl", 'wb') as f:
-            #     pickle.dump(evaluations, f)
+            with open(f"./results/{file_name}_step.pkl", 'wb') as f:
+                pickle.dump(total_step_collection, f)
+            with open(f"./results/{file_name}_eval.pkl", 'wb') as f:
+                pickle.dump(evaluations, f)
 
             if args.save_model:
                 policy.save(f"./models/{file_name}")
