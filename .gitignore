@@ -127,8 +127,8 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-*.pkl
 
 # profiler
 *.pyp
 models/
+results/
