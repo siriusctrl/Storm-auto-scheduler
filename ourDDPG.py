@@ -13,14 +13,14 @@ class Actor(nn.Module):
     def __init__(self, state_dim, action_dim, max_action) -> None:
         super(Actor, self).__init__()
         self.model = nn.Sequential(
-            nn.Linear(state_dim, 256),
-            nn.ReLU(),
-            nn.Linear(256, 256),
-            nn.ReLU(),
-            nn.Linear(256, action_dim),
+            nn.Linear(state_dim, 64),
+            nn.Tanh(),
+            nn.Linear(64, 32),
+            nn.Tanh(),
+            nn.Linear(32, action_dim),
             # NOTICE: we would like the output to be (0,1) in our simulator
-            nn.Sigmoid()
-            # nn.Tanh()
+            # nn.Sigmoid()
+            nn.Tanh()
         )
         
         self.max_action = max_action
@@ -34,11 +34,11 @@ class Critic(nn.Module):
         super(Critic, self).__init__()
 
         self.model = nn.Sequential(
-            nn.Linear(state_dim+action_dim, 256),
-            nn.ReLU(),
-            nn.Linear(256,256),
-            nn.ReLU(),
-            nn.Linear(256, 1)
+            nn.Linear(state_dim+action_dim, 64),
+            nn.Tanh(),
+            nn.Linear(64,32),
+            nn.Tanh(),
+            nn.Linear(32, 1)
         )
     
     def forward(self, state, action):
