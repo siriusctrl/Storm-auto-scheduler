@@ -8,12 +8,11 @@ import pickle
 import sys
 sys.path.append(os.path.join(os.getcwd(), 'Simulator'))
 
-from WordCounting_Wolpertinger import WordCountingEnv
+from WordCounting_Wolpertinger import WordCountingEnv as wolp_word
+from WordCounting import WordCountingEnv as con_word
 from ParallelWrapper import ParalllelWrapper
 
 from SimpleBuffer import ReplayBuffer
-from Li_Wolpertinger import Wolpertinger as li_wolp
-from our_Wolpertinger import Wolpertinger as our_wolp
 
 # Runs policy for X episodes and returns average reward
 # A fixed seed is used for the eval environment
@@ -44,19 +43,27 @@ if __name__ == "__main__":
     parser.add_argument("--seed", default=0, type=int)              # Sets Gym, PyTorch and Numpy seeds         
     parser.add_argument("--n_env", default=5, type=int)
     parser.add_argument("--max_timesteps", default=10000, type=int)
-    parser.add_argument("--max_episodic_length", default=50, type=int)      
+    parser.add_argument("--max_episodic_length", default=50, type=int) 
+    parser.add_argument('--which', default='wolp')     
     args = parser.parse_args()
 
-    file_name = f"random_wolpertinger_{args.seed}"
+    file_name = f"random_{args.which}_{args.seed}"
     print("---------------------------------------")
-    print(f"Random Transactions Seed: {args.seed}")
+    print(f"Random Transactions of {args.which} Seed: {args.seed}")
     print("---------------------------------------")
 
     if not os.path.exists("./offline"):
         os.makedirs("./offline")
 
-    parallel_env = ParalllelWrapper([WordCountingEnv(seed=args.seed) for _ in range(args.n_env)], args.n_env)
-    eval_env = WordCountingEnv(seed=args.seed+100)
+    if args.which == 'wolp':
+        parallel_env = ParalllelWrapper([wolp_word(seed=args.seed) for _ in range(args.n_env)], args.n_env)
+        eval_env = wolp_word(seed=args.seed+100)
+    elif args.which == 'con':
+        parallel_env = ParalllelWrapper([con_word(seed=args.seed) for _ in range(args.n_env)], args.n_env)
+        eval_env = con_word(seed=args.seed+100)
+    else:
+        raise ValueError(args.which)
+
     # env.seed(args.seed)
     # env.action_space.seed(args.seed)
     torch.manual_seed(args.seed)
@@ -81,9 +88,14 @@ if __name__ == "__main__":
         actions = []
         proto_actions = []
         for _ in range(args.n_env):
-            ac, proto_ac = eval_env.random_action()
+            if args.which == 'wolp':
+                ac, proto_ac = eval_env.random_action()
+                proto_actions.append(proto_ac)
+            elif args.which == 'con':
+                ac = eval_env.action_space.sample()
+            else:
+                raise ValueError()
             actions.append(ac)
-            proto_actions.append(proto_ac)
         
         # next_states, reward, done, info = parallel_env.step_multiple(actions)
         res = parallel_env.step_multiple(actions)
