@@ -8,6 +8,8 @@ import os
 import sys
 sys.path.append(os.path.join(os.getcwd(), 'Simulator'))
 
+import pickle
+
 from WordCounting import WordCountingEnv
 from ParallelWrapper import ParalllelWrapper
 
@@ -53,7 +55,7 @@ if __name__ == "__main__":
     parser.add_argument("--discount", default=0.99)                 # Discount factor
     parser.add_argument("--tau", default=0.005)                     # Target network update rate
     parser.add_argument("--policy_noise", default=0.2)              # Noise added to target policy during critic update
-    parser.add_argument("--noise_clip", default=0.5)                # Range to clip target policy noise
+    parser.add_argument("--noise_clip", default=0.1)                # Range to clip target policy noise
     parser.add_argument("--policy_freq", default=2, type=int)       # Frequency of delayed policy updates
     parser.add_argument("--save_model", action="store_true", default=True)        # Save model and optimizer parameters
     parser.add_argument("--load_model", default="")                 # Model load file name, "" doesn't load, "default" uses file_name
@@ -61,9 +63,9 @@ if __name__ == "__main__":
     parser.add_argument("--n_env", default=10, type=int)            
     args = parser.parse_args()
 
-    file_name = f"parallel_{args.policy}_cSim_{args.seed}"
+    file_name = f"parallel_{args.policy}_cSim_condense_{args.seed}"
     print("---------------------------------------")
-    print(f"Policy: {args.policy}, Env: cSim, Seed: {args.seed}, Parallel")
+    print(f"Policy: {args.policy}, Env: cSim, Seed: {args.seed}, Parallel condense")
     print("---------------------------------------")
 
     if not os.path.exists("./results"):
@@ -114,6 +116,7 @@ if __name__ == "__main__":
     episode_reward = 0
     episode_timesteps = 0
     episode_num = 0
+    total_step_collection = []
 
     for t in range(int(args.max_timesteps // args.n_env)):
         # episode_timesteps += t*args.n_env
@@ -145,6 +148,7 @@ if __name__ == "__main__":
             # print(actions[index])
             episode_reward += reward
             batch_reward += reward
+            total_step_collection.append(reward)
 
         print(f'batch:{t+1}/{int(args.max_timesteps // args.n_env)} avg reward is {batch_reward/args.n_env}')
 
@@ -164,6 +168,12 @@ if __name__ == "__main__":
         if (t+1) % int(args.eval_freq/args.n_env) == 0:
             evaluations.append(eval_policy(policy, eval_env))
             # np.save(f"./results/{file_name}", evaluations)
+
+            with open(f"./results/{file_name}_step.pkl", 'wb') as f:
+                pickle.dump(total_step_collection, f)
+            with open(f"./results/{file_name}_eval.pkl", 'wb') as f:
+                pickle.dump(evaluations, f)
+
             if args.save_model:
                 policy.save(f"./models/{file_name}")
 
