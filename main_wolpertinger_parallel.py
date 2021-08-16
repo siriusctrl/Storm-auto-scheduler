@@ -157,6 +157,7 @@ if __name__ == "__main__":
             next_state, reward, done, info = res[index]
             next_states.append(next_state)
             done_bool = done if episode_timesteps < args.max_episodic_length else True
+            reward = -np.log(np.abs(reward))
             # if done_bool == True:
             #     print(episode_timesteps, args.max_episodic_length)
             # Store in replay buffer
