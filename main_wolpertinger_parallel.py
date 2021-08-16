@@ -119,7 +119,10 @@ if __name__ == "__main__":
         eval_policy(policy, eval_env)
         os.exit()
 
-    replay_buffer = ReplayBuffer(state_dim, action_dim)
+    if args.model == 'li':
+        replay_buffer = ReplayBuffer(state_dim, action_dim, max_size=5000)
+    else:
+        replay_buffer = ReplayBuffer(state_dim, action_dim)
     # evaluations = [eval_policy(policy, args.env, args.seed)]
     evaluations = []
     states, done = parallel_env.reset(), False

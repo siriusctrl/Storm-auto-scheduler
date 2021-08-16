@@ -16,8 +16,8 @@ class Actor(nn.Module):
             nn.Tanh(),
             nn.Linear(32, action_dim),
             # NOTICE: we would like the output to be (0,1) in our simulator
-            # nn.Sigmoid()
-            nn.Tanh()
+            nn.Sigmoid()
+            # nn.Tanh()
         )
         
     
@@ -75,7 +75,7 @@ class Wolpertinger:
         action[row, col] = 1
         return action.flatten()
     
-    def train(self, replay_buffer, batch_size=32):
+    def train(self, replay_buffer, batch_size=64):
         state, action, next_state, reward, not_done = replay_buffer.sample(batch_size)
 
         # compute the target Q
