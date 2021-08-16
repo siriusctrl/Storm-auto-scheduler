@@ -1,0 +1,2353 @@
+---------------------------------------
+Policy: our, Env: cSim, Seed: 0
+---------------------------------------
+Building Topology
+spout 2
+WordCount 9
+Database 9
+Building Topology
+spout 2
+WordCount 9
+Database 9
+Building Topology
+spout 2
+WordCount 9
+Database 9
+Building Topology
+spout 2
+WordCount 9
+Database 9
+Building Topology
+spout 2
+WordCount 9
+Database 9
+Building Topology
+spout 2
+WordCount 9
+Database 9
+Building Topology
+spout 2
+WordCount 9
+Database 9
+Building Topology
+spout 2
+WordCount 9
+Database 9
+Building Topology
+spout 2
+WordCount 9
+Database 9
+Building Topology
+spout 2
+WordCount 9
+Database 9
+Building Topology
+spout 2
+WordCount 9
+Database 9
+Building Topology
+spout 2
+WordCount 9
+Database 9
+Building Topology
+spout 2
+WordCount 9
+Database 9
+Building Topology
+spout 2
+WordCount 9
+Database 9
+Building Topology
+spout 2
+WordCount 9
+Database 9
+Building Topology
+spout 2
+WordCount 9
+Database 9
+batch:1/1000 avg reward is -935.1088473416573
+batch:2/1000 avg reward is -1001.3035165000059
+batch:3/1000 avg reward is -1177.4987007333334
+0.9846 collected with offset=-153.9999999999997
+batch:4/1000 avg reward is -1511.6650897583468
+0.9122 collected with offset=-877.9999999999999
+batch:5/1000 avg reward is -1188.0112415750052
+batch:6/1000 avg reward is -1238.3277555166683
+0.97985 collected with offset=-201.5
+batch:7/1000 avg reward is -1442.7939059583325
+batch:8/1000 avg reward is -768.7782360000019
+batch:9/1000 avg reward is -997.4730797333362
+batch:10/1000 avg reward is -718.7628375083347
+batch:11/1000 avg reward is -963.8566733333372
+batch:12/1000 avg reward is -1666.7188566666805
+batch:13/1000 avg reward is -865.0771567166622
+0.9963 collected with offset=-37.00000000000037
+batch:14/1000 avg reward is -875.1035158083262
+batch:15/1000 avg reward is -649.9825891000073
+batch:16/1000 avg reward is -915.2097967083253
+batch:17/1000 avg reward is -1385.2792431749917
+batch:18/1000 avg reward is -907.9025318583191
+batch:19/1000 avg reward is -1146.1684332500056
+batch:20/1000 avg reward is -1180.693029474998
+batch:21/1000 avg reward is -1238.315813599975
+batch:22/1000 avg reward is -1173.4893772416901
+batch:23/1000 avg reward is -1231.7082626500087
+0.9601 collected with offset=-399.00000000000045
+0.9373 collected with offset=-626.9999999999998
+batch:24/1000 avg reward is -1386.5151325583363
+batch:25/1000 avg reward is -839.1750808916601
+0.997525 collected with offset=-24.75000000000005
+batch:26/1000 avg reward is -1567.8000381249988
+batch:27/1000 avg reward is -1222.8781629666692
+0.9736 collected with offset=-263.9999999999998
+0.98055 collected with offset=-194.49999999999966
+batch:28/1000 avg reward is -1726.018832375036
+batch:29/1000 avg reward is -720.8802971833427
+batch:30/1000 avg reward is -1116.4855898583212
+0.6821 collected with offset=-3178.9999999999995
+0.77145 collected with offset=-2285.5000000000005
+batch:31/1000 avg reward is -1803.3232301000085
+0.7007 collected with offset=-2993.0
+0.978375 collected with offset=-216.25000000000006
+batch:32/1000 avg reward is -1300.577405208333
+batch:33/1000 avg reward is -721.9450667833426
+0.6342 collected with offset=-3658.0
+batch:34/1000 avg reward is -1362.2948404500046
+batch:35/1000 avg reward is -1342.9162548666661
+0.96875 collected with offset=-312.5
+0.849625 collected with offset=-1503.7500000000005
+batch:36/1000 avg reward is -1464.70218898333
+0.9883 collected with offset=-117.00000000000044
+0.989225 collected with offset=-107.74999999999979
+batch:37/1000 avg reward is -1407.0604701999857
+batch:38/1000 avg reward is -1292.1635770500188
+batch:39/1000 avg reward is -1010.9148312416561
+0.7267 collected with offset=-2733.0
+batch:40/1000 avg reward is -1414.3332669666631
+0.6238 collected with offset=-3762.0
+0.985825 collected with offset=-141.75000000000048
+batch:41/1000 avg reward is -1490.790471191652
+0.997775 collected with offset=-22.250000000000327
+0.933025 collected with offset=-669.7500000000001
+batch:42/1000 avg reward is -1296.0956805666613
+batch:43/1000 avg reward is -967.083535783319
+0.642225 collected with offset=-3577.7499999999995
+batch:44/1000 avg reward is -1218.0463935916534
+0.8259 collected with offset=-1741.0000000000002
+batch:45/1000 avg reward is -1294.903477108338
+0.77975 collected with offset=-2202.4999999999995
+0.8402 collected with offset=-1598.0000000000005
+0.98585 collected with offset=-141.49999999999997
+batch:46/1000 avg reward is -2141.5958007749987
+batch:47/1000 avg reward is -783.4532029583308
+batch:48/1000 avg reward is -993.8515039083337
+batch:49/1000 avg reward is -813.9570996249972
+batch:50/1000 avg reward is -991.3543489249971
+Total T: 736 Episode Num: 1 Episode T: 50 Reward: -883055.164
+0.998025 collected with offset=-19.74999999999949
+batch:51/1000 avg reward is -1136.055738925011
+0.709175 collected with offset=-2908.25
+0.7412 collected with offset=-2588.0000000000005
+batch:52/1000 avg reward is -1704.4815608333136
+0.739925 collected with offset=-2600.7499999999995
+batch:53/1000 avg reward is -1053.4343810166574
+0.95215 collected with offset=-478.4999999999995
+batch:54/1000 avg reward is -1356.9393305916467
+batch:55/1000 avg reward is -1100.5129225249982
+batch:56/1000 avg reward is -1180.6452324916709
+0.76 collected with offset=-2400.0
+0.96025 collected with offset=-397.49999999999955
+batch:57/1000 avg reward is -1493.9556338500108
+0.723075 collected with offset=-2769.2499999999995
+0.883025 collected with offset=-1169.7500000000005
+batch:58/1000 avg reward is -1802.2583892166813
+batch:59/1000 avg reward is -1230.0872083916702
+batch:60/1000 avg reward is -860.2416080416626
+0.759975 collected with offset=-2400.2500000000005
+0.9524 collected with offset=-475.9999999999998
+batch:61/1000 avg reward is -1607.7570320749862
+batch:62/1000 avg reward is -1283.5936990500004
+0.988875 collected with offset=-111.25000000000051
+batch:63/1000 avg reward is -1519.210307074991
+0.9218 collected with offset=-782.0000000000005
+batch:64/1000 avg reward is -1268.6368682833368
+batch:65/1000 avg reward is -989.2017994000155
+0.717325 collected with offset=-2826.75
+batch:66/1000 avg reward is -966.8226811583246
+0.87465 collected with offset=-1253.4999999999995
+batch:67/1000 avg reward is -1384.490749874991
+0.7618 collected with offset=-2381.9999999999995
+batch:68/1000 avg reward is -1394.4824412416704
+0.981475 collected with offset=-185.25000000000014
+batch:69/1000 avg reward is -1096.4778366083285
+0.9337 collected with offset=-663.0000000000002
+batch:70/1000 avg reward is -1452.6287426166605
+batch:71/1000 avg reward is -1030.4056778083334
+batch:72/1000 avg reward is -987.6359548333218
+0.986375 collected with offset=-136.24999999999997
+batch:73/1000 avg reward is -823.116901066663
+0.57755 collected with offset=-4224.5
+0.8938 collected with offset=-1061.9999999999995
+batch:74/1000 avg reward is -1531.632045958331
+batch:75/1000 avg reward is -1055.713760625001
+batch:76/1000 avg reward is -786.7249883333405
+0.848725 collected with offset=-1512.7500000000005
+0.910675 collected with offset=-893.2499999999999
+batch:77/1000 avg reward is -963.4912028083421
+0.762575 collected with offset=-2374.25
+0.831075 collected with offset=-1689.25
+batch:78/1000 avg reward is -1780.2872968916718
+0.9991 collected with offset=-9.000000000000119
+0.81805 collected with offset=-1819.4999999999995
+batch:79/1000 avg reward is -1880.9780467500063
+0.865625 collected with offset=-1343.7500000000002
+batch:80/1000 avg reward is -1020.6360264583244
+0.999525 collected with offset=-4.750000000000032
+batch:81/1000 avg reward is -1256.9129255916719
+batch:82/1000 avg reward is -1186.9566855916814
+0.96575 collected with offset=-342.5
+batch:83/1000 avg reward is -1453.0970106749926
+batch:84/1000 avg reward is -863.4025477249985
+0.788275 collected with offset=-2117.2500000000005
+batch:85/1000 avg reward is -1383.253222141673
+0.76155 collected with offset=-2384.5000000000005
+0.97595 collected with offset=-240.50000000000017
+0.984525 collected with offset=-154.75000000000017
+0.996575 collected with offset=-34.250000000000114
+batch:86/1000 avg reward is -1734.2751650750104
+batch:87/1000 avg reward is -825.7629990166726
+batch:88/1000 avg reward is -1092.4720987333208
+batch:89/1000 avg reward is -914.7884237666632
+0.890825 collected with offset=-1091.7500000000002
+batch:90/1000 avg reward is -1280.560167483357
+0.91615 collected with offset=-838.4999999999998
+batch:91/1000 avg reward is -1305.982379524981
+batch:92/1000 avg reward is -847.7228278416703
+batch:93/1000 avg reward is -1040.0403750666562
+0.99555 collected with offset=-44.49999999999954
+batch:94/1000 avg reward is -1322.5105105083228
+0.7217 collected with offset=-2783.0
+0.98805 collected with offset=-119.50000000000016
+batch:95/1000 avg reward is -1624.525554666664
+batch:96/1000 avg reward is -978.7102363499927
+batch:97/1000 avg reward is -1159.8075041166696
+batch:98/1000 avg reward is -863.9941314666615
+0.66425 collected with offset=-3357.5
+0.999175 collected with offset=-8.249999999999647
+batch:99/1000 avg reward is -1370.8500680250008
+0.9837 collected with offset=-162.9999999999998
+batch:100/1000 avg reward is -1256.1640247999906
+Total T: 1486 Episode Num: 2 Episode T: 50 Reward: -922564.874
+0.85335 collected with offset=-1466.4999999999995
+0.8752 collected with offset=-1248.0000000000002
+0.838225 collected with offset=-1617.75
+0.863575 collected with offset=-1364.2500000000002
+0.869775 collected with offset=-1302.2500000000005
+0.8964 collected with offset=-1036.0000000000002
+0.8763 collected with offset=-1237.0000000000002
+0.825525 collected with offset=-1744.7500000000005
+0.868475 collected with offset=-1315.25
+0.899 collected with offset=-1009.9999999999998
+0.8825 collected with offset=-1175.0000000000005
+0.803375 collected with offset=-1966.2500000000005
+0.858175 collected with offset=-1418.2499999999998
+0.873125 collected with offset=-1268.7499999999995
+0.88285 collected with offset=-1171.4999999999998
+0.904475 collected with offset=-955.2499999999997
+---------------------------------------
+Evaluation over 1 episodes: -9291.049 steps:-929.105
+---------------------------------------
+0.783025 collected with offset=-2169.7500000000005
+0.98635 collected with offset=-136.5000000000005
+batch:101/1000 avg reward is -1515.2028192416549
+batch:102/1000 avg reward is -1206.4308106083183
+batch:103/1000 avg reward is -962.1285827666682
+batch:104/1000 avg reward is -1353.3226773750046
+0.9809 collected with offset=-191.00000000000006
+batch:105/1000 avg reward is -1356.9208336833287
+batch:106/1000 avg reward is -685.9263278250054
+batch:107/1000 avg reward is -849.3028386249931
+0.797375 collected with offset=-2026.2500000000005
+batch:108/1000 avg reward is -1260.1395088166578
+0.987 collected with offset=-130.0000000000001
+0.9753 collected with offset=-247.00000000000054
+batch:109/1000 avg reward is -1473.6688953000073
+0.9957 collected with offset=-42.9999999999997
+0.857625 collected with offset=-1423.7500000000002
+batch:110/1000 avg reward is -1252.1006477249973
+0.986 collected with offset=-140.0000000000001
+batch:111/1000 avg reward is -1099.6678388333369
+batch:112/1000 avg reward is -796.5292903083404
+0.99885 collected with offset=-11.499999999999844
+batch:113/1000 avg reward is -995.2964111500021
+batch:114/1000 avg reward is -722.8080854333385
+batch:115/1000 avg reward is -766.7891178000006
+0.914025 collected with offset=-859.7500000000002
+batch:116/1000 avg reward is -986.9399962916625
+0.920325 collected with offset=-796.7500000000006
+batch:117/1000 avg reward is -926.0151356250067
+batch:118/1000 avg reward is -1189.875396416684
+batch:119/1000 avg reward is -1069.03829851668
+batch:120/1000 avg reward is -960.4247131916712
+0.75745 collected with offset=-2425.5000000000005
+batch:121/1000 avg reward is -1219.4290984999993
+batch:122/1000 avg reward is -712.179717558333
+0.99975 collected with offset=-2.4999999999997247
+batch:123/1000 avg reward is -1208.0849235833477
+batch:124/1000 avg reward is -892.9882730416797
+batch:125/1000 avg reward is -1571.946105716672
+0.98335 collected with offset=-166.50000000000054
+batch:126/1000 avg reward is -1046.4695269749934
+0.9977 collected with offset=-22.999999999999687
+0.998 collected with offset=-20.000000000000018
+batch:127/1000 avg reward is -1127.9728280500108
+0.972625 collected with offset=-273.7500000000004
+batch:128/1000 avg reward is -910.297380083335
+0.542975 collected with offset=-4570.25
+0.85355 collected with offset=-1464.4999999999998
+0.637475 collected with offset=-3625.25
+batch:129/1000 avg reward is -1831.3483410583378
+batch:130/1000 avg reward is -1420.8416230583416
+batch:131/1000 avg reward is -857.6233103000047
+batch:132/1000 avg reward is -1330.8192983416486
+0.959325 collected with offset=-406.75000000000017
+batch:133/1000 avg reward is -925.5589786083324
+0.90885 collected with offset=-911.4999999999995
+batch:134/1000 avg reward is -1156.8632208583347
+0.97905 collected with offset=-209.50000000000023
+batch:135/1000 avg reward is -1590.7449249916638
+batch:136/1000 avg reward is -840.5988011083326
+0.992775 collected with offset=-72.25000000000037
+batch:137/1000 avg reward is -1081.0733767916588
+0.90615 collected with offset=-938.4999999999999
+batch:138/1000 avg reward is -1435.0862356666626
+batch:139/1000 avg reward is -945.7960907416722
+0.933425 collected with offset=-665.7500000000005
+batch:140/1000 avg reward is -1510.2580339083531
+0.774375 collected with offset=-2256.2499999999995
+batch:141/1000 avg reward is -944.1090435666587
+0.7444 collected with offset=-2556.0000000000005
+batch:142/1000 avg reward is -987.6241675916802
+batch:143/1000 avg reward is -959.3329897333425
+batch:144/1000 avg reward is -906.3800631416738
+batch:145/1000 avg reward is -900.2937663333406
+batch:146/1000 avg reward is -882.9096229499858
+batch:147/1000 avg reward is -839.6113881999895
+0.982425 collected with offset=-175.75000000000009
+batch:148/1000 avg reward is -1255.6648059750091
+batch:149/1000 avg reward is -905.6884079000057
+batch:150/1000 avg reward is -810.1424364416674
+Total T: 2236 Episode Num: 3 Episode T: 50 Reward: -816543.975
+batch:151/1000 avg reward is -973.0322463416547
+batch:152/1000 avg reward is -905.5548738416713
+batch:153/1000 avg reward is -770.7793830500062
+0.798475 collected with offset=-2015.2499999999995
+batch:154/1000 avg reward is -1220.824633325006
+0.9125 collected with offset=-875.0000000000002
+0.978925 collected with offset=-210.74999999999955
+0.881225 collected with offset=-1187.7499999999995
+batch:155/1000 avg reward is -1916.3055077333343
+batch:156/1000 avg reward is -1056.020463224998
+batch:157/1000 avg reward is -1004.5245900916564
+0.9599 collected with offset=-401.0000000000002
+0.99665 collected with offset=-33.499999999999645
+batch:158/1000 avg reward is -1497.7061173583259
+0.780575 collected with offset=-2194.25
+0.987325 collected with offset=-126.74999999999991
+batch:159/1000 avg reward is -1504.7343370499932
+batch:160/1000 avg reward is -1342.8824833916801
+0.913325 collected with offset=-866.7499999999994
+batch:161/1000 avg reward is -1721.2695996750076
+0.901425 collected with offset=-985.7499999999997
+batch:162/1000 avg reward is -998.8267828499958
+0.998675 collected with offset=-13.250000000000206
+batch:163/1000 avg reward is -1090.318590641677
+batch:164/1000 avg reward is -1072.2140511500106
+batch:165/1000 avg reward is -932.0647957000011
+0.94495 collected with offset=-550.5000000000005
+batch:166/1000 avg reward is -1266.62091913333
+0.76405 collected with offset=-2359.5
+0.919525 collected with offset=-804.7499999999997
+batch:167/1000 avg reward is -1508.555776141646
+batch:168/1000 avg reward is -1175.230041516673
+0.85965 collected with offset=-1403.4999999999998
+batch:169/1000 avg reward is -1301.3144229499994
+0.66825 collected with offset=-3317.5
+0.915325 collected with offset=-846.7499999999994
+batch:170/1000 avg reward is -1660.8946295166709
+0.85875 collected with offset=-1412.4999999999998
+batch:171/1000 avg reward is -1338.175171983318
+batch:172/1000 avg reward is -1004.5964577833146
+batch:173/1000 avg reward is -1026.026204875015
+0.98285 collected with offset=-171.5
+batch:174/1000 avg reward is -1295.1655301333544
+0.940475 collected with offset=-595.2500000000005
+batch:175/1000 avg reward is -930.6219045083185
+batch:176/1000 avg reward is -940.0287400916623
+0.77135 collected with offset=-2286.5
+batch:177/1000 avg reward is -1406.8858925916768
+0.972725 collected with offset=-272.7500000000005
+batch:178/1000 avg reward is -872.5291392666658
+batch:179/1000 avg reward is -1302.8535333333152
+0.692 collected with offset=-3080.0000000000005
+batch:180/1000 avg reward is -1700.341630366659
+batch:181/1000 avg reward is -799.6253626916548
+batch:182/1000 avg reward is -1131.9792970499975
+0.8539 collected with offset=-1461.0
+batch:183/1000 avg reward is -843.6641401999843
+0.933975 collected with offset=-660.25
+0.986125 collected with offset=-138.74999999999972
+batch:184/1000 avg reward is -1242.8585016333166
+0.979 collected with offset=-210.0000000000002
+batch:185/1000 avg reward is -980.7537389000101
+batch:186/1000 avg reward is -806.5943889499815
+batch:187/1000 avg reward is -1402.2500631666635
+0.659775 collected with offset=-3402.25
+batch:188/1000 avg reward is -1237.575197541667
+0.727975 collected with offset=-2720.2499999999995
+batch:189/1000 avg reward is -1303.3681591583195
+0.878075 collected with offset=-1219.2499999999995
+0.981375 collected with offset=-186.25000000000003
+batch:190/1000 avg reward is -1799.2682757749667
+batch:191/1000 avg reward is -701.6646824083432
+0.909225 collected with offset=-907.7500000000005
+batch:192/1000 avg reward is -1410.1138815916688
+0.931825 collected with offset=-681.7499999999999
+batch:193/1000 avg reward is -1101.2409323166482
+batch:194/1000 avg reward is -1015.2418934499981
+0.98955 collected with offset=-104.49999999999959
+batch:195/1000 avg reward is -1097.9850152083225
+0.8884 collected with offset=-1116.0000000000002
+batch:196/1000 avg reward is -1613.7751568250312
+batch:197/1000 avg reward is -708.8728140916652
+0.99885 collected with offset=-11.499999999999844
+batch:198/1000 avg reward is -1398.2565293166417
+0.706525 collected with offset=-2934.7500000000005
+0.974475 collected with offset=-255.2500000000002
+batch:199/1000 avg reward is -1530.2489947083257
+batch:200/1000 avg reward is -770.5766165333292
+Total T: 2986 Episode Num: 4 Episode T: 50 Reward: -894492.181
+---------------------------------------
+Evaluation over 1 episodes: -7620.232 steps:-762.023
+---------------------------------------
+batch:201/1000 avg reward is -1149.674905116665
+batch:202/1000 avg reward is -791.4206707083356
+batch:203/1000 avg reward is -1758.1997390833394
+0.99035 collected with offset=-96.50000000000047
+batch:204/1000 avg reward is -1793.865047950004
+batch:205/1000 avg reward is -1126.7659788083342
+batch:206/1000 avg reward is -569.5896009249997
+0.906325 collected with offset=-936.7499999999995
+batch:207/1000 avg reward is -1087.4035325416478
+batch:208/1000 avg reward is -876.5384992000073
+0.99495 collected with offset=-50.499999999999986
+batch:209/1000 avg reward is -1390.294317074989
+batch:210/1000 avg reward is -911.3626096750007
+batch:211/1000 avg reward is -1204.2710989833217
+batch:212/1000 avg reward is -939.7601993666608
+0.92465 collected with offset=-753.5000000000002
+0.955075 collected with offset=-449.24999999999994
+batch:213/1000 avg reward is -1343.10507187501
+0.950625 collected with offset=-493.7499999999995
+batch:214/1000 avg reward is -1181.5775491333347
+batch:215/1000 avg reward is -744.1725793999893
+batch:216/1000 avg reward is -997.5099636333329
+0.98045 collected with offset=-195.49999999999957
+batch:217/1000 avg reward is -1197.283648891685
+batch:218/1000 avg reward is -887.0398739833338
+batch:219/1000 avg reward is -563.4140109083238
+0.98025 collected with offset=-197.50000000000045
+batch:220/1000 avg reward is -1007.5371918750117
+0.932875 collected with offset=-671.2499999999999
+batch:221/1000 avg reward is -954.2431700499998
+batch:222/1000 avg reward is -870.0192304333269
+0.881725 collected with offset=-1182.7500000000002
+0.7117 collected with offset=-2883.0
+batch:223/1000 avg reward is -1701.8558172916653
+batch:224/1000 avg reward is -778.9962620750126
+batch:225/1000 avg reward is -1190.1061534000078
+0.8743 collected with offset=-1257.0000000000002
+batch:226/1000 avg reward is -1739.4358172916911
+batch:227/1000 avg reward is -807.818600524983
+batch:228/1000 avg reward is -872.7860314416678
+batch:229/1000 avg reward is -802.2773589583345
+batch:230/1000 avg reward is -984.9357536333333
+0.982875 collected with offset=-171.24999999999946
+batch:231/1000 avg reward is -727.6041557583293
+0.96195 collected with offset=-380.5000000000003
+batch:232/1000 avg reward is -613.2009294416656
+0.781225 collected with offset=-2187.7500000000005
+batch:233/1000 avg reward is -1287.4885219250168
+batch:234/1000 avg reward is -698.8289673083306
+batch:235/1000 avg reward is -1010.5130783333502
+batch:236/1000 avg reward is -980.3726834416614
+batch:237/1000 avg reward is -1092.9236299416445
+0.94155 collected with offset=-584.5
+0.997875 collected with offset=-21.250000000000433
+batch:238/1000 avg reward is -1356.620009241673
+batch:239/1000 avg reward is -736.3112827833327
+batch:240/1000 avg reward is -774.7439023833326
+batch:241/1000 avg reward is -1065.091170100007
+0.97 collected with offset=-300.0000000000003
+batch:242/1000 avg reward is -962.1300978833307
+0.670275 collected with offset=-3297.2500000000005
+0.95285 collected with offset=-471.5000000000002
+batch:243/1000 avg reward is -1195.4807168833422
+batch:244/1000 avg reward is -1209.1837646583278
+batch:245/1000 avg reward is -902.2038053833335
+batch:246/1000 avg reward is -771.2889682749988
+0.978775 collected with offset=-212.25000000000048
+batch:247/1000 avg reward is -1057.0971196916687
+batch:248/1000 avg reward is -662.5509758000029
+0.927425 collected with offset=-725.7499999999994
+batch:249/1000 avg reward is -1055.8808049499996
+0.99725 collected with offset=-27.500000000000302
+batch:250/1000 avg reward is -1056.8994589583415
+Total T: 3736 Episode Num: 5 Episode T: 50 Reward: -771595.115
+batch:251/1000 avg reward is -808.993479574985
+batch:252/1000 avg reward is -795.3072553916687
+0.87765 collected with offset=-1223.4999999999995
+batch:253/1000 avg reward is -863.0681532999948
+0.921825 collected with offset=-781.75
+0.988 collected with offset=-120.00000000000011
+batch:254/1000 avg reward is -956.7099930416792
+batch:255/1000 avg reward is -972.1423297916775
+batch:256/1000 avg reward is -897.3423725749965
+0.81555 collected with offset=-1844.5
+batch:257/1000 avg reward is -1098.2604878500017
+batch:258/1000 avg reward is -1288.6871487250035
+0.905175 collected with offset=-948.2500000000005
+0.561075 collected with offset=-4389.25
+0.63555 collected with offset=-3644.5000000000005
+0.632425 collected with offset=-3675.75
+0.881925 collected with offset=-1180.7500000000005
+0.7664 collected with offset=-2336.0000000000005
+0.76375 collected with offset=-2362.4999999999995
+0.827025 collected with offset=-1729.75
+0.934325 collected with offset=-656.7500000000003
+0.95725 collected with offset=-427.49999999999955
+0.902975 collected with offset=-970.2500000000002
+0.7232 collected with offset=-2768.0000000000005
+0.9087 collected with offset=-913.0000000000005
+0.735525 collected with offset=-2644.75
+batch:259/1000 avg reward is -4758.53178481665
+0.438775 collected with offset=-5612.25
+0.40445 collected with offset=-5955.5
+0.411925 collected with offset=-5880.75
+0.574675 collected with offset=-4253.249999999999
+0.5888 collected with offset=-4112.0
+0.554375 collected with offset=-4456.250000000001
+0.5415 collected with offset=-4585.0
+0.671525 collected with offset=-3284.7499999999995
+0.631325 collected with offset=-3686.7499999999995
+0.650125 collected with offset=-3498.7500000000005
+0.637225 collected with offset=-3627.7499999999995
+0.73985 collected with offset=-2601.5
+0.765875 collected with offset=-2341.2500000000005
+0.7313 collected with offset=-2687.0000000000005
+0.74515 collected with offset=-2548.5
+batch:260/1000 avg reward is -6466.9883385666735
+0.270375 collected with offset=-7296.25
+0.44555 collected with offset=-5544.5
+0.406575 collected with offset=-5934.25
+0.578225 collected with offset=-4217.75
+0.43405 collected with offset=-5659.499999999999
+0.42955 collected with offset=-5704.5
+0.443075 collected with offset=-5569.25
+0.48375 collected with offset=-5162.5
+0.536125 collected with offset=-4638.75
+0.552425 collected with offset=-4475.749999999999
+0.560325 collected with offset=-4396.75
+0.550925 collected with offset=-4490.75
+0.56255 collected with offset=-4374.5
+0.66125 collected with offset=-3387.5
+0.5796 collected with offset=-4204.0
+batch:261/1000 avg reward is -7367.0559970083295
+0.11405 collected with offset=-8859.5
+0.131825 collected with offset=-8681.75
+0.140225 collected with offset=-8597.75
+0.259425 collected with offset=-7405.75
+0.31855 collected with offset=-6814.5
+0.45265 collected with offset=-5473.5
+0.31205 collected with offset=-6879.500000000001
+0.449675 collected with offset=-5503.249999999999
+0.4524 collected with offset=-5476.0
+0.470225 collected with offset=-5297.75
+0.462075 collected with offset=-5379.25
+0.4715 collected with offset=-5285.0
+0.472725 collected with offset=-5272.749999999999
+0.53795 collected with offset=-4620.5
+0.525 collected with offset=-4750.0
+batch:262/1000 avg reward is -8049.704069824991
+0.2265 collected with offset=-7735.0
+0.2558 collected with offset=-7442.0
+0.3166 collected with offset=-6834.0
+0.3255 collected with offset=-6745.0
+0.325925 collected with offset=-6740.75
+0.285475 collected with offset=-7145.250000000001
+0.311075 collected with offset=-6889.25
+0.390975 collected with offset=-6090.249999999999
+0.434575 collected with offset=-5654.250000000001
+0.46375 collected with offset=-5362.5
+0.562025 collected with offset=-4379.75
+0.574225 collected with offset=-4257.75
+0.5724 collected with offset=-4276.0
+0.56345 collected with offset=-4365.5
+0.522025 collected with offset=-4779.75
+batch:263/1000 avg reward is -7682.869178308314
+0.1155 collected with offset=-8845.0
+0.2528 collected with offset=-7472.0
+0.3849 collected with offset=-6151.0
+0.27265 collected with offset=-7273.499999999999
+0.363725 collected with offset=-6362.749999999999
+0.408525 collected with offset=-5914.75
+0.2386 collected with offset=-7614.0
+0.369925 collected with offset=-6300.749999999999
+0.47215 collected with offset=-5278.499999999999
+0.431575 collected with offset=-5684.25
+0.511525 collected with offset=-4884.75
+0.5263 collected with offset=-4737.0
+0.605775 collected with offset=-3942.2500000000005
+0.566275 collected with offset=-4337.25
+0.427275 collected with offset=-5727.249999999999
+batch:264/1000 avg reward is -7640.392304983318
+0.21915 collected with offset=-7808.5
+0.307725 collected with offset=-6922.75
+0.305625 collected with offset=-6943.75
+0.37465 collected with offset=-6253.500000000001
+0.43535 collected with offset=-5646.5
+0.501125 collected with offset=-4988.75
+0.534725 collected with offset=-4652.75
+0.47245 collected with offset=-5275.5
+0.61865 collected with offset=-3813.4999999999995
+0.53255 collected with offset=-4674.5
+0.5572 collected with offset=-4428.0
+0.6598 collected with offset=-3401.9999999999995
+0.70565 collected with offset=-2943.5
+0.63645 collected with offset=-3635.5000000000005
+0.41035 collected with offset=-5896.5
+batch:265/1000 avg reward is -7184.899887466658
+0.301325 collected with offset=-6986.749999999999
+0.36745 collected with offset=-6325.499999999999
+0.356675 collected with offset=-6433.249999999999
+0.4043 collected with offset=-5957.0
+0.44235 collected with offset=-5576.5
+0.591775 collected with offset=-4082.2499999999995
+0.525925 collected with offset=-4740.75
+0.581275 collected with offset=-4187.25
+0.5555 collected with offset=-4445.0
+0.646675 collected with offset=-3533.25
+0.6416 collected with offset=-3584.0000000000005
+0.64775 collected with offset=-3522.4999999999995
+0.8662 collected with offset=-1338.0000000000002
+0.70225 collected with offset=-2977.4999999999995
+0.7035 collected with offset=-2965.0
+batch:266/1000 avg reward is -6555.343371824998
+0.244225 collected with offset=-7557.75
+0.5405 collected with offset=-4595.0
+0.4521 collected with offset=-5479.000000000001
+0.5165 collected with offset=-4835.0
+0.56825 collected with offset=-4317.5
+0.5613 collected with offset=-4387.0
+0.538 collected with offset=-4620.0
+0.527575 collected with offset=-4724.25
+0.555825 collected with offset=-4441.75
+0.65615 collected with offset=-3438.5
+0.565625 collected with offset=-4343.75
+0.630075 collected with offset=-3699.2499999999995
+0.70795 collected with offset=-2920.5000000000005
+0.70415 collected with offset=-2958.4999999999995
+0.637325 collected with offset=-3626.7499999999995
+batch:267/1000 avg reward is -6639.472231491639
+0.297375 collected with offset=-7026.250000000001
+0.47535 collected with offset=-5246.500000000001
+0.435625 collected with offset=-5643.750000000001
+0.509875 collected with offset=-4901.25
+0.811325 collected with offset=-1886.7500000000005
+0.873425 collected with offset=-1265.75
+0.608725 collected with offset=-3912.7500000000005
+0.7371 collected with offset=-2629.0
+0.689175 collected with offset=-3108.25
+0.62645 collected with offset=-3735.5000000000005
+0.7631 collected with offset=-2369.0
+0.748525 collected with offset=-2514.75
+0.782025 collected with offset=-2179.7500000000005
+0.633 collected with offset=-3670.0
+0.7709 collected with offset=-2290.9999999999995
+batch:268/1000 avg reward is -6062.089877574986
+0.53865 collected with offset=-4613.5
+0.56145 collected with offset=-4385.5
+0.569825 collected with offset=-4301.75
+0.56695 collected with offset=-4330.500000000001
+0.555225 collected with offset=-4447.75
+0.54175 collected with offset=-4582.500000000001
+0.76235 collected with offset=-2376.5000000000005
+0.970925 collected with offset=-290.7499999999996
+0.641475 collected with offset=-3585.25
+0.954 collected with offset=-460.0000000000004
+0.999575 collected with offset=-4.250000000000087
+0.8686 collected with offset=-1313.9999999999995
+0.72195 collected with offset=-2780.5
+0.635975 collected with offset=-3640.2500000000005
+batch:269/1000 avg reward is -5636.302964424981
+0.58605 collected with offset=-4139.5
+0.6436 collected with offset=-3564.0000000000005
+0.684275 collected with offset=-3157.2500000000005
+0.5444 collected with offset=-4556.0
+0.6613 collected with offset=-3387.0
+0.6475 collected with offset=-3525.0000000000005
+0.6562 collected with offset=-3438.0
+0.61595 collected with offset=-3840.5
+0.612725 collected with offset=-3872.7500000000005
+0.720075 collected with offset=-2799.25
+0.902575 collected with offset=-974.2499999999999
+0.94515 collected with offset=-548.4999999999995
+0.756425 collected with offset=-2435.75
+0.936425 collected with offset=-635.7500000000005
+0.866025 collected with offset=-1339.7499999999995
+batch:270/1000 avg reward is -5744.063521358344
+0.539975 collected with offset=-4600.25
+0.554125 collected with offset=-4458.75
+0.8931 collected with offset=-1069.0
+0.619375 collected with offset=-3806.25
+0.601375 collected with offset=-3986.25
+0.767525 collected with offset=-2324.75
+0.9948 collected with offset=-51.99999999999982
+0.735125 collected with offset=-2648.7499999999995
+0.984825 collected with offset=-151.75000000000048
+0.73335 collected with offset=-2666.5000000000005
+batch:271/1000 avg reward is -4629.192240941694
+0.43845 collected with offset=-5615.5
+0.55715 collected with offset=-4428.5
+0.768025 collected with offset=-2319.7500000000005
+0.663025 collected with offset=-3369.7500000000005
+0.65005 collected with offset=-3499.5
+0.91145 collected with offset=-885.5000000000002
+0.74645 collected with offset=-2535.5000000000005
+0.897825 collected with offset=-1021.7500000000001
+0.91605 collected with offset=-839.4999999999997
+0.789275 collected with offset=-2107.2500000000005
+0.751075 collected with offset=-2489.2499999999995
+0.722 collected with offset=-2780.0000000000005
+batch:272/1000 avg reward is -5097.107243900027
+0.634275 collected with offset=-3657.2499999999995
+0.632225 collected with offset=-3677.7499999999995
+0.65295 collected with offset=-3470.4999999999995
+0.5768 collected with offset=-4232.0
+0.9253 collected with offset=-746.9999999999999
+0.640775 collected with offset=-3592.25
+0.752275 collected with offset=-2477.2499999999995
+0.793325 collected with offset=-2066.7500000000005
+0.739625 collected with offset=-2603.7500000000005
+batch:273/1000 avg reward is -4362.52326771667
+0.55165 collected with offset=-4483.5
+0.86065 collected with offset=-1393.4999999999998
+0.666325 collected with offset=-3336.7500000000005
+0.70155 collected with offset=-2984.5
+0.9752 collected with offset=-248.00000000000045
+0.750625 collected with offset=-2493.75
+0.9894 collected with offset=-106.00000000000054
+0.894825 collected with offset=-1051.7500000000002
+0.695325 collected with offset=-3046.7500000000005
+0.721875 collected with offset=-2781.2499999999995
+batch:274/1000 avg reward is -4291.471921874998
+0.624575 collected with offset=-3754.25
+0.72915 collected with offset=-2708.5000000000005
+0.66605 collected with offset=-3339.4999999999995
+0.7369 collected with offset=-2631.0
+0.656775 collected with offset=-3432.25
+0.778775 collected with offset=-2212.25
+0.6389 collected with offset=-3610.9999999999995
+0.896475 collected with offset=-1035.2499999999998
+0.74135 collected with offset=-2586.5000000000005
+0.721475 collected with offset=-2785.25
+0.7807 collected with offset=-2193.0000000000005
+0.7871 collected with offset=-2129.0
+0.775175 collected with offset=-2248.2500000000005
+0.7379 collected with offset=-2621.0
+batch:275/1000 avg reward is -5186.719734108337
+0.644275 collected with offset=-3557.2499999999995
+0.64495 collected with offset=-3550.4999999999995
+0.6144 collected with offset=-3856.0000000000005
+0.750125 collected with offset=-2498.7499999999995
+0.912575 collected with offset=-874.2499999999998
+0.98275 collected with offset=-172.4999999999999
+0.902925 collected with offset=-970.7500000000002
+0.89645 collected with offset=-1035.5000000000002
+batch:276/1000 avg reward is -4187.567585633299
+0.57735 collected with offset=-4226.5
+0.649275 collected with offset=-3507.2499999999995
+0.6639 collected with offset=-3360.9999999999995
+0.6209 collected with offset=-3791.0
+0.89395 collected with offset=-1060.4999999999998
+0.766975 collected with offset=-2330.2500000000005
+0.970525 collected with offset=-294.7500000000003
+0.698475 collected with offset=-3015.2500000000005
+0.952625 collected with offset=-473.74999999999943
+0.87795 collected with offset=-1220.5
+batch:277/1000 avg reward is -4352.399554466627
+0.874325 collected with offset=-1256.7499999999998
+0.964175 collected with offset=-358.24999999999994
+0.991175 collected with offset=-88.24999999999972
+0.984075 collected with offset=-159.24999999999966
+0.809525 collected with offset=-1904.7499999999995
+batch:278/1000 avg reward is -2951.755742124986
+0.98685 collected with offset=-131.49999999999994
+0.71435 collected with offset=-2856.4999999999995
+batch:279/1000 avg reward is -3030.1875363750078
+0.6404 collected with offset=-3596.0000000000005
+0.970775 collected with offset=-292.24999999999943
+0.987175 collected with offset=-128.24999999999974
+0.86545 collected with offset=-1345.4999999999995
+0.9827 collected with offset=-172.99999999999983
+batch:280/1000 avg reward is -2785.7925442583232
+batch:281/1000 avg reward is -1448.7756244833336
+0.87395 collected with offset=-1260.5
+0.951275 collected with offset=-487.25000000000017
+batch:282/1000 avg reward is -2563.824061850019
+0.62805 collected with offset=-3719.5
+0.753275 collected with offset=-2467.2499999999995
+0.85855 collected with offset=-1414.4999999999995
+0.860425 collected with offset=-1395.75
+0.73185 collected with offset=-2681.5
+0.9911 collected with offset=-89.00000000000018
+0.88005 collected with offset=-1199.5
+batch:283/1000 avg reward is -4165.252429099984
+0.9583 collected with offset=-416.9999999999996
+0.956175 collected with offset=-438.25
+0.8023 collected with offset=-1976.9999999999998
+0.782475 collected with offset=-2175.2499999999995
+0.68945 collected with offset=-3105.5
+0.809425 collected with offset=-1905.7500000000005
+0.9896 collected with offset=-103.99999999999964
+0.73945 collected with offset=-2605.4999999999995
+batch:284/1000 avg reward is -4502.951590008366
+0.603675 collected with offset=-3963.2500000000005
+0.972075 collected with offset=-279.2499999999998
+0.7333 collected with offset=-2667.0000000000005
+0.66955 collected with offset=-3304.5
+0.988525 collected with offset=-114.75000000000013
+0.819925 collected with offset=-1800.7499999999998
+0.993225 collected with offset=-67.74999999999976
+0.8874 collected with offset=-1126.0000000000002
+batch:285/1000 avg reward is -4386.47258560002
+0.847725 collected with offset=-1522.7500000000005
+0.884225 collected with offset=-1157.7499999999995
+0.97685 collected with offset=-231.50000000000003
+0.7819 collected with offset=-2180.9999999999995
+0.88765 collected with offset=-1123.4999999999995
+0.771325 collected with offset=-2286.7499999999995
+0.90755 collected with offset=-924.5000000000003
+0.99285 collected with offset=-71.4999999999999
+batch:286/1000 avg reward is -3734.035693916657
+0.995725 collected with offset=-42.750000000000284
+batch:287/1000 avg reward is -2593.372143341653
+0.888875 collected with offset=-1111.2500000000002
+0.991875 collected with offset=-81.25000000000048
+0.9047 collected with offset=-953.0000000000006
+batch:288/1000 avg reward is -2859.926551224993
+0.976725 collected with offset=-232.75000000000045
+0.927275 collected with offset=-727.2500000000003
+0.99465 collected with offset=-53.49999999999966
+batch:289/1000 avg reward is -2900.5824730166187
+0.854975 collected with offset=-1450.2499999999995
+0.995725 collected with offset=-42.750000000000284
+0.99635 collected with offset=-36.50000000000042
+batch:290/1000 avg reward is -2898.1065527916717
+0.746175 collected with offset=-2538.2499999999995
+0.97365 collected with offset=-263.49999999999983
+0.899625 collected with offset=-1003.7499999999999
+batch:291/1000 avg reward is -2859.041164091645
+0.7122 collected with offset=-2877.9999999999995
+0.9653 collected with offset=-346.99999999999955
+batch:292/1000 avg reward is -3006.6441944500025
+0.828275 collected with offset=-1717.2500000000002
+0.8826 collected with offset=-1173.9999999999995
+0.75935 collected with offset=-2406.5000000000005
+0.9913 collected with offset=-87.00000000000041
+batch:293/1000 avg reward is -2899.6878518333187
+0.795 collected with offset=-2049.9999999999995
+0.999425 collected with offset=-5.749999999999922
+batch:294/1000 avg reward is -2838.4754526332927
+0.93195 collected with offset=-680.5000000000006
+0.9963 collected with offset=-37.00000000000037
+0.769975 collected with offset=-2300.2500000000005
+0.719325 collected with offset=-2806.75
+batch:295/1000 avg reward is -2807.28176541667
+0.988225 collected with offset=-117.7499999999998
+0.643375 collected with offset=-3566.2499999999995
+0.8737 collected with offset=-1262.9999999999998
+0.68045 collected with offset=-3195.5
+0.9854 collected with offset=-145.99999999999946
+0.7859 collected with offset=-2140.9999999999995
+batch:296/1000 avg reward is -3684.3287870167114
+0.998475 collected with offset=-15.249999999999986
+batch:297/1000 avg reward is -2892.143678525026
+0.5537 collected with offset=-4463.0
+0.99895 collected with offset=-10.499999999999954
+0.9839 collected with offset=-161.00000000000003
+0.871575 collected with offset=-1284.25
+batch:298/1000 avg reward is -3426.865169533342
+0.89445 collected with offset=-1055.5000000000002
+0.767175 collected with offset=-2328.2499999999995
+0.8306 collected with offset=-1694.0
+0.710625 collected with offset=-2893.7500000000005
+batch:299/1000 avg reward is -2692.0861934499744
+0.89655 collected with offset=-1034.5000000000005
+batch:300/1000 avg reward is -2632.9904249417086
+Total T: 4486 Episode Num: 6 Episode T: 50 Reward: -2852036.798
+---------------------------------------
+Evaluation over 1 episodes: -42926.937 steps:-4292.694
+---------------------------------------
+0.91815 collected with offset=-818.4999999999998
+0.891775 collected with offset=-1082.2500000000002
+batch:301/1000 avg reward is -2924.7221245583123
+0.98825 collected with offset=-117.50000000000038
+0.702925 collected with offset=-2970.75
+0.985975 collected with offset=-140.24999999999955
+0.8964 collected with offset=-1036.0000000000002
+0.959325 collected with offset=-406.75000000000017
+batch:302/1000 avg reward is -3024.951487399982
+0.85845 collected with offset=-1415.4999999999995
+0.989375 collected with offset=-106.24999999999996
+0.819125 collected with offset=-1808.75
+batch:303/1000 avg reward is -2768.9084939583267
+0.7639 collected with offset=-2360.9999999999995
+0.846175 collected with offset=-1538.25
+batch:304/1000 avg reward is -2632.118899208347
+0.703725 collected with offset=-2962.7499999999995
+0.85725 collected with offset=-1427.5000000000005
+0.787425 collected with offset=-2125.7499999999995
+0.9817 collected with offset=-182.99999999999983
+0.980475 collected with offset=-195.25000000000014
+0.943925 collected with offset=-560.7499999999999
+batch:305/1000 avg reward is -3512.055520516675
+0.863125 collected with offset=-1368.7499999999998
+0.892725 collected with offset=-1072.75
+0.940725 collected with offset=-592.7499999999997
+0.757475 collected with offset=-2425.25
+batch:306/1000 avg reward is -3230.0481610750044
+0.9848 collected with offset=-151.99999999999991
+batch:307/1000 avg reward is -2764.81928976666
+0.978575 collected with offset=-214.25000000000028
+0.93995 collected with offset=-600.5000000000005
+0.900075 collected with offset=-999.2500000000005
+batch:308/1000 avg reward is -2520.3669021499904
+0.645625 collected with offset=-3543.75
+0.756725 collected with offset=-2432.75
+0.8681 collected with offset=-1319.0000000000002
+0.95765 collected with offset=-423.5
+batch:309/1000 avg reward is -2996.841863783333
+0.90895 collected with offset=-910.4999999999997
+0.99735 collected with offset=-26.500000000000412
+0.7673 collected with offset=-2327.0
+batch:310/1000 avg reward is -3061.5869619583514
+0.901875 collected with offset=-981.2500000000002
+0.9978 collected with offset=-21.999999999999797
+0.9088 collected with offset=-911.9999999999994
+batch:311/1000 avg reward is -2333.6913773583283
+0.827175 collected with offset=-1728.25
+0.972125 collected with offset=-278.74999999999983
+0.99515 collected with offset=-48.50000000000021
+batch:312/1000 avg reward is -2762.4855369416746
+0.624975 collected with offset=-3750.2500000000005
+0.994175 collected with offset=-58.24999999999969
+0.94045 collected with offset=-595.4999999999999
+0.987875 collected with offset=-121.25000000000053
+batch:313/1000 avg reward is -3005.0475264333677
+0.850575 collected with offset=-1494.2500000000002
+0.867575 collected with offset=-1324.2500000000002
+batch:314/1000 avg reward is -2837.013693258377
+0.635975 collected with offset=-3640.2500000000005
+0.98765 collected with offset=-123.49999999999972
+0.99025 collected with offset=-97.50000000000037
+0.963875 collected with offset=-361.2499999999996
+0.933875 collected with offset=-661.2499999999999
+0.997275 collected with offset=-27.249999999999773
+0.9795 collected with offset=-204.99999999999963
+batch:315/1000 avg reward is -3509.9797586333293
+0.98905 collected with offset=-109.50000000000016
+0.99325 collected with offset=-67.50000000000034
+0.852075 collected with offset=-1479.2499999999998
+batch:316/1000 avg reward is -2534.0063646999834
+0.773175 collected with offset=-2268.2500000000005
+0.983375 collected with offset=-166.25
+0.94045 collected with offset=-595.4999999999999
+0.961125 collected with offset=-388.74999999999994
+batch:317/1000 avg reward is -2922.338342749992
+0.998725 collected with offset=-12.750000000000261
+0.63065 collected with offset=-3693.4999999999995
+0.899725 collected with offset=-1002.75
+0.983975 collected with offset=-160.24999999999955
+batch:318/1000 avg reward is -3138.1074587166618
+0.77465 collected with offset=-2253.5000000000005
+0.706825 collected with offset=-2931.7499999999995
+0.844675 collected with offset=-1553.2500000000005
+batch:319/1000 avg reward is -2928.1226845750093
+0.8815 collected with offset=-1185.0000000000005
+0.978625 collected with offset=-213.75000000000034
+0.96625 collected with offset=-337.4999999999995
+batch:320/1000 avg reward is -2797.2064874666657
+0.908225 collected with offset=-917.7500000000005
+0.913475 collected with offset=-865.2499999999997
+0.9592 collected with offset=-407.9999999999995
+0.94515 collected with offset=-548.4999999999995
+0.977575 collected with offset=-224.25000000000028
+batch:321/1000 avg reward is -2793.5074868416727
+0.915425 collected with offset=-845.7499999999995
+0.943375 collected with offset=-566.2500000000003
+0.998425 collected with offset=-15.74999999999993
+0.90265 collected with offset=-973.5000000000005
+batch:322/1000 avg reward is -2986.3454387249803
+0.6509 collected with offset=-3490.9999999999995
+0.947025 collected with offset=-529.75
+0.934525 collected with offset=-654.7499999999995
+0.912325 collected with offset=-876.7499999999994
+0.906725 collected with offset=-932.75
+batch:323/1000 avg reward is -3215.1175792000145
+0.75385 collected with offset=-2461.5
+batch:324/1000 avg reward is -2908.303532233343
+batch:325/1000 avg reward is -2378.649874408344
+0.98985 collected with offset=-101.49999999999993
+0.94215 collected with offset=-578.4999999999995
+batch:326/1000 avg reward is -2456.5811485083373
+0.981675 collected with offset=-183.25000000000037
+0.981875 collected with offset=-181.24999999999946
+batch:327/1000 avg reward is -2795.9339542333228
+0.962575 collected with offset=-374.2500000000004
+0.99045 collected with offset=-95.49999999999947
+batch:328/1000 avg reward is -2457.373014133364
+0.444375 collected with offset=-5556.25
+0.887725 collected with offset=-1122.7500000000002
+0.9941 collected with offset=-59.00000000000016
+batch:329/1000 avg reward is -3009.9951353749643
+0.777575 collected with offset=-2224.25
+0.648225 collected with offset=-3517.7499999999995
+0.742875 collected with offset=-2571.2500000000005
+0.926725 collected with offset=-732.7499999999998
+0.8968 collected with offset=-1031.9999999999995
+batch:330/1000 avg reward is -3673.0742801250008
+0.5366 collected with offset=-4634.0
+0.98305 collected with offset=-169.5000000000002
+0.99815 collected with offset=-18.500000000000185
+batch:331/1000 avg reward is -2943.0376090083587
+0.9361 collected with offset=-638.9999999999995
+0.905475 collected with offset=-945.2499999999997
+batch:332/1000 avg reward is -2552.186154324967
+0.751175 collected with offset=-2488.2499999999995
+0.946425 collected with offset=-535.7500000000003
+0.891175 collected with offset=-1088.2499999999995
+batch:333/1000 avg reward is -2674.961912041687
+0.703525 collected with offset=-2964.7500000000005
+0.848425 collected with offset=-1515.7500000000002
+batch:334/1000 avg reward is -2583.531484341656
+0.996525 collected with offset=-34.75000000000006
+0.986375 collected with offset=-136.24999999999997
+0.9043 collected with offset=-957.0000000000001
+0.98215 collected with offset=-178.5000000000003
+batch:335/1000 avg reward is -2373.877410883333
+0.645575 collected with offset=-3544.25
+0.9266 collected with offset=-734.0000000000002
+0.9606 collected with offset=-393.9999999999999
+0.9402 collected with offset=-597.9999999999997
+0.68895 collected with offset=-3110.5000000000005
+batch:336/1000 avg reward is -3245.0939094833143
+0.638425 collected with offset=-3615.75
+0.920325 collected with offset=-796.7500000000006
+0.87635 collected with offset=-1236.5000000000005
+batch:337/1000 avg reward is -2967.8549892416486
+0.6604 collected with offset=-3396.0
+0.9876 collected with offset=-123.99999999999966
+batch:338/1000 avg reward is -2816.2994532416606
+0.63935 collected with offset=-3606.5000000000005
+0.9983 collected with offset=-17.000000000000348
+batch:339/1000 avg reward is -2743.4274909000032
+0.7041 collected with offset=-2959.0000000000005
+0.988725 collected with offset=-112.75000000000036
+batch:340/1000 avg reward is -2233.669908266663
+0.644 collected with offset=-3560.0
+0.960475 collected with offset=-395.25000000000034
+0.79625 collected with offset=-2037.4999999999998
+0.99975 collected with offset=-2.4999999999997247
+batch:341/1000 avg reward is -3112.393934100011
+0.736 collected with offset=-2640.0
+0.904875 collected with offset=-951.2500000000001
+batch:342/1000 avg reward is -2686.2608364166963
+0.759625 collected with offset=-2403.75
+0.919425 collected with offset=-805.7499999999995
+0.832025 collected with offset=-1679.7499999999998
+batch:343/1000 avg reward is -2998.636047441663
+0.87175 collected with offset=-1282.4999999999998
+0.859675 collected with offset=-1403.2500000000002
+batch:344/1000 avg reward is -2288.8222491
+0.99145 collected with offset=-85.49999999999946
+0.9695 collected with offset=-304.9999999999997
+batch:345/1000 avg reward is -2729.1597257999747
+0.7688 collected with offset=-2311.9999999999995
+0.7475 collected with offset=-2524.9999999999995
+0.882525 collected with offset=-1174.75
+0.998325 collected with offset=-16.749999999999822
+batch:346/1000 avg reward is -3086.3218601000135
+0.99535 collected with offset=-46.500000000000426
+0.982575 collected with offset=-174.25000000000023
+0.8781 collected with offset=-1219.0
+0.99205 collected with offset=-79.50000000000013
+batch:347/1000 avg reward is -3024.6576255749624
+0.636025 collected with offset=-3639.7500000000005
+0.77065 collected with offset=-2293.5000000000005
+0.971325 collected with offset=-286.75000000000006
+0.9949 collected with offset=-50.999999999999936
+0.986375 collected with offset=-136.24999999999997
+batch:348/1000 avg reward is -3307.4685416083275
+0.993725 collected with offset=-62.750000000000306
+batch:349/1000 avg reward is -2381.1958606166886
+0.865675 collected with offset=-1343.2500000000002
+0.7215 collected with offset=-2784.9999999999995
+0.85995 collected with offset=-1400.5
+0.976175 collected with offset=-238.24999999999986
+0.9665 collected with offset=-334.9999999999997
+batch:350/1000 avg reward is -3060.860549141666
+Total T: 5236 Episode Num: 7 Episode T: 50 Reward: -2140335.269
+0.98105 collected with offset=-189.50000000000023
+0.735 collected with offset=-2650.0
+0.978125 collected with offset=-218.74999999999977
+batch:351/1000 avg reward is -2929.6687582416675
+0.65265 collected with offset=-3473.5000000000005
+0.97355 collected with offset=-264.4999999999997
+0.98935 collected with offset=-106.50000000000048
+0.915175 collected with offset=-848.2500000000003
+batch:352/1000 avg reward is -3351.3612876250113
+batch:353/1000 avg reward is -2600.6084911166713
+0.999725 collected with offset=-2.7500000000002522
+0.868675 collected with offset=-1313.2500000000002
+0.94275 collected with offset=-572.5000000000002
+0.855625 collected with offset=-1443.7500000000002
+0.90115 collected with offset=-988.4999999999999
+0.9706 collected with offset=-293.99999999999983
+batch:354/1000 avg reward is -3380.629518591653
+0.86835 collected with offset=-1316.5000000000005
+0.91715 collected with offset=-828.4999999999998
+0.9608 collected with offset=-392.0000000000001
+batch:355/1000 avg reward is -2602.4312335916616
+0.548075 collected with offset=-4519.25
+0.757975 collected with offset=-2420.2500000000005
+0.998275 collected with offset=-17.249999999999766
+0.9267 collected with offset=-733.0000000000003
+0.9814 collected with offset=-185.9999999999995
+batch:356/1000 avg reward is -2955.6430695916756
+0.9184 collected with offset=-816.0000000000001
+batch:357/1000 avg reward is -2430.9843311499803
+0.992225 collected with offset=-77.74999999999976
+batch:358/1000 avg reward is -2308.6191448916584
+0.9897 collected with offset=-102.99999999999976
+batch:359/1000 avg reward is -2304.111233483354
+0.7096 collected with offset=-2904.0
+0.759375 collected with offset=-2406.25
+batch:360/1000 avg reward is -2883.82610605831
+0.80455 collected with offset=-1954.5000000000002
+0.983375 collected with offset=-166.25
+0.98445 collected with offset=-155.49999999999952
+batch:361/1000 avg reward is -2587.4500128333607
+0.902725 collected with offset=-972.75
+0.85195 collected with offset=-1480.5000000000002
+0.998875 collected with offset=-11.250000000000426
+batch:362/1000 avg reward is -2823.853364491645
+0.888 collected with offset=-1119.9999999999998
+0.885625 collected with offset=-1143.75
+batch:363/1000 avg reward is -2616.127605541657
+0.863925 collected with offset=-1360.7499999999995
+0.7258 collected with offset=-2742.0
+batch:364/1000 avg reward is -2910.7597845166756
+0.9976 collected with offset=-23.999999999999577
+0.9938 collected with offset=-61.99999999999983
+0.9909 collected with offset=-90.99999999999997
+0.960925 collected with offset=-390.7499999999997
+batch:365/1000 avg reward is -2662.8327392833316
+0.703 collected with offset=-2970.0000000000005
+0.99605 collected with offset=-39.50000000000009
+0.989675 collected with offset=-103.25000000000028
+0.95935 collected with offset=-406.49999999999966
+0.928775 collected with offset=-712.2499999999998
+batch:366/1000 avg reward is -3096.991192316681
+0.99625 collected with offset=-37.50000000000031
+batch:367/1000 avg reward is -2070.912680558331
+0.91265 collected with offset=-873.5000000000003
+batch:368/1000 avg reward is -2217.1200133583434
+0.64805 collected with offset=-3519.5
+0.9144 collected with offset=-856.0000000000001
+0.853525 collected with offset=-1464.7500000000002
+0.90395 collected with offset=-960.4999999999997
+batch:369/1000 avg reward is -3112.3773171999824
+0.62255 collected with offset=-3774.4999999999995
+0.9895 collected with offset=-104.99999999999955
+0.648775 collected with offset=-3512.25
+0.99655 collected with offset=-34.49999999999953
+0.6363 collected with offset=-3637.0000000000005
+batch:370/1000 avg reward is -3246.2045870083666
+0.946475 collected with offset=-535.2500000000005
+batch:371/1000 avg reward is -2540.772908308318
+0.9375 collected with offset=-625.0
+0.982725 collected with offset=-172.7500000000004
+batch:372/1000 avg reward is -2782.5515508666913
+0.556575 collected with offset=-4434.25
+0.75085 collected with offset=-2491.5
+0.926325 collected with offset=-736.7500000000005
+batch:373/1000 avg reward is -2938.2663270583375
+0.9592 collected with offset=-407.9999999999995
+0.70755 collected with offset=-2924.5
+batch:374/1000 avg reward is -2429.7705949083365
+0.896175 collected with offset=-1038.2499999999995
+0.7852 collected with offset=-2148.0
+0.967425 collected with offset=-325.7500000000002
+0.993725 collected with offset=-62.750000000000306
+0.88255 collected with offset=-1174.5000000000005
+batch:375/1000 avg reward is -3179.071154433308
+0.633 collected with offset=-3670.0
+0.950075 collected with offset=-499.25
+batch:376/1000 avg reward is -2610.2395113583348
+0.955875 collected with offset=-441.2499999999997
+0.58125 collected with offset=-4187.5
+0.8934 collected with offset=-1066.0000000000002
+batch:377/1000 avg reward is -2467.762573324985
+0.98565 collected with offset=-143.49999999999974
+batch:378/1000 avg reward is -2176.3949282416597
+0.646475 collected with offset=-3535.25
+0.919975 collected with offset=-800.2500000000001
+0.996025 collected with offset=-39.74999999999951
+batch:379/1000 avg reward is -3004.834455216676
+0.9897 collected with offset=-102.99999999999976
+0.980075 collected with offset=-199.24999999999972
+0.85145 collected with offset=-1485.4999999999995
+batch:380/1000 avg reward is -2851.8096043583064
+0.94175 collected with offset=-582.5000000000002
+0.883575 collected with offset=-1164.25
+0.84225 collected with offset=-1577.4999999999995
+0.996675 collected with offset=-33.25000000000023
+batch:381/1000 avg reward is -2865.884191608343
+0.94705 collected with offset=-529.5000000000006
+0.87615 collected with offset=-1238.5000000000002
+0.952825 collected with offset=-471.74999999999966
+0.81635 collected with offset=-1836.4999999999998
+0.93765 collected with offset=-623.5000000000001
+0.8206 collected with offset=-1794.0
+0.96125 collected with offset=-387.4999999999995
+batch:382/1000 avg reward is -3324.993653208289
+0.564525 collected with offset=-4354.749999999999
+0.686025 collected with offset=-3139.75
+0.982525 collected with offset=-174.75000000000017
+batch:383/1000 avg reward is -2863.552039266651
+0.9754 collected with offset=-245.99999999999955
+0.782725 collected with offset=-2172.75
+batch:384/1000 avg reward is -2270.3792157583307
+0.7588 collected with offset=-2411.9999999999995
+batch:385/1000 avg reward is -2555.790853383297
+0.9099 collected with offset=-900.9999999999995
+0.85705 collected with offset=-1429.5000000000002
+batch:386/1000 avg reward is -2136.801282650024
+0.8854 collected with offset=-1146.0000000000005
+0.8954 collected with offset=-1046.0000000000002
+0.9777 collected with offset=-222.99999999999986
+0.991525 collected with offset=-84.7500000000001
+batch:387/1000 avg reward is -3025.0069224083245
+0.755625 collected with offset=-2443.75
+batch:388/1000 avg reward is -2276.883021158362
+0.9881 collected with offset=-119.00000000000021
+0.977925 collected with offset=-220.74999999999955
+0.87745 collected with offset=-1225.5000000000005
+batch:389/1000 avg reward is -2605.26022566665
+0.8766 collected with offset=-1233.9999999999995
+0.9443 collected with offset=-556.9999999999998
+0.958175 collected with offset=-418.25
+0.982175 collected with offset=-178.2499999999998
+0.936625 collected with offset=-633.7499999999995
+batch:390/1000 avg reward is -2808.3533303499676
+0.98265 collected with offset=-173.49999999999977
+0.8975 collected with offset=-1025.0000000000005
+batch:391/1000 avg reward is -3003.404782383367
+0.79125 collected with offset=-2087.5
+0.9769 collected with offset=-231.00000000000009
+0.972975 collected with offset=-270.24999999999966
+0.98775 collected with offset=-122.49999999999983
+batch:392/1000 avg reward is -2754.1564413666633
+0.87805 collected with offset=-1219.5
+0.927975 collected with offset=-720.25
+batch:393/1000 avg reward is -2795.0517499833077
+0.998125 collected with offset=-18.749999999999602
+0.979425 collected with offset=-205.7500000000001
+batch:394/1000 avg reward is -2365.8393270000233
+0.756625 collected with offset=-2433.75
+0.902175 collected with offset=-978.2500000000005
+batch:395/1000 avg reward is -2508.540044999983
+0.994275 collected with offset=-57.2499999999998
+0.98665 collected with offset=-133.49999999999972
+0.9564 collected with offset=-435.9999999999997
+0.90685 collected with offset=-931.4999999999995
+batch:396/1000 avg reward is -2925.8426662416664
+0.893075 collected with offset=-1069.2500000000005
+0.992675 collected with offset=-73.25000000000026
+batch:397/1000 avg reward is -2848.180834175
+0.977325 collected with offset=-226.75
+batch:398/1000 avg reward is -2258.886544341668
+0.955 collected with offset=-450.0000000000004
+0.813575 collected with offset=-1864.2499999999995
+batch:399/1000 avg reward is -2191.069094433343
+0.99925 collected with offset=-7.500000000000284
+0.974325 collected with offset=-256.75000000000006
+batch:400/1000 avg reward is -2388.0985408749816
+Total T: 5986 Episode Num: 8 Episode T: 50 Reward: -2022689.413
+0.85945 collected with offset=-1405.4999999999995
+0.8632 collected with offset=-1368.0000000000002
+0.94435 collected with offset=-556.4999999999998
+0.68105 collected with offset=-3189.4999999999995
+0.982675 collected with offset=-173.25000000000034
+0.883225 collected with offset=-1167.7499999999995
+0.9004 collected with offset=-996.0000000000002
+0.6336 collected with offset=-3663.9999999999995
+0.977025 collected with offset=-229.7499999999997
+0.9209 collected with offset=-790.9999999999994
+---------------------------------------
+Evaluation over 1 episodes: -51116.523 steps:-5111.652
+---------------------------------------
+0.53435 collected with offset=-4656.5
+0.917275 collected with offset=-827.2500000000005
+0.985875 collected with offset=-141.25000000000054
+0.9923 collected with offset=-77.0000000000004
+batch:401/1000 avg reward is -3143.1216818583403
+0.749225 collected with offset=-2507.7499999999995
+0.763075 collected with offset=-2369.2500000000005
+0.67715 collected with offset=-3228.4999999999995
+0.91285 collected with offset=-871.4999999999995
+0.845025 collected with offset=-1549.7499999999998
+0.968975 collected with offset=-310.2499999999997
+batch:402/1000 avg reward is -3509.268643058333
+0.913175 collected with offset=-868.2500000000005
+0.9165 collected with offset=-835.0000000000002
+batch:403/1000 avg reward is -2745.274502900004
+0.8838 collected with offset=-1161.9999999999998
+0.965225 collected with offset=-347.75
+0.93375 collected with offset=-662.5000000000003
+batch:404/1000 avg reward is -1992.145457858331
+0.717725 collected with offset=-2822.7500000000005
+0.978375 collected with offset=-216.25000000000006
+0.981075 collected with offset=-189.2499999999997
+0.982525 collected with offset=-174.75000000000017
+batch:405/1000 avg reward is -2632.140963458353
+batch:406/1000 avg reward is -1436.004547883331
+0.993775 collected with offset=-62.25000000000036
+batch:407/1000 avg reward is -1989.483423608329
+0.9575 collected with offset=-424.99999999999983
+0.983575 collected with offset=-164.25000000000023
+batch:408/1000 avg reward is -2248.5138602499665
+0.976675 collected with offset=-233.2500000000004
+0.8894 collected with offset=-1106.0000000000002
+0.979225 collected with offset=-207.7499999999999
+0.86565 collected with offset=-1343.4999999999998
+0.978325 collected with offset=-216.75
+batch:409/1000 avg reward is -2665.535957766656
+batch:410/1000 avg reward is -1724.4611972250036
+0.742475 collected with offset=-2575.25
+0.97855 collected with offset=-214.4999999999997
+0.993025 collected with offset=-69.74999999999953
+0.92405 collected with offset=-759.4999999999997
+batch:411/1000 avg reward is -2587.2089069833205
+0.9865 collected with offset=-134.99999999999957
+0.9866 collected with offset=-133.9999999999997
+batch:412/1000 avg reward is -2260.9128695416734
+0.9139 collected with offset=-860.9999999999995
+batch:413/1000 avg reward is -2053.7482065916524
+0.680525 collected with offset=-3194.7499999999995
+0.9365 collected with offset=-635.0
+0.902025 collected with offset=-979.7500000000003
+0.821175 collected with offset=-1788.2500000000002
+0.993175 collected with offset=-68.2499999999997
+batch:414/1000 avg reward is -2436.5552881999874
+batch:415/1000 avg reward is -2158.219540633337
+batch:416/1000 avg reward is -1923.7679048250093
+0.988625 collected with offset=-113.75000000000024
+0.97405 collected with offset=-259.5000000000003
+batch:417/1000 avg reward is -2752.9733729916193
+0.76185 collected with offset=-2381.4999999999995
+0.71235 collected with offset=-2876.4999999999995
+batch:418/1000 avg reward is -2479.6603708333573
+0.790025 collected with offset=-2099.75
+batch:419/1000 avg reward is -2779.758775808297
+0.9656 collected with offset=-343.9999999999999
+0.952925 collected with offset=-470.7499999999998
+0.999625 collected with offset=-3.750000000000142
+0.72685 collected with offset=-2731.5
+batch:420/1000 avg reward is -2342.3110215083493
+0.926275 collected with offset=-737.2500000000005
+0.8128 collected with offset=-1872.0000000000002
+0.8654 collected with offset=-1346.0000000000005
+batch:421/1000 avg reward is -2762.37323388331
+0.9903 collected with offset=-97.00000000000043
+batch:422/1000 avg reward is -2331.05339091667
+0.877875 collected with offset=-1221.2500000000005
+0.720375 collected with offset=-2796.25
+batch:423/1000 avg reward is -2216.48292958332
+0.73485 collected with offset=-2651.5
+0.843725 collected with offset=-1562.7500000000005
+batch:424/1000 avg reward is -2447.816139833335
+0.718025 collected with offset=-2819.7499999999995
+0.88095 collected with offset=-1190.5
+0.99975 collected with offset=-2.4999999999997247
+0.913875 collected with offset=-861.2500000000001
+0.9998 collected with offset=-1.9999999999997797
+batch:425/1000 avg reward is -2559.430059308323
+0.83065 collected with offset=-1693.5
+batch:426/1000 avg reward is -2024.148957775
+0.886975 collected with offset=-1130.2500000000005
+batch:427/1000 avg reward is -2419.4222666499754
+0.869925 collected with offset=-1300.7500000000005
+0.978625 collected with offset=-213.75000000000034
+batch:428/1000 avg reward is -2458.784113800018
+batch:429/1000 avg reward is -2026.502633499982
+0.752475 collected with offset=-2475.25
+0.88095 collected with offset=-1190.5
+0.983575 collected with offset=-164.25000000000023
+0.99285 collected with offset=-71.4999999999999
+0.9998 collected with offset=-1.9999999999997797
+batch:430/1000 avg reward is -2743.2091502083285
+batch:431/1000 avg reward is -2034.9218931666644
+0.7702 collected with offset=-2298.0
+0.98105 collected with offset=-189.50000000000023
+0.987375 collected with offset=-126.24999999999997
+batch:432/1000 avg reward is -2091.597371891656
+batch:433/1000 avg reward is -2165.8463763500126
+0.767175 collected with offset=-2328.2499999999995
+batch:434/1000 avg reward is -2035.215206141659
+0.880275 collected with offset=-1197.2499999999998
+0.937625 collected with offset=-623.7499999999995
+batch:435/1000 avg reward is -2437.6488337666933
+0.99295 collected with offset=-70.5
+0.8283 collected with offset=-1716.9999999999995
+0.944325 collected with offset=-556.7500000000003
+batch:436/1000 avg reward is -2722.5379704666484
+0.896575 collected with offset=-1034.25
+0.8532 collected with offset=-1468.0000000000005
+batch:437/1000 avg reward is -2644.634843608314
+0.9857 collected with offset=-142.9999999999998
+batch:438/1000 avg reward is -1179.7905296749998
+0.888675 collected with offset=-1113.25
+batch:439/1000 avg reward is -1823.8936065583316
+0.873625 collected with offset=-1263.7500000000002
+batch:440/1000 avg reward is -1938.61851171666
+0.755625 collected with offset=-2443.75
+0.992575 collected with offset=-74.25000000000014
+0.9588 collected with offset=-412.00000000000017
+batch:441/1000 avg reward is -1895.6965238750126
+0.767475 collected with offset=-2325.25
+0.7239 collected with offset=-2761.0
+batch:442/1000 avg reward is -2335.4106369249926
+0.961525 collected with offset=-384.75000000000034
+0.86635 collected with offset=-1336.5000000000005
+0.9813 collected with offset=-187.0000000000005
+batch:443/1000 avg reward is -2127.705230008352
+batch:444/1000 avg reward is -1653.007460558343
+0.995625 collected with offset=-43.75000000000018
+0.974475 collected with offset=-255.2500000000002
+0.981325 collected with offset=-186.74999999999997
+batch:445/1000 avg reward is -2037.051628650025
+0.657075 collected with offset=-3429.2500000000005
+0.954375 collected with offset=-456.2500000000003
+batch:446/1000 avg reward is -1957.264011408331
+0.969175 collected with offset=-308.2499999999999
+0.99545 collected with offset=-45.50000000000054
+batch:447/1000 avg reward is -1930.6782028166904
+0.8711 collected with offset=-1289.0000000000002
+0.97385 collected with offset=-261.50000000000006
+batch:448/1000 avg reward is -2195.3443467750403
+0.909625 collected with offset=-903.7499999999999
+batch:449/1000 avg reward is -1920.628320600002
+0.888575 collected with offset=-1114.25
+0.9056 collected with offset=-944.0000000000003
+batch:450/1000 avg reward is -1828.1059375166556
+Total T: 6736 Episode Num: 9 Episode T: 50 Reward: -1692088.302
+0.651075 collected with offset=-3489.2500000000005
+0.75645 collected with offset=-2435.5000000000005
+0.956825 collected with offset=-431.74999999999966
+batch:451/1000 avg reward is -2437.14242089165
+0.96565 collected with offset=-343.49999999999994
+batch:452/1000 avg reward is -2112.153508916667
+0.97505 collected with offset=-249.50000000000028
+batch:453/1000 avg reward is -1823.270862525001
+0.95525 collected with offset=-447.49999999999955
+batch:454/1000 avg reward is -1981.186519991644
+0.99335 collected with offset=-66.50000000000045
+batch:455/1000 avg reward is -1798.8729617416523
+0.711275 collected with offset=-2887.25
+0.99025 collected with offset=-97.50000000000037
+batch:456/1000 avg reward is -2215.843897483342
+0.792075 collected with offset=-2079.2500000000005
+batch:457/1000 avg reward is -1724.3296668833223
+0.865275 collected with offset=-1347.2499999999998
+batch:458/1000 avg reward is -1499.637799883347
+0.984625 collected with offset=-153.75000000000028
+0.99505 collected with offset=-49.5000000000001
+batch:459/1000 avg reward is -1451.5881034916708
+0.787425 collected with offset=-2125.7499999999995
+batch:460/1000 avg reward is -1707.2809826750088
+0.875575 collected with offset=-1244.25
+batch:461/1000 avg reward is -1990.6541190083217
+batch:462/1000 avg reward is -1551.529085241675
+batch:463/1000 avg reward is -1665.3836982666448
+0.98655 collected with offset=-134.49999999999963
+batch:464/1000 avg reward is -1610.4138249166524
+0.817375 collected with offset=-1826.2500000000005
+batch:465/1000 avg reward is -2067.3075882333405
+batch:466/1000 avg reward is -1506.7190210916783
+0.995525 collected with offset=-44.75000000000007
+0.899325 collected with offset=-1006.7499999999995
+0.982025 collected with offset=-179.74999999999963
+batch:467/1000 avg reward is -2240.5717922916824
+0.68825 collected with offset=-3117.4999999999995
+batch:468/1000 avg reward is -2166.0138933083126
+batch:469/1000 avg reward is -1040.3325970166698
+batch:470/1000 avg reward is -983.0718812916687
+0.8801 collected with offset=-1199.0
+0.931125 collected with offset=-688.7500000000002
+batch:471/1000 avg reward is -1673.9232653833174
+batch:472/1000 avg reward is -1018.0691343666617
+batch:473/1000 avg reward is -1287.0014827249809
+0.95195 collected with offset=-480.5000000000004
+0.870925 collected with offset=-1290.7500000000005
+batch:474/1000 avg reward is -1746.5469827249674
+batch:475/1000 avg reward is -1058.3840110166466
+0.619125 collected with offset=-3808.7499999999995
+0.872575 collected with offset=-1274.25
+batch:476/1000 avg reward is -2084.8885531583533
+0.9424 collected with offset=-575.9999999999999
+batch:477/1000 avg reward is -1355.9629791000164
+0.894225 collected with offset=-1057.7499999999995
+0.998875 collected with offset=-11.250000000000426
+batch:478/1000 avg reward is -1628.806914350008
+batch:479/1000 avg reward is -1193.9749709500147
+0.980875 collected with offset=-191.2499999999995
+batch:480/1000 avg reward is -1262.4563720083304
+batch:481/1000 avg reward is -1248.419278391668
+batch:482/1000 avg reward is -881.8389270833228
+batch:483/1000 avg reward is -1293.2994693666608
+batch:484/1000 avg reward is -1307.306399866657
+batch:485/1000 avg reward is -809.9409624416684
+batch:486/1000 avg reward is -759.9534370916637
+batch:487/1000 avg reward is -803.0110613750128
+batch:488/1000 avg reward is -695.755460308338
+batch:489/1000 avg reward is -813.65193448334
+batch:490/1000 avg reward is -1100.4775399333291
+0.9918 collected with offset=-81.99999999999986
+0.993375 collected with offset=-66.24999999999991
+batch:491/1000 avg reward is -1343.8580077083266
+0.999425 collected with offset=-5.749999999999922
+batch:492/1000 avg reward is -1191.1075421083183
+0.98495 collected with offset=-150.50000000000009
+batch:493/1000 avg reward is -972.050796850001
+batch:494/1000 avg reward is -486.7138169833303
+batch:495/1000 avg reward is -593.5680658166751
+batch:496/1000 avg reward is -791.2230327166842
+batch:497/1000 avg reward is -507.8293458916592
+batch:498/1000 avg reward is -642.3984042166633
+batch:499/1000 avg reward is -701.5423827166608
+batch:500/1000 avg reward is -455.5716597000019
+Total T: 7486 Episode Num: 10 Episode T: 50 Reward: -1009242.546
+0.639575 collected with offset=-3604.25
+0.783 collected with offset=-2169.9999999999995
+0.77555 collected with offset=-2244.5000000000005
+0.78935 collected with offset=-2106.5
+0.777675 collected with offset=-2223.25
+0.766375 collected with offset=-2336.2499999999995
+0.765525 collected with offset=-2344.75
+0.800325 collected with offset=-1996.7500000000005
+0.774325 collected with offset=-2256.7499999999995
+0.74655 collected with offset=-2534.4999999999995
+---------------------------------------
+Evaluation over 1 episodes: -52777.396 steps:-5277.740
+---------------------------------------
+batch:501/1000 avg reward is -474.8949303916701
+batch:502/1000 avg reward is -399.7584286333367
+batch:503/1000 avg reward is -1001.0607932083319
+batch:504/1000 avg reward is -478.0558223250018
+batch:505/1000 avg reward is -755.4577323083234
+batch:506/1000 avg reward is -516.0181059000107
+batch:507/1000 avg reward is -585.3068022999904
+batch:508/1000 avg reward is -767.5679633666688
+batch:509/1000 avg reward is -730.6815074416735
+batch:510/1000 avg reward is -1209.6653065916566
+batch:511/1000 avg reward is -902.2204318416741
+batch:512/1000 avg reward is -866.635254008343
+batch:513/1000 avg reward is -708.431772658347
+batch:514/1000 avg reward is -701.5279676916674
+batch:515/1000 avg reward is -689.6570737083423
+batch:516/1000 avg reward is -1011.0876648499947
+batch:517/1000 avg reward is -617.8986261166693
+batch:518/1000 avg reward is -505.5187079833377
+batch:519/1000 avg reward is -982.9640625333335
+batch:520/1000 avg reward is -749.7025230750112
+batch:521/1000 avg reward is -691.1527175416577
+batch:522/1000 avg reward is -877.0718111166613
+batch:523/1000 avg reward is -819.168939575007
+batch:524/1000 avg reward is -443.18729686666467
+batch:525/1000 avg reward is -754.9410347499881
+0.98355 collected with offset=-164.49999999999966
+batch:526/1000 avg reward is -1106.409496866671
+batch:527/1000 avg reward is -736.1186619999947
+batch:528/1000 avg reward is -719.2604102583417
+0.981775 collected with offset=-182.25000000000045
+batch:529/1000 avg reward is -1145.98541378334
+batch:530/1000 avg reward is -550.6929096666762
+batch:531/1000 avg reward is -886.8903766833422
+batch:532/1000 avg reward is -597.0269688249931
+batch:533/1000 avg reward is -703.0543988416636
+batch:534/1000 avg reward is -803.455245008315
+batch:535/1000 avg reward is -647.5834331333306
+batch:536/1000 avg reward is -526.2006817249975
+batch:537/1000 avg reward is -512.3106168583375
+batch:538/1000 avg reward is -484.3308703166617
+batch:539/1000 avg reward is -580.852305750002
+batch:540/1000 avg reward is -637.013539216674
+batch:541/1000 avg reward is -442.78407100833505
+batch:542/1000 avg reward is -889.2821173583361
+batch:543/1000 avg reward is -405.6376913666683
+batch:544/1000 avg reward is -368.87742082500137
+batch:545/1000 avg reward is -796.6134174499844
+batch:546/1000 avg reward is -759.1060071416684
+batch:547/1000 avg reward is -774.1337475833366
+batch:548/1000 avg reward is -447.917983358342
+batch:549/1000 avg reward is -567.0912668249923
+batch:550/1000 avg reward is -560.6577829916637
+Total T: 8236 Episode Num: 11 Episode T: 50 Reward: -523333.802
+batch:551/1000 avg reward is -940.4881157666703
+batch:552/1000 avg reward is -670.2996740249977
+batch:553/1000 avg reward is -506.99583483332634
+batch:554/1000 avg reward is -643.8813503499889
+batch:555/1000 avg reward is -791.5789645916661
+batch:556/1000 avg reward is -393.5356757833388
+batch:557/1000 avg reward is -737.1621819333278
+batch:558/1000 avg reward is -750.9543323500081
+batch:559/1000 avg reward is -284.28964200833286
+batch:560/1000 avg reward is -726.5896658500068
+batch:561/1000 avg reward is -702.4441992833398
+batch:562/1000 avg reward is -633.2467025833274
+batch:563/1000 avg reward is -736.7108634250027
+batch:564/1000 avg reward is -479.8473462916724
+batch:565/1000 avg reward is -693.7535739250073
+batch:566/1000 avg reward is -694.7466126416745
+batch:567/1000 avg reward is -682.3168217916619
+batch:568/1000 avg reward is -690.6070528000037
+batch:569/1000 avg reward is -341.42461147499927
+0.90415 collected with offset=-958.4999999999999
+batch:570/1000 avg reward is -900.1461951000013
+batch:571/1000 avg reward is -845.7584914750025
+batch:572/1000 avg reward is -1020.0593287250008
+batch:573/1000 avg reward is -1184.314534358337
+0.9994 collected with offset=-6.000000000000449
+batch:574/1000 avg reward is -1107.8915996583357
+batch:575/1000 avg reward is -627.4873131833278
+batch:576/1000 avg reward is -748.6770567583309
+batch:577/1000 avg reward is -595.9993723000191
+batch:578/1000 avg reward is -839.1375932666704
+batch:579/1000 avg reward is -1047.6806213916614
+batch:580/1000 avg reward is -824.0077589583474
+batch:581/1000 avg reward is -722.098265991665
+batch:582/1000 avg reward is -1313.5835054749862
+batch:583/1000 avg reward is -1257.202155849998
+batch:584/1000 avg reward is -939.8459378833286
+batch:585/1000 avg reward is -1391.4493483666608
+batch:586/1000 avg reward is -891.5115043583323
+batch:587/1000 avg reward is -1317.9457098583512
+0.990375 collected with offset=-96.24999999999994
+batch:588/1000 avg reward is -811.9197064583399
+batch:589/1000 avg reward is -826.5045414166578
+batch:590/1000 avg reward is -936.8077031416743
+batch:591/1000 avg reward is -854.9902168583295
+batch:592/1000 avg reward is -849.6134679583328
+batch:593/1000 avg reward is -804.2401437499985
+batch:594/1000 avg reward is -754.9480115250124
+batch:595/1000 avg reward is -772.0058957666758
+batch:596/1000 avg reward is -1252.116746683327
+batch:597/1000 avg reward is -1051.8923937999982
+batch:598/1000 avg reward is -1338.929887133321
+batch:599/1000 avg reward is -1001.5498662000085
+batch:600/1000 avg reward is -790.588557341661
+Total T: 8986 Episode Num: 12 Episode T: 50 Reward: -625826.650
+---------------------------------------
+Evaluation over 1 episodes: -31893.742 steps:-3189.374
+---------------------------------------
+batch:601/1000 avg reward is -835.7549598833358
+0.89105 collected with offset=-1089.5
+0.981475 collected with offset=-185.25000000000014
+batch:602/1000 avg reward is -1525.530535483341
+0.978475 collected with offset=-215.25000000000017
+batch:603/1000 avg reward is -1413.3725728666839
+batch:604/1000 avg reward is -837.3552838000052
+0.99505 collected with offset=-49.5000000000001
+batch:605/1000 avg reward is -1387.9375057833383
+batch:606/1000 avg reward is -591.0539276416747
+batch:607/1000 avg reward is -1325.4633090499926
+batch:608/1000 avg reward is -568.9326801499993
+batch:609/1000 avg reward is -831.2831770749872
+batch:610/1000 avg reward is -1069.5512193749958
+batch:611/1000 avg reward is -1033.9217866916558
+batch:612/1000 avg reward is -919.5894453250028
+batch:613/1000 avg reward is -1133.8822890333117
+batch:614/1000 avg reward is -802.7555355083385
+batch:615/1000 avg reward is -1242.752276466661
+batch:616/1000 avg reward is -1041.4969286583312
+batch:617/1000 avg reward is -863.2077480499954
+0.991875 collected with offset=-81.25000000000048
+batch:618/1000 avg reward is -1172.5175260416581
+0.991975 collected with offset=-80.24999999999949
+0.924425 collected with offset=-755.7499999999994
+batch:619/1000 avg reward is -1616.3906746750356
+batch:620/1000 avg reward is -829.0800401833318
+batch:621/1000 avg reward is -1214.7321127250107
+0.889125 collected with offset=-1108.7499999999995
+batch:622/1000 avg reward is -1807.494492166683
+0.944075 collected with offset=-559.25
+batch:623/1000 avg reward is -1855.1361042250137
+batch:624/1000 avg reward is -1019.5785480166686
+batch:625/1000 avg reward is -1399.9659582416946
+0.892575 collected with offset=-1074.25
+batch:626/1000 avg reward is -1511.8653717083214
+0.992375 collected with offset=-76.24999999999993
+batch:627/1000 avg reward is -1147.2390201166766
+0.728225 collected with offset=-2717.75
+batch:628/1000 avg reward is -1280.3209747250003
+batch:629/1000 avg reward is -1128.6481170500126
+batch:630/1000 avg reward is -912.4147879166617
+batch:631/1000 avg reward is -1308.7838432749913
+0.699625 collected with offset=-3003.7499999999995
+0.94445 collected with offset=-555.4999999999999
+batch:632/1000 avg reward is -1682.5886107916592
+0.9025 collected with offset=-975.0000000000003
+batch:633/1000 avg reward is -1661.5595983500086
+batch:634/1000 avg reward is -1471.562349541677
+batch:635/1000 avg reward is -1002.1377155666731
+0.84385 collected with offset=-1561.5
+0.8703 collected with offset=-1297.0000000000005
+0.921575 collected with offset=-784.2499999999997
+batch:636/1000 avg reward is -1593.5782458250108
+batch:637/1000 avg reward is -1067.199242075004
+0.92245 collected with offset=-775.5000000000001
+0.871825 collected with offset=-1281.7500000000005
+batch:638/1000 avg reward is -1861.9132669583169
+batch:639/1000 avg reward is -1102.3898140916701
+batch:640/1000 avg reward is -1073.259262608335
+0.857325 collected with offset=-1426.75
+batch:641/1000 avg reward is -1103.502385033334
+0.7543 collected with offset=-2457.0000000000005
+batch:642/1000 avg reward is -1287.4995932916615
+0.753025 collected with offset=-2469.7499999999995
+0.9159 collected with offset=-840.9999999999995
+0.997425 collected with offset=-25.74999999999994
+batch:643/1000 avg reward is -1818.9460844333873
+0.674675 collected with offset=-3253.2499999999995
+0.929475 collected with offset=-705.2499999999995
+batch:644/1000 avg reward is -1773.8089078250016
+0.7803 collected with offset=-2197.0
+0.930225 collected with offset=-697.7500000000003
+batch:645/1000 avg reward is -1174.4140281750226
+batch:646/1000 avg reward is -1274.4386567666852
+batch:647/1000 avg reward is -863.1314187333377
+batch:648/1000 avg reward is -909.7849259499927
+0.9372 collected with offset=-627.9999999999997
+0.9279 collected with offset=-721.0000000000006
+batch:649/1000 avg reward is -1499.7403871250135
+batch:650/1000 avg reward is -801.3094791916599
+Total T: 9736 Episode Num: 13 Episode T: 50 Reward: -909761.591
+0.973725 collected with offset=-262.75000000000045
+0.989525 collected with offset=-104.75000000000011
+0.96645 collected with offset=-335.49999999999966
+0.97635 collected with offset=-236.4999999999995
+0.972125 collected with offset=-278.74999999999983
+0.96845 collected with offset=-315.49999999999966
+0.9922 collected with offset=-78.00000000000028
+0.9819 collected with offset=-181.00000000000006
+0.992275 collected with offset=-77.24999999999982
+0.999625 collected with offset=-3.750000000000142
+0.9906 collected with offset=-93.99999999999964
+0.969725 collected with offset=-302.7500000000005
+0.99935 collected with offset=-6.500000000000394
+0.983725 collected with offset=-162.7500000000004
+0.78715 collected with offset=-2128.5
+0.623925 collected with offset=-3760.7500000000005
+0.9313 collected with offset=-686.9999999999999
+batch:651/1000 avg reward is -1650.3426231916646
+batch:652/1000 avg reward is -730.3394712583225
+0.6998 collected with offset=-3002.0
+batch:653/1000 avg reward is -1438.828475633334
+batch:654/1000 avg reward is -949.6093290416669
+0.7208 collected with offset=-2792.0
+0.99985 collected with offset=-1.4999999999998348
+batch:655/1000 avg reward is -1301.3537499250237
+batch:656/1000 avg reward is -660.7390658833322
+0.923875 collected with offset=-761.25
+0.9987 collected with offset=-12.999999999999678
+batch:657/1000 avg reward is -1661.2897661916736
+0.928325 collected with offset=-716.7500000000005
+batch:658/1000 avg reward is -1369.3021227083257
+0.88615 collected with offset=-1138.5
+batch:659/1000 avg reward is -1074.4168470416878
+batch:660/1000 avg reward is -999.6454369499913
+0.881175 collected with offset=-1188.2499999999995
+0.999825 collected with offset=-1.7500000000003624
+batch:661/1000 avg reward is -1570.177427591664
+0.8802 collected with offset=-1198.0000000000002
+batch:662/1000 avg reward is -1371.7004960249913
+batch:663/1000 avg reward is -1020.5497463000139
+0.723925 collected with offset=-2760.7499999999995
+0.721275 collected with offset=-2787.25
+0.76765 collected with offset=-2323.4999999999995
+batch:664/1000 avg reward is -1689.0532367833307
+batch:665/1000 avg reward is -944.0849981166773
+batch:666/1000 avg reward is -952.0777477999873
+0.778175 collected with offset=-2218.2500000000005
+0.9339 collected with offset=-661.0000000000005
+batch:667/1000 avg reward is -1500.263232791675
+0.75105 collected with offset=-2489.5
+batch:668/1000 avg reward is -1262.371054691674
+batch:669/1000 avg reward is -999.8366973500013
+0.8759 collected with offset=-1240.9999999999998
+0.882475 collected with offset=-1175.25
+batch:670/1000 avg reward is -1269.207478508327
+batch:671/1000 avg reward is -1323.5125260249754
+batch:672/1000 avg reward is -810.4259959083196
+0.6929 collected with offset=-3071.0000000000005
+batch:673/1000 avg reward is -1222.1686285416797
+0.728225 collected with offset=-2717.75
+batch:674/1000 avg reward is -1319.520595891649
+batch:675/1000 avg reward is -804.0510293916706
+0.975075 collected with offset=-249.24999999999974
+batch:676/1000 avg reward is -1240.8876291999863
+0.75095 collected with offset=-2490.5
+batch:677/1000 avg reward is -1521.535477649996
+batch:678/1000 avg reward is -1245.2444613249995
+batch:679/1000 avg reward is -668.7887280083329
+batch:680/1000 avg reward is -783.9680116833426
+batch:681/1000 avg reward is -1065.0569902083375
+batch:682/1000 avg reward is -776.8390915499818
+batch:683/1000 avg reward is -1096.5977714500093
+batch:684/1000 avg reward is -895.5400249333325
+0.887825 collected with offset=-1121.7500000000002
+batch:685/1000 avg reward is -1353.8384657250133
+batch:686/1000 avg reward is -921.72337947501
+0.904625 collected with offset=-953.7499999999999
+batch:687/1000 avg reward is -1010.7932141916548
+0.753575 collected with offset=-2464.25
+batch:688/1000 avg reward is -905.2880942666615
+0.937575 collected with offset=-624.2499999999995
+batch:689/1000 avg reward is -1252.877502249999
+0.648525 collected with offset=-3514.75
+batch:690/1000 avg reward is -1380.5119022166732
+0.966275 collected with offset=-337.25000000000006
+batch:691/1000 avg reward is -1101.746504508317
+0.5004 collected with offset=-4996.0
+batch:692/1000 avg reward is -1554.6151092833356
+0.99195 collected with offset=-80.50000000000001
+batch:693/1000 avg reward is -1125.1300356416598
+0.76165 collected with offset=-2383.4999999999995
+0.977325 collected with offset=-226.75
+batch:694/1000 avg reward is -1186.276478833323
+batch:695/1000 avg reward is -888.4868823833245
+0.9446 collected with offset=-554.0
+batch:696/1000 avg reward is -814.2807215500142
+batch:697/1000 avg reward is -813.1976963833339
+batch:698/1000 avg reward is -857.8974617249844
+0.99985 collected with offset=-1.4999999999998348
+batch:699/1000 avg reward is -783.1223013749819
+0.718775 collected with offset=-2812.2499999999995
+0.991475 collected with offset=-85.25000000000004
+batch:700/1000 avg reward is -1555.5656702499832
+Total T: 10486 Episode Num: 14 Episode T: 50 Reward: -850420.161
+0.997075 collected with offset=-29.249999999999552
+0.99965 collected with offset=-3.4999999999996145
+0.469375 collected with offset=-5306.25
+0.584425 collected with offset=-4155.75
+0.668125 collected with offset=-3318.7500000000005
+0.547525 collected with offset=-4524.75
+0.6647 collected with offset=-3353.0000000000005
+0.550275 collected with offset=-4497.25
+0.687725 collected with offset=-3122.7499999999995
+0.51585 collected with offset=-4841.5
+0.65615 collected with offset=-3438.5
+0.530175 collected with offset=-4698.250000000001
+---------------------------------------
+Evaluation over 1 episodes: -63990.099 steps:-6399.010
+---------------------------------------
+batch:701/1000 avg reward is -762.3146467333379
+batch:702/1000 avg reward is -744.0298886833406
+batch:703/1000 avg reward is -889.7680098499999
+batch:704/1000 avg reward is -720.7368760083409
+batch:705/1000 avg reward is -660.8776260333332
+batch:706/1000 avg reward is -843.8694238000055
+batch:707/1000 avg reward is -848.9583816666653
+batch:708/1000 avg reward is -841.169431858334
+batch:709/1000 avg reward is -770.6858605833415
+0.650125 collected with offset=-3498.7500000000005
+0.941875 collected with offset=-581.2499999999998
+batch:710/1000 avg reward is -1175.7556983250058
+batch:711/1000 avg reward is -705.6776465166685
+0.86535 collected with offset=-1346.5000000000005
+batch:712/1000 avg reward is -1079.8273553749914
+0.883825 collected with offset=-1161.7500000000002
+batch:713/1000 avg reward is -976.2769272583523
+batch:714/1000 avg reward is -950.7208996499935
+batch:715/1000 avg reward is -1026.7204978583356
+batch:716/1000 avg reward is -839.862842150006
+0.979025 collected with offset=-209.74999999999966
+batch:717/1000 avg reward is -1077.5341070416632
+batch:718/1000 avg reward is -653.2359229333412
+batch:719/1000 avg reward is -525.5681493749934
+0.738875 collected with offset=-2611.2500000000005
+batch:720/1000 avg reward is -1354.7237040999905
+batch:721/1000 avg reward is -1085.0265484083493
+batch:722/1000 avg reward is -1436.4078700500197
+0.746 collected with offset=-2540.0
+batch:723/1000 avg reward is -1130.9946918333262
+batch:724/1000 avg reward is -758.3860133166702
+0.990925 collected with offset=-90.75000000000055
+0.957325 collected with offset=-426.75000000000017
+0.894025 collected with offset=-1059.7500000000005
+batch:725/1000 avg reward is -1799.474962666685
+batch:726/1000 avg reward is -754.981510991669
+batch:727/1000 avg reward is -1342.319019425008
+0.998525 collected with offset=-14.75000000000004
+batch:728/1000 avg reward is -896.3195540333389
+0.998375 collected with offset=-16.249999999999876
+batch:729/1000 avg reward is -1451.7287001750076
+0.96795 collected with offset=-320.5000000000002
+batch:730/1000 avg reward is -1238.7429789000043
+batch:731/1000 avg reward is -879.5252733333315
+batch:732/1000 avg reward is -763.343996599999
+batch:733/1000 avg reward is -479.9522036499966
+0.886975 collected with offset=-1130.2500000000005
+batch:734/1000 avg reward is -923.5642530000018
+batch:735/1000 avg reward is -1391.651864883327
+batch:736/1000 avg reward is -1026.5193763916734
+0.702875 collected with offset=-2971.2499999999995
+batch:737/1000 avg reward is -1053.3152057333205
+0.9985 collected with offset=-14.999999999999458
+batch:738/1000 avg reward is -970.324280716665
+0.990675 collected with offset=-93.25000000000028
+batch:739/1000 avg reward is -682.2065098750023
+0.9879 collected with offset=-121.0
+batch:740/1000 avg reward is -875.939878450003
+0.9449 collected with offset=-551.0000000000003
+0.96135 collected with offset=-386.4999999999996
+0.928275 collected with offset=-717.2500000000003
+batch:741/1000 avg reward is -1368.194248775007
+batch:742/1000 avg reward is -1083.666912358325
+batch:743/1000 avg reward is -948.413822350002
+0.953625 collected with offset=-463.75000000000057
+batch:744/1000 avg reward is -735.6348843166753
+batch:745/1000 avg reward is -804.9196365333183
+0.924375 collected with offset=-756.2500000000006
+batch:746/1000 avg reward is -1157.5399073416481
+0.523825 collected with offset=-4761.75
+0.7282 collected with offset=-2718.0000000000005
+batch:747/1000 avg reward is -1491.1472643583224
+batch:748/1000 avg reward is -525.7909729666721
+0.8095 collected with offset=-1905.0
+batch:749/1000 avg reward is -1064.1868489166725
+batch:750/1000 avg reward is -665.6343631916699
+Total T: 11236 Episode Num: 15 Episode T: 50 Reward: -723512.512
+batch:751/1000 avg reward is -818.9491882333297
+batch:752/1000 avg reward is -1316.8694781249962
+0.99305 collected with offset=-69.50000000000011
+batch:753/1000 avg reward is -1260.4002395083305
+batch:754/1000 avg reward is -908.5961370666622
+batch:755/1000 avg reward is -914.7451299416563
+batch:756/1000 avg reward is -1121.9738752833393
+0.9969 collected with offset=-30.999999999999915
+batch:757/1000 avg reward is -974.1116643416661
+0.912475 collected with offset=-875.2499999999997
+batch:758/1000 avg reward is -966.1142904750033
+batch:759/1000 avg reward is -912.7158547833224
+batch:760/1000 avg reward is -874.1654897999949
+batch:761/1000 avg reward is -547.240558083329
+batch:762/1000 avg reward is -1152.5641005083346
+batch:763/1000 avg reward is -790.5413954250035
+0.9017 collected with offset=-983.0000000000006
+batch:764/1000 avg reward is -961.5963036583186
+batch:765/1000 avg reward is -1117.7342268916625
+batch:766/1000 avg reward is -674.7641001583316
+batch:767/1000 avg reward is -1355.2654480749843
+0.995625 collected with offset=-43.75000000000018
+batch:768/1000 avg reward is -1333.4246900666674
+0.857325 collected with offset=-1426.75
+0.821275 collected with offset=-1787.2500000000002
+0.892775 collected with offset=-1072.2500000000002
+batch:769/1000 avg reward is -1557.9966865499832
+0.733025 collected with offset=-2669.7499999999995
+batch:770/1000 avg reward is -971.7908681916832
+0.641225 collected with offset=-3587.7499999999995
+batch:771/1000 avg reward is -1294.3874034166688
+batch:772/1000 avg reward is -999.5641643499989
+0.986075 collected with offset=-139.24999999999966
+batch:773/1000 avg reward is -952.7591076666656
+0.85575 collected with offset=-1442.5
+batch:774/1000 avg reward is -1597.3852025666822
+batch:775/1000 avg reward is -773.3145549499966
+batch:776/1000 avg reward is -1117.792529216657
+batch:777/1000 avg reward is -906.1493852583318
+batch:778/1000 avg reward is -927.2187893166623
+batch:779/1000 avg reward is -872.4888381750044
+batch:780/1000 avg reward is -785.1124981916595
+batch:781/1000 avg reward is -920.7984736749881
+batch:782/1000 avg reward is -982.0647875250103
+0.935025 collected with offset=-649.75
+batch:783/1000 avg reward is -993.470575491675
+batch:784/1000 avg reward is -998.4847299500012
+0.8673 collected with offset=-1327.0000000000005
+batch:785/1000 avg reward is -828.1607164249962
+batch:786/1000 avg reward is -724.2672373000115
+batch:787/1000 avg reward is -1005.8072927916419
+0.9919 collected with offset=-80.99999999999996
+batch:788/1000 avg reward is -961.2178298750034
+batch:789/1000 avg reward is -1070.8279211749962
+batch:790/1000 avg reward is -709.9316853833424
+0.93245 collected with offset=-675.5
+batch:791/1000 avg reward is -1306.6854547750008
+0.86325 collected with offset=-1367.5000000000005
+batch:792/1000 avg reward is -1336.8890210916345
+batch:793/1000 avg reward is -1016.0184850000204
+0.979025 collected with offset=-209.74999999999966
+batch:794/1000 avg reward is -998.512140974998
+batch:795/1000 avg reward is -1041.6504528166354
+batch:796/1000 avg reward is -853.2314178250017
+0.88285 collected with offset=-1171.4999999999998
+batch:797/1000 avg reward is -1317.7144237916639
+0.981625 collected with offset=-183.7500000000003
+batch:798/1000 avg reward is -1172.0470393666762
+batch:799/1000 avg reward is -636.4365123333276
+batch:800/1000 avg reward is -998.3238074166744
+Total T: 11986 Episode Num: 16 Episode T: 50 Reward: -759454.083
+0.238325 collected with offset=-7616.75
+0.31605 collected with offset=-6839.500000000001
+0.458325 collected with offset=-5416.75
+0.472575 collected with offset=-5274.25
+0.432975 collected with offset=-5670.25
+0.451375 collected with offset=-5486.249999999999
+0.45765 collected with offset=-5423.5
+0.47825 collected with offset=-5217.499999999999
+0.41615 collected with offset=-5838.5
+0.4398 collected with offset=-5602.0
+---------------------------------------
+Evaluation over 1 episodes: -75761.637 steps:-7576.164
+---------------------------------------
+0.93135 collected with offset=-686.4999999999999
+batch:801/1000 avg reward is -998.1222572166612
+0.626 collected with offset=-3740.0
+0.99395 collected with offset=-60.5
+batch:802/1000 avg reward is -1366.0357731249958
+0.999775 collected with offset=-2.2500000000003073
+batch:803/1000 avg reward is -1146.7746741166752
+batch:804/1000 avg reward is -934.7404972916551
+batch:805/1000 avg reward is -1039.0215707333277
+0.67845 collected with offset=-3215.5
+batch:806/1000 avg reward is -789.7701409833446
+batch:807/1000 avg reward is -849.8318770333304
+batch:808/1000 avg reward is -737.920104258331
+batch:809/1000 avg reward is -911.5928419500062
+0.7247 collected with offset=-2753.0
+batch:810/1000 avg reward is -1191.3528476666731
+batch:811/1000 avg reward is -559.7125359583266
+0.9846 collected with offset=-153.9999999999997
+batch:812/1000 avg reward is -1220.8980355499996
+batch:813/1000 avg reward is -575.7280928416687
+batch:814/1000 avg reward is -640.8309339666623
+0.901675 collected with offset=-983.25
+batch:815/1000 avg reward is -1157.7556838083265
+batch:816/1000 avg reward is -1049.7424796583462
+batch:817/1000 avg reward is -1207.3248760749932
+0.98305 collected with offset=-169.5000000000002
+batch:818/1000 avg reward is -1240.714247766672
+0.944025 collected with offset=-559.75
+batch:819/1000 avg reward is -1272.6058644916614
+0.746375 collected with offset=-2536.25
+0.83315 collected with offset=-1668.5000000000005
+0.99975 collected with offset=-2.4999999999997247
+batch:820/1000 avg reward is -1343.0877494833283
+0.945975 collected with offset=-540.2499999999999
+batch:821/1000 avg reward is -828.2310270916597
+batch:822/1000 avg reward is -1059.3883842749997
+0.997825 collected with offset=-21.75000000000038
+batch:823/1000 avg reward is -921.1574628916828
+batch:824/1000 avg reward is -677.3234437333525
+batch:825/1000 avg reward is -1343.913582574999
+0.910425 collected with offset=-895.7499999999995
+0.875225 collected with offset=-1247.7499999999998
+batch:826/1000 avg reward is -1257.1718212666794
+0.85915 collected with offset=-1408.5000000000002
+0.9825 collected with offset=-174.9999999999996
+batch:827/1000 avg reward is -1397.6246361750173
+batch:828/1000 avg reward is -764.6239148166777
+batch:829/1000 avg reward is -838.6220219916656
+batch:830/1000 avg reward is -620.0148619583377
+batch:831/1000 avg reward is -842.8594342333365
+0.7118 collected with offset=-2882.0
+batch:832/1000 avg reward is -1173.636053525008
+batch:833/1000 avg reward is -608.8288427749917
+batch:834/1000 avg reward is -277.7549373499931
+0.982475 collected with offset=-175.2500000000001
+batch:835/1000 avg reward is -1154.2225091750136
+0.9646 collected with offset=-353.9999999999999
+batch:836/1000 avg reward is -1126.9531581916685
+batch:837/1000 avg reward is -700.1330683416558
+0.94635 collected with offset=-536.4999999999998
+batch:838/1000 avg reward is -713.5670696666677
+batch:839/1000 avg reward is -792.7209927833336
+batch:840/1000 avg reward is -982.9016654750134
+0.9947 collected with offset=-52.999999999999716
+batch:841/1000 avg reward is -827.5917004166539
+0.86425 collected with offset=-1357.5000000000005
+batch:842/1000 avg reward is -995.9635907166715
+batch:843/1000 avg reward is -810.8050285916742
+batch:844/1000 avg reward is -907.8994555250005
+batch:845/1000 avg reward is -951.1831058250044
+batch:846/1000 avg reward is -888.8686140583238
+batch:847/1000 avg reward is -450.9999346000042
+0.938725 collected with offset=-612.7499999999997
+batch:848/1000 avg reward is -1083.5802208499854
+batch:849/1000 avg reward is -531.1165218916722
+batch:850/1000 avg reward is -629.3660200583366
+Total T: 12736 Episode Num: 17 Episode T: 50 Reward: -695888.792
+batch:851/1000 avg reward is -943.4832084166621
+0.996925 collected with offset=-30.750000000000497
+batch:852/1000 avg reward is -899.4163599416606
+batch:853/1000 avg reward is -1401.2933553916698
+0.913975 collected with offset=-860.2500000000002
+batch:854/1000 avg reward is -1026.755887150001
+0.908925 collected with offset=-910.7500000000002
+batch:855/1000 avg reward is -942.8127871833361
+batch:856/1000 avg reward is -612.7383321916644
+batch:857/1000 avg reward is -867.9744456749959
+0.9844 collected with offset=-155.99999999999946
+batch:858/1000 avg reward is -882.7333245083299
+batch:859/1000 avg reward is -789.8883792083277
+batch:860/1000 avg reward is -586.4149593916711
+batch:861/1000 avg reward is -769.1275555166583
+batch:862/1000 avg reward is -841.7080812833317
+batch:863/1000 avg reward is -724.8722997166592
+0.96975 collected with offset=-302.5
+batch:864/1000 avg reward is -1422.7293240083466
+batch:865/1000 avg reward is -637.716055966667
+0.713175 collected with offset=-2868.25
+batch:866/1000 avg reward is -968.1054449583345
+batch:867/1000 avg reward is -839.3052763833364
+batch:868/1000 avg reward is -725.1289746916576
+0.945475 collected with offset=-545.2500000000005
+batch:869/1000 avg reward is -857.3720222166654
+batch:870/1000 avg reward is -880.9839085750053
+0.812675 collected with offset=-1873.2499999999995
+batch:871/1000 avg reward is -1133.0784155833385
+batch:872/1000 avg reward is -1344.5811438749993
+0.851725 collected with offset=-1482.7500000000005
+batch:873/1000 avg reward is -921.904487541652
+0.9056 collected with offset=-944.0000000000003
+batch:874/1000 avg reward is -1020.7975560500015
+batch:875/1000 avg reward is -683.8751657166607
+batch:876/1000 avg reward is -803.0934134083309
+0.789325 collected with offset=-2106.7499999999995
+batch:877/1000 avg reward is -942.8251239249986
+batch:878/1000 avg reward is -1079.1439016916602
+batch:879/1000 avg reward is -1148.9539246666727
+batch:880/1000 avg reward is -1061.2394178333443
+0.98925 collected with offset=-107.50000000000037
+0.881025 collected with offset=-1189.7500000000005
+batch:881/1000 avg reward is -1172.382298249994
+batch:882/1000 avg reward is -998.1058175249977
+0.799975 collected with offset=-2000.25
+batch:883/1000 avg reward is -1254.9333945333456
+batch:884/1000 avg reward is -561.6989590416681
+batch:885/1000 avg reward is -450.56664818333593
+batch:886/1000 avg reward is -668.2322857583443
+batch:887/1000 avg reward is -636.4381396833368
+0.8218 collected with offset=-1782.0000000000002
+batch:888/1000 avg reward is -1069.7232502999977
+batch:889/1000 avg reward is -679.7322366749981
+batch:890/1000 avg reward is -827.9293118333286
+0.9558 collected with offset=-442.00000000000017
+batch:891/1000 avg reward is -1360.4802845666663
+batch:892/1000 avg reward is -717.3873757249935
+batch:893/1000 avg reward is -793.8069034499861
+0.9962 collected with offset=-38.000000000000256
+batch:894/1000 avg reward is -1130.9364651166754
+batch:895/1000 avg reward is -816.685762075
+batch:896/1000 avg reward is -816.6394490833252
+batch:897/1000 avg reward is -808.2573005083449
+0.9851 collected with offset=-149.00000000000026
+batch:898/1000 avg reward is -1069.934616858345
+batch:899/1000 avg reward is -582.316262058322
+batch:900/1000 avg reward is -1254.494496750001
+Total T: 13486 Episode Num: 18 Episode T: 50 Reward: -681461.007
+0.426975 collected with offset=-5730.25
+0.5488 collected with offset=-4512.0
+0.543525 collected with offset=-4564.75
+0.52105 collected with offset=-4789.5
+0.59025 collected with offset=-4097.499999999999
+0.562475 collected with offset=-4375.250000000001
+0.559525 collected with offset=-4404.749999999999
+0.589175 collected with offset=-4108.25
+0.530325 collected with offset=-4696.749999999999
+0.5505 collected with offset=-4495.0
+---------------------------------------
+Evaluation over 1 episodes: -70067.001 steps:-7006.700
+---------------------------------------
+0.9951 collected with offset=-49.000000000000156
+batch:901/1000 avg reward is -1153.7227980999858
+batch:902/1000 avg reward is -827.9524180583521
+batch:903/1000 avg reward is -780.456111016668
+batch:904/1000 avg reward is -717.8555747416649
+batch:905/1000 avg reward is -566.1350318500033
+0.7521 collected with offset=-2479.0
+batch:906/1000 avg reward is -980.5123907500067
+batch:907/1000 avg reward is -838.7490528082998
+0.9753 collected with offset=-247.00000000000054
+batch:908/1000 avg reward is -1284.776720125012
+batch:909/1000 avg reward is -795.7647810999865
+batch:910/1000 avg reward is -886.9427645666739
+0.65635 collected with offset=-3436.5
+0.982175 collected with offset=-178.2499999999998
+batch:911/1000 avg reward is -1361.6331182166637
+batch:912/1000 avg reward is -597.3779881416632
+batch:913/1000 avg reward is -916.3906511666762
+batch:914/1000 avg reward is -943.449630141664
+batch:915/1000 avg reward is -927.5443192166774
+batch:916/1000 avg reward is -385.6328139583318
+batch:917/1000 avg reward is -909.1808956083265
+0.726275 collected with offset=-2737.25
+batch:918/1000 avg reward is -1011.7637832666852
+batch:919/1000 avg reward is -737.6867814833366
+batch:920/1000 avg reward is -1026.6047273833653
+batch:921/1000 avg reward is -614.5955552250115
+batch:922/1000 avg reward is -884.0022444166584
+0.659025 collected with offset=-3409.7500000000005
+0.715125 collected with offset=-2848.75
+batch:923/1000 avg reward is -1439.4914174249948
+batch:924/1000 avg reward is -749.6805600916662
+0.871375 collected with offset=-1286.25
+batch:925/1000 avg reward is -1178.8268062833436
+batch:926/1000 avg reward is -691.1616772416704
+batch:927/1000 avg reward is -834.5029482166616
+batch:928/1000 avg reward is -840.7628819166407
+batch:929/1000 avg reward is -1031.5005323750167
+batch:930/1000 avg reward is -842.0208768166674
+batch:931/1000 avg reward is -835.0868402250045
+0.999575 collected with offset=-4.250000000000087
+batch:932/1000 avg reward is -998.8150043416591
+batch:933/1000 avg reward is -952.9740283833329
+0.7491 collected with offset=-2509.0
+batch:934/1000 avg reward is -1025.351450874996
+batch:935/1000 avg reward is -1302.093589633335
+batch:936/1000 avg reward is -826.7849100083421
+batch:937/1000 avg reward is -721.6542289833282
+0.929725 collected with offset=-702.7499999999998
+batch:938/1000 avg reward is -987.427938883341
+0.805925 collected with offset=-1940.75
+batch:939/1000 avg reward is -1049.0178276250144
+batch:940/1000 avg reward is -572.0829696999973
+batch:941/1000 avg reward is -871.3318427666579
+batch:942/1000 avg reward is -700.080756775001
+0.99685 collected with offset=-31.49999999999986
+batch:943/1000 avg reward is -934.0030859416594
+batch:944/1000 avg reward is -471.9558497083339
+batch:945/1000 avg reward is -973.7699446999992
+batch:946/1000 avg reward is -829.9765111666601
+batch:947/1000 avg reward is -598.9538123499891
+batch:948/1000 avg reward is -797.3180296000041
+batch:949/1000 avg reward is -728.7189830916572
+batch:950/1000 avg reward is -1065.2952403833365
+Total T: 14236 Episode Num: 19 Episode T: 50 Reward: -659990.560
+batch:951/1000 avg reward is -553.7146857583339
+batch:952/1000 avg reward is -1062.82031933334
+batch:953/1000 avg reward is -881.3713053083295
+batch:954/1000 avg reward is -849.9170222583297
+batch:955/1000 avg reward is -932.7406721916639
+batch:956/1000 avg reward is -845.4800544083258
+0.87735 collected with offset=-1226.5000000000005
+batch:957/1000 avg reward is -913.1336572583261
+batch:958/1000 avg reward is -989.6790880999961
+batch:959/1000 avg reward is -955.5785852416689
+batch:960/1000 avg reward is -750.0861044250038
+0.829525 collected with offset=-1704.7500000000005
+0.9998 collected with offset=-1.9999999999997797
+0.966925 collected with offset=-330.74999999999966
+batch:961/1000 avg reward is -1536.7872272666789
+batch:962/1000 avg reward is -813.5903529583267
+batch:963/1000 avg reward is -845.8976143500036
+batch:964/1000 avg reward is -737.4731369416604
+batch:965/1000 avg reward is -597.5095742083294
+batch:966/1000 avg reward is -475.7282266083297
+batch:967/1000 avg reward is -1278.8019598416572
+batch:968/1000 avg reward is -1191.1143408333298
+batch:969/1000 avg reward is -474.0651408166645
+0.849375 collected with offset=-1506.25
+batch:970/1000 avg reward is -1159.854068508326
+batch:971/1000 avg reward is -622.385046158338
+batch:972/1000 avg reward is -1257.9929165083295
+0.985125 collected with offset=-148.74999999999972
+batch:973/1000 avg reward is -801.7214882916546
+0.9994 collected with offset=-6.000000000000449
+batch:974/1000 avg reward is -797.5057888083401
+batch:975/1000 avg reward is -805.7128441333372
+batch:976/1000 avg reward is -766.3504726500039
+batch:977/1000 avg reward is -646.3211405583367
+batch:978/1000 avg reward is -1035.6872844583322
+0.753425 collected with offset=-2465.75
+batch:979/1000 avg reward is -1242.4987243083247
+batch:980/1000 avg reward is -613.4007520500174
+batch:981/1000 avg reward is -735.6986316250045
+0.90145 collected with offset=-985.5000000000002
+batch:982/1000 avg reward is -1437.765132766655
+batch:983/1000 avg reward is -626.2687977916693
+batch:984/1000 avg reward is -500.5051014583374
+batch:985/1000 avg reward is -772.9868868666579
+batch:986/1000 avg reward is -605.4116435166742
+batch:987/1000 avg reward is -717.5407370083243
+batch:988/1000 avg reward is -558.5310260666682
+0.9951 collected with offset=-49.000000000000156
+batch:989/1000 avg reward is -1043.9751792333357
+0.9635 collected with offset=-364.9999999999998
+batch:990/1000 avg reward is -873.4147812833301
+0.986175 collected with offset=-138.24999999999977
+batch:991/1000 avg reward is -654.3287311416638
+batch:992/1000 avg reward is -750.2204246583278
+batch:993/1000 avg reward is -786.4856703083348
+batch:994/1000 avg reward is -867.0000183166684
+batch:995/1000 avg reward is -765.5899973750078
+batch:996/1000 avg reward is -955.0479738249978
+batch:997/1000 avg reward is -818.6879374250078
+batch:998/1000 avg reward is -690.9449648500137
+batch:999/1000 avg reward is -625.8635834000069
+0.89675 collected with offset=-1032.4999999999995
+batch:1000/1000 avg reward is -1197.982459383349
+Total T: 14986 Episode Num: 20 Episode T: 50 Reward: -636287.539
+0.821 collected with offset=-1790.0000000000005
+0.8384 collected with offset=-1615.9999999999995
+0.887 collected with offset=-1130.0
+0.8367 collected with offset=-1633.0
+0.8493 collected with offset=-1506.9999999999995
+0.885425 collected with offset=-1145.7499999999998
+0.8624 collected with offset=-1375.9999999999995
+0.82065 collected with offset=-1793.5
+0.854 collected with offset=-1460.0000000000002
+0.84125 collected with offset=-1587.4999999999995
+0.877675 collected with offset=-1223.2500000000002
+0.830075 collected with offset=-1699.25
+0.8122 collected with offset=-1877.9999999999998
+0.885925 collected with offset=-1140.7500000000005
+0.859975 collected with offset=-1400.2499999999995
+0.8225 collected with offset=-1775.0
+0.441625 collected with offset=-5583.750000000001
+0.2343 collected with offset=-7657.000000000001
+0.288525 collected with offset=-7114.750000000001
+0.2265 collected with offset=-7735.0
+0.2218 collected with offset=-7782.0
+0.2319 collected with offset=-7681.0
+0.263025 collected with offset=-7369.749999999999
+0.254325 collected with offset=-7456.75
+0.247675 collected with offset=-7523.25
+0.261575 collected with offset=-7384.25
+---------------------------------------
+Evaluation over 1 episodes: -89103.927 steps:-8910.393
+---------------------------------------
