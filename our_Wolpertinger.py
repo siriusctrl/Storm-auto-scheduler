@@ -15,9 +15,9 @@ class Actor(nn.Module):
     def __init__(self, state_dim, action_dim):
         super(Actor, self).__init__()
 
-        self.l1 = nn.Linear(state_dim, 256)
-        self.l2 = nn.Linear(256, 256)
-        self.l3 = nn.Linear(256, action_dim)
+        self.l1 = nn.Linear(state_dim, 128)
+        self.l2 = nn.Linear(128, 128)
+        self.l3 = nn.Linear(128, action_dim)
         
     def forward(self, state):
         a = F.relu(self.l1(state))
@@ -30,14 +30,14 @@ class Critic(nn.Module):
         super(Critic, self).__init__()
 
         # Q1 architecture
-        self.l1 = nn.Linear(state_dim + action_dim, 256)
-        self.l2 = nn.Linear(256, 256)
-        self.l3 = nn.Linear(256, 1)
+        self.l1 = nn.Linear(state_dim + action_dim, 128)
+        self.l2 = nn.Linear(128, 128)
+        self.l3 = nn.Linear(128, 1)
 
         # Q2 architecture
-        self.l4 = nn.Linear(state_dim + action_dim, 256)
-        self.l5 = nn.Linear(256, 256)
-        self.l6 = nn.Linear(256, 1)
+        self.l4 = nn.Linear(state_dim + action_dim, 128)
+        self.l5 = nn.Linear(128, 128)
+        self.l6 = nn.Linear(128, 1)
 
 
     def forward(self, state, action):
@@ -114,7 +114,7 @@ class Wolpertinger(object):
         action[row, col] = 1
         return action.flatten()
 
-    def train(self, replay_buffer, batch_size=256):
+    def train(self, replay_buffer, batch_size=128):
         self.total_it += 1
 
         # Sample replay buffer 
