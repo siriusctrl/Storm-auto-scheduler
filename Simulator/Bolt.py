@@ -149,6 +149,8 @@ class Bolt():
                                 data.finish_time = self.env.now
                                 if data.tracked:
                                     self.topology.record(data)
+                                
+                                self.topology.total_finish += 1
                             else:
                                 # TODO: define generic rule for output destination
                                 destination = choice(self.downstreams)

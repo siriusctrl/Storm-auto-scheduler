@@ -63,6 +63,9 @@ class Topology():
         self.tracking_list = []
         self.collection_counter = 0
 
+        self.total_income = 0
+        self.total_finish = 0
+
         self.env = Environment()
 
         self.assignment_cache = None
@@ -84,14 +87,6 @@ class Topology():
         self.assignment_cache = new_assignments
         self.reset_assignments()
 
-        for executors in self.name_to_executors.values():
-            for e in executors:
-                e.clear()
-        
-        for e in self.edge_list:
-            e.clear()
-
-        # self.reset_assignments()
         ##############################################################
         # NOTICE: Assuming the condensed new_assignment will take following form
         # X = [[0.4, 0.3, 0.4]] shape=(1,3)
@@ -181,6 +176,8 @@ class Topology():
             self.tracking_counter = 0
             self.collection_counter = 0
             self.tracking_list = []
+            self.total_income = 0
+            self.total_finish = 0
             metrics = {}
 
             next_batch = int(round(self.env.now, 0)) + time
@@ -209,6 +206,7 @@ class Topology():
 
             reward = -(total_delay / self.tracking_counter)
 
+            metrics['relative_thoughput'] = self.total_finish/self.total_income
             # if we did not get all the tracking task, simply add whole trajectary 
             # with proportion to the data we did not received as penalty
             if self.collection_counter < self.tracking_counter:
@@ -442,6 +440,14 @@ class Topology():
     def reset_assignments(self):
         self.machine_to_executors = {}
         self.executor_to_machines = {}
+
+        for executors in self.name_to_executors.values():
+            for e in executors:
+                e.clear()
+        
+        for e in self.edge_list:
+            e.clear()
+
         if Config.debug:
             print('The current config has been reset')
 

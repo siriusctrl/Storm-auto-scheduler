@@ -64,8 +64,8 @@ class Spout():
             self.working = True
             try:
                 # word_list = np.random.poisson(2.7, size=self.batch)
-                word_list = self.rng.poisson(2.7, size=self.batch) + 2
                 # word_list = word_list[word_list > 1]
+                word_list = self.rng.poisson(2.7, size=self.batch) + 2
                 dest:Bolt = choice(self.downstreams)
                 
                 new_word_list = []
@@ -99,6 +99,7 @@ class Spout():
                     bridge.action.interrupt()
 
                 yield self.env.timeout(interval)
+                self.topology.total_income += len(new_word_list)
             except simpy.Interrupt:
                 if Config.update_flag or Config.debug:
                     print(f'{self} get interrupted, start again')
