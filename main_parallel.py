@@ -144,7 +144,7 @@ if __name__ == "__main__":
             # if done_bool == True:
             #     print(episode_timesteps, args.max_episodic_length)
             # Store in replay buffer
-            reward = -np.log(np.abs(reward))
+            # reward = -np.log(np.abs(reward))
             # the true is only for not done bool, which defines a infinit horizon problem
             replay_buffer.add(states[index], actions[index], next_state, reward, True)
             # print(info['pre_action'])

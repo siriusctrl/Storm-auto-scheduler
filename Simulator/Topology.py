@@ -204,22 +204,24 @@ class Topology():
                 if d.finish_time is not None:
                     total_delay += d.finish_time - d.enter_time
 
-            reward = -(total_delay / self.tracking_counter)
+            latency = -(total_delay / self.tracking_counter)
 
-            metrics['relative_thoughput'] = self.total_finish/self.total_income
             # if we did not get all the tracking task, simply add whole trajectary 
             # with proportion to the data we did not received as penalty
             if self.collection_counter < self.tracking_counter:
                 offset = -(time*5*b_count)*(1 - (self.collection_counter/self.tracking_counter))
                 if Config.debug or Config.progress_check:
                     print(f'{self.collection_counter/self.tracking_counter} collected with offset={offset}')
-                reward += offset
+                latency += offset
 
             if Config.progress_check or Config.debug:
-                print(f'final reward is {reward}')
+                print(f'final latency is {latency}')
                 print(f'simulation end at {self.env.now}')
 
-            return reward, metrics
+            metrics['relative_thoughput'] = self.total_finish/self.total_income
+            metrics['latency'] = latency
+
+            return metrics
         else:
             # This should only use for debug or data collection for cold start
             next_batch = int(round(self.env.now, 0)) + time
