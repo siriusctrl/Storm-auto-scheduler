@@ -13,14 +13,14 @@ class Actor(nn.Module):
     def __init__(self, state_dim, action_dim, max_action) -> None:
         super(Actor, self).__init__()
         self.model = nn.Sequential(
-            nn.Linear(state_dim, 64),
+            nn.Linear(state_dim, 128),
             nn.Tanh(),
-            nn.Linear(64, 32),
+            nn.Linear(128, 128),
             nn.Tanh(),
-            nn.Linear(32, action_dim),
+            nn.Linear(128, action_dim),
             # NOTICE: we would like the output to be (0,1) in our simulator
-            # nn.Sigmoid()
-            nn.Tanh()
+            nn.Sigmoid()
+            # nn.Tanh()
         )
         
         self.max_action = max_action
@@ -34,11 +34,11 @@ class Critic(nn.Module):
         super(Critic, self).__init__()
 
         self.model = nn.Sequential(
-            nn.Linear(state_dim+action_dim, 64),
+            nn.Linear(state_dim+action_dim, 128),
             nn.Tanh(),
-            nn.Linear(64,32),
+            nn.Linear(128,128),
             nn.Tanh(),
-            nn.Linear(32, 1)
+            nn.Linear(128, 1)
         )
     
     def forward(self, state, action):
@@ -68,7 +68,7 @@ class DDPG:
     #     action = np.random.uniform(0.,1.,self.action_dim)*self.max_action
     #     return action
     
-    def train(self, replay_buffer, batch_size=256):
+    def train(self, replay_buffer, batch_size=128):
         state, action, next_state, reward, not_done = replay_buffer.sample(batch_size)
 
         # compute the target Q
