@@ -12,9 +12,9 @@ from Data import IdentityDataTransformer
 
 class WordCountingEnv(gym.Env):
 
-    def __init__(self, n_machines= 5,
-                       n_spouts  = 2,
-                       data_incoming_rate = 20.,
+    def __init__(self, n_machines= 10,
+                       n_spouts  = 20,
+                       data_incoming_rate = 5.,
                        seed      = 20210723,
                     ) -> None:
         """
@@ -89,12 +89,12 @@ class WordCountingEnv(gym.Env):
             'spout': ['spout', self.n_spouts, [
                 {"incoming_rate":self.data_incoming_rate, "batch":100}]*self.n_spouts
             ],
-            'WordCount': ['bolt', 9, {
+            'WordCount': ['bolt', 40, {
                     'd_transform': IdentityDataTransformer(),
                     'batch':100,
                     'random_seed':None,
                 }],
-            'Database': ['bolt', 9, {
+            'Database': ['bolt', 40, {
                     'd_transform': IdentityDataTransformer(),
                     'batch':100,
                     'random_seed':None,
