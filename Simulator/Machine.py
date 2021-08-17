@@ -37,7 +37,7 @@ class Machine():
         self.memory = simpy.Container(env, capacity=capacity*100, init=capacity*100)
 
         # 500 byte per milisecond if the capacity is 100%
-        self.standard = 100
+        self.standard = 200
     
     def __repr__(self) -> str:
         # return f'm{self.id} cpu:{self.cpu.capacity}'

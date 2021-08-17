@@ -211,7 +211,8 @@ class Topology():
             # with proportion to the data we did not received as penalty
             if self.collection_counter < self.tracking_counter:
                 offset = -(time*5*b_count)*(1 - (self.collection_counter/self.tracking_counter))
-                print(f'{self.collection_counter/self.tracking_counter} collected with offset={offset}')
+                if Config.debug or Config.progress_check:
+                    print(f'{self.collection_counter/self.tracking_counter} collected with offset={offset}')
                 reward += offset
 
             if Config.progress_check or Config.debug:
