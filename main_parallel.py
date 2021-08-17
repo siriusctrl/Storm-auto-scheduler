@@ -54,16 +54,17 @@ if __name__ == "__main__":
     parser.add_argument("--batch_size", default=256, type=int)      # Batch size for both actor and critic
     parser.add_argument("--discount", default=0.99)                 # Discount factor
     parser.add_argument("--tau", default=0.005)                     # Target network update rate
-    parser.add_argument("--policy_noise", default=0.2)              # Noise added to target policy during critic update
+    parser.add_argument("--policy_noise", default=0.1)              # Noise added to target policy during critic update
     parser.add_argument("--noise_clip", default=0.1)                # Range to clip target policy noise
     parser.add_argument("--policy_freq", default=2, type=int)       # Frequency of delayed policy updates
     parser.add_argument("--save_model", action="store_true", default=True)        # Save model and optimizer parameters
     parser.add_argument("--load_model", default="")                 # Model load file name, "" doesn't load, "default" uses file_name
     parser.add_argument("--max_episodic_length", default=50, type=int)              
-    parser.add_argument("--n_env", default=10, type=int)            
+    parser.add_argument("--n_env", default=10, type=int)
+    parser.add_argument("--extra_name", default="")            
     args = parser.parse_args()
 
-    file_name = f"parallel_{args.policy}_cSim_condense_{args.seed}"
+    file_name = f"parallel_{args.policy}_cSim_condense_{args.extra_name}_{args.seed}"
     print("---------------------------------------")
     print(f"Policy: {args.policy}, Env: cSim, Seed: {args.seed}, Parallel condense")
     print("---------------------------------------")
@@ -143,6 +144,7 @@ if __name__ == "__main__":
             # if done_bool == True:
             #     print(episode_timesteps, args.max_episodic_length)
             # Store in replay buffer
+            reward = -np.log(np.abs(reward))
             replay_buffer.add(states[index], actions[index], next_state, reward, done_bool)
             # print(info['pre_action'])
             # print(actions[index])
