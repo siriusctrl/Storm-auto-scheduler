@@ -59,10 +59,10 @@ class WordCountingEnv(gym.Env):
         reshaped_assignments = new_assignments.reshape((len(self.topology.executor_flat), self.n_machines))
         self.topology.update_assignments(reshaped_assignments, 'one-hot')
         self.warm()
-        reward, metrics = self.once()
+        metrics = self.once()
         # the observation is the current deployment(after softmax) + data incoming rate
         new_state = np.concatenate(((new_assignments.flatten()), np.array([self.data_incoming_rate]*self.n_spouts)))
-        return new_state, reward, False, {'pre_action':new_assignments, **metrics}
+        return new_state, metrics['latency'], False, {**metrics}
 
     def reset(self):
         self.topology.reset_assignments()
