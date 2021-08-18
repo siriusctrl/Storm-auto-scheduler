@@ -24,8 +24,8 @@ class BaseSampler():
 
 class IdentitySampler(BaseSampler):
 
-    def __init__(self, value, random_seed=None) -> None:
-        super().__init__(random_seed=random_seed)
+    def __init__(self, value) -> None:
+        super().__init__(random_seed=None)
         self.value = value
     
     def sample(self, n=1):

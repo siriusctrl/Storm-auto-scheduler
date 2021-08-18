@@ -9,6 +9,7 @@ from scipy.special import softmax
 from Topology import Topology
 
 from Data import IdentityDataTransformer
+from Sampler import BetaSampler, PoissonSampler, IdentitySampler
 
 class WordCountingEnv(gym.Env):
 
@@ -34,7 +35,6 @@ class WordCountingEnv(gym.Env):
         self.n_spouts = n_spouts
         self.random_seed = seed
 
-        self.data_incoming_rate = data_incoming_rate
         self.topology:Topology = None
         self.bandwidth = bandwidth
         self.edge_batch = 100
@@ -46,8 +46,8 @@ class WordCountingEnv(gym.Env):
         size = n_machines*len(self.topology.executor_flat)
         self.action_space = Box(low=0.001, high=1., shape=(size,))
         # NOTICE: we are assuming a easier fixed incoming rate here
-        ob_low = np.array([0.]*size + [self.data_incoming_rate]*n_spouts)
-        ob_high = np.array([1.]*size + [self.data_incoming_rate]*n_spouts)
+        ob_low = np.array([0.]*size + [0.]*n_spouts)
+        ob_high = np.array([1.]*size + [20.]*n_spouts)
         self.observation_space = Box(low=ob_low, high=ob_high)
 
 
@@ -62,7 +62,7 @@ class WordCountingEnv(gym.Env):
         self.warm()
         metrics = self.once()
         # the observation is the current deployment(after softmax) + data incoming rate
-        new_state = np.concatenate(((new_assignments.flatten()), np.array([self.data_incoming_rate]*self.n_spouts)))
+        new_state = np.concatenate((new_assignments.flatten(), metrics['avg_incoming_rate']))
         return new_state, metrics['latency'], False, {**metrics}
 
     def reset(self):
@@ -95,7 +95,11 @@ class WordCountingEnv(gym.Env):
     def build_topology(self, debug=False):
         exe_info = {
             'spout': ['spout', self.n_spouts, [
-                {"incoming_rate":self.data_incoming_rate, "batch":100}]*self.n_spouts
+                {   "rate_sampler":IdentitySampler(5.), 
+                    "batch":100,
+                    "random_seed":self.random_seed+offset,
+                }
+                for offset in range(self.n_spouts)]
             ],
             'WordCount': ['bolt', 40, {
                     'd_transform': IdentityDataTransformer(),
@@ -137,7 +141,7 @@ class WordCountingEnv(gym.Env):
 if __name__ == '__main__':
     # env = WordCountingEnv(n_machines=10, n_spouts=20, data_incoming_rate=5)
     env = WordCountingEnv()
-    print("data incoming rate is", env.data_incoming_rate)
+    # print("data incoming rate is", env.data_incoming_rate)
     # env.warm()
     # print(env.once())
     # env.warm()

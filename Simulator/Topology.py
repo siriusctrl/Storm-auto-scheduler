@@ -10,6 +10,7 @@ from Data import Data, IdentityDataTransformer
 from Edge import Edge
 from Machine import Machine
 from Spout import Spout
+from Sampler import BetaSampler, PoissonSampler, IdentitySampler
 
 
 class Topology():
@@ -63,6 +64,7 @@ class Topology():
         self.tracking_list = []
         self.collection_counter = 0
 
+        # this is for calculating the overall throughput
         self.total_income = 0
         self.total_finish = 0
 
@@ -199,6 +201,7 @@ class Topology():
                 self.env.run(until=next_batch)
                 b_count += 1
 
+            # calculate the latency
             total_delay = 0
             for d in self.tracking_list:
                 if d.finish_time is not None:
@@ -220,6 +223,14 @@ class Topology():
 
             metrics['relative_thoughput'] = self.total_finish/self.total_income
             metrics['latency'] = latency
+
+            avg_incoming_rate = []
+            for sp in self.name_to_executors['spout']:
+                avg_incoming_rate.append(np.mean(sp.rate_history))
+
+            metrics['avg_incoming_rate'] = avg_incoming_rate
+
+            print(avg_incoming_rate)
 
             return metrics
         else:
@@ -326,7 +337,7 @@ class Topology():
         for i in range(n):
             # new_spout = Spout(i, data_rates[i],
             #                   self.env, self, self.random_seed)
-            new_spout = Spout(i, self.env, self, random_seed=self.random_seed, **(param[i]))
+            new_spout = Spout(i, self.env, self, **(param[i]))
             self.name_to_executors['spout'] = self.name_to_executors.get(
                 'spout', []) + [new_spout]
 
@@ -394,21 +405,23 @@ class Topology():
     def _build_sample_executors(self):
         sample_info = {
             'spout': ['spout', 2, [
-                {"incoming_rate":20, "batch":100}]*2
+                {"rate_sampler":PoissonSampler(mu=20, random_seed=self.random_seed+offset), 
+                "batch":20, 
+                "random_seed":self.random_seed+offset} for offset in range(2)]
             ],
             'SplitSentence': ['bolt', 5, {
                     'd_transform': IdentityDataTransformer(),
-                    'batch':100,
+                    'batch':20,
                     'random_seed':None,
                 }],
             'WordCount': ['bolt', 5, {
                     'd_transform': IdentityDataTransformer(),
-                    'batch':100,
+                    'batch':20,
                     'random_seed':None,
                 }],
             'Database': ['bolt', 5, {
                     'd_transform': IdentityDataTransformer(),
-                    'batch':100,
+                    'batch':20,
                     'random_seed':None,
                 }],
             'graph': [
@@ -457,7 +470,7 @@ class Topology():
 
 if __name__ == '__main__':
     # test = Topology(4, {})
-    test = Topology(4, {})
+    test = Topology(4, {}, random_seed=100)
     test.build_sample(debug=False)
     
 
@@ -494,10 +507,10 @@ if __name__ == '__main__':
     """
     Test new assignment updates
     """
-    # test.update_states(time=10, track=True)
-    # test.update_states(time=0.1, track=False)
-    # test.update_assignments([[0.3, 0.3, 0.2, 0.2]]*4)
-    # test.update_states(time=0.105, track=False)
+    test.update_states(time=10, track=True)
+    test.update_states(time=0.1, track=False)
+    test.update_assignments([[0.3, 0.3, 0.2, 0.2]]*4)
+    test.update_states(time=0.105, track=False)
 
     """
     Tracking info

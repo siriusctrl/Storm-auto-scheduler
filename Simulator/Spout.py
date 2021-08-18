@@ -17,15 +17,17 @@ class Spout():
     def __init__(self, id:int,
                     env:Environment,
                     topology,
-                    incoming_rate:float,
+                    rate_sampler,
                     batch:int,
                     random_seed=None
                 ) -> None:
         
         self.name = 'spout'
         self.id = id
-        self.incoming_rate = incoming_rate
         self.env = env
+
+        self.rate_sampler = rate_sampler
+        self.rate_history = []
 
         if random_seed is not None:
             self.random_seed = random_seed
@@ -54,17 +56,19 @@ class Spout():
         if self.downstreams is None:
             self.downstreams = self.topology.get_downstreams(self)
 
-        # TODO: the data income rate can follow some distribution, wrap it
-        interval = 1.0*self.batch / self.incoming_rate
 
-        if Config.debug:
-            print(self.__repr__(), 'interval=', interval)
 
         while True:
             self.working = True
+            rate = max(self.rate_sampler.sample(), 1)
+            self.rate_history.append(rate)
+            interval = self.batch / rate
+            if Config.debug:
+                print(self.__repr__(), 'interval=', interval)
             try:
                 # word_list = np.random.poisson(2.7, size=self.batch)
                 # word_list = word_list[word_list > 1]
+                # TODO: later wrap this data generation pattern
                 word_list = self.rng.poisson(2.7, size=self.batch) + 2
                 dest:Bolt = choice(self.downstreams)
                 
@@ -109,6 +113,8 @@ class Spout():
             print(f'{self} is clearing')
         if self.working:
             self.action.interrupt()
+        
+        self.rate_history = []
 
     @staticmethod
     def to_yellow(prt): 
