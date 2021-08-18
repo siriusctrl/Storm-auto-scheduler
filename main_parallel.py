@@ -24,22 +24,26 @@ from Wolptinger.ContinuousCartPole import ContinuousCartPoleEnv
 def eval_policy(policy, eval_env, eval_episodes=1):
     avg_reward = 0.
     step_count = 0
+    res = {}
     for _ in range(eval_episodes):
         state, done = eval_env.reset(), False
         while not done:
             action = policy.select_action(np.array(state))
-            state, reward, done, _ = eval_env.step(action)
+            state, reward, done, info = eval_env.step(action)
             avg_reward += reward
             step_count += 1
             if step_count >= 10:
                 break
+
+            for key in info.keys():
+                res[key] = res.get(key, []) + [info[key]]
 
     avg_reward /= eval_episodes
 
     print("---------------------------------------")
     print(f"Evaluation over {eval_episodes} episodes: {avg_reward:.3f} steps:{avg_reward/step_count:.3f}")
     print("---------------------------------------")
-    return avg_reward
+    return res
 
 
 if __name__ == "__main__":
@@ -113,6 +117,8 @@ if __name__ == "__main__":
     replay_buffer = ReplayBuffer(state_dim, action_dim)
     # evaluations = [eval_policy(policy, args.env, args.seed)]
     evaluations = []
+    evaluations.append(eval_policy(policy, eval_env))
+    print(evaluations)
     states, done = parallel_env.reset(), False
     episode_reward = 0
     episode_timesteps = 0
