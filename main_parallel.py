@@ -160,7 +160,6 @@ if __name__ == "__main__":
                     total_step_collection[key].append(info[key])
                 else:
                     total_step_collection[key] = [info[key]]
-            print(total_step_collection)
 
         print(f'batch:{t+1}/{int(args.max_timesteps // args.n_env)} avg reward is {batch_reward/args.n_env}')
 
