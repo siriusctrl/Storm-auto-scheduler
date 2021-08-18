@@ -13,7 +13,7 @@ from Data import IdentityDataTransformer
 class WordCountingEnv(gym.Env):
 
     def __init__(self, n_machines= 5,
-                       n_spouts  = 20,
+                       n_spouts  = 2,
                        data_incoming_rate = 20.,
                        seed      = 20210723,
                        bandwidth = 100,
@@ -164,7 +164,7 @@ if __name__ == '__main__':
     """
     Test the effect of bad allocations
     """
-    ac = env.random_action()
+    ac = env.random_action()[0]
     # ac[:,-1] = 0
     # ac[0:1,0] = 10
     # ac[1:2,1] = 10
