@@ -117,7 +117,7 @@ if __name__ == "__main__":
     episode_reward = 0
     episode_timesteps = 0
     episode_num = 0
-    total_step_collection = []
+    total_step_collection = {}
 
     for t in range(int(args.max_timesteps // args.n_env)):
         # episode_timesteps += t*args.n_env
@@ -151,7 +151,12 @@ if __name__ == "__main__":
             # print(actions[index])
             episode_reward += reward
             batch_reward += reward
-            total_step_collection.append(reward)
+            for key in info.keys():
+                if key in total_step_collection:
+                    total_step_collection[key].append(info[key])
+                else:
+                    total_step_collection[key] = [info[key]]
+            print(total_step_collection)
 
         print(f'batch:{t+1}/{int(args.max_timesteps // args.n_env)} avg reward is {batch_reward/args.n_env}')
 
