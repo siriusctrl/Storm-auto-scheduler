@@ -161,10 +161,10 @@ if __name__ == "__main__":
             #     print(episode_timesteps, args.max_episodic_length)
             # Store in replay buffer
             if args.model == 'li':
-                replay_buffer.add(states[index], actions[index], next_state, reward, done_bool)
+                replay_buffer.add(states[index], actions[index], next_state, reward, True)
             elif args.model == 'our':
                 # replay_buffer.add(states[index], proto_actions[index], next_state, reward, done_bool)
-                replay_buffer.add(states[index], actions[index], next_state, reward, done_bool)
+                replay_buffer.add(states[index], actions[index], next_state, reward, True)
             else:
                 raise ValueError()
             # print(info['pre_action'])
