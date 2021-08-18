@@ -13,9 +13,10 @@ from Data import IdentityDataTransformer
 class WordCountingEnv(gym.Env):
 
     def __init__(self, n_machines= 5,
-                       n_spouts  = 2,
+                       n_spouts  = 20,
                        data_incoming_rate = 20.,
                        seed      = 20210723,
+                       bandwidth = 100,
                     ) -> None:
         """
         Construct all the necessary attributes for the word couting topology
@@ -35,7 +36,7 @@ class WordCountingEnv(gym.Env):
 
         self.data_incoming_rate = data_incoming_rate
         self.topology:Topology = None
-        self.bandwidth = 200
+        self.bandwidth = bandwidth
         self.edge_batch = 100
 
         self.seed()
