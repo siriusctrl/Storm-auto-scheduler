@@ -7,12 +7,19 @@ from scipy.stats import beta, poisson
 class BaseSampler():
     def __init__(self, random_seed=None) -> None:
         self.random_seed = random_seed
-
+        self.rv = None
         if random_seed:
             np.random.seed(random_seed)
             self.rv_state = np.random.RandomState(seed=random_seed)
 
-    def sample(self, n):
+    def sample(self, n=1):
+        assert(n > 0)
+        if n == 1:
+            return self.rv.rvs(1)[0]
+        else:
+            return self.rv.rvs(size=n)
+    
+    def plot(self):
         raise NotImplementedError
 
 class IdentitySampler(BaseSampler):
@@ -30,47 +37,38 @@ class IdentitySampler(BaseSampler):
 
 class BetaSampler(BaseSampler):
 
-    def __init__(self, random_seed=None) -> None:
+    def __init__(self, a=9, b=2, random_seed=None) -> None:
         super().__init__(random_seed=random_seed)
 
-    def sample(self, n=1, a=9, b=2, plot=False):
-        assert(n > 0)
-        rv = beta(a, b)
+        self.rv = beta(a, b)
         if self.random_seed is not None:
-            rv.random_state = self.rv_state
-
-        if plot:
-            x = np.arange(0.01, 1, 0.01)
-            y = rv.pdf(x)
-            plt.plot(x,y)
-            plt.show()
-
-        return rv.rvs(size=n)
+            self.rv.random_state = self.rv_state
+    
+    def plot(self):
+        x = np.arange(0.01, 1, 0.01)
+        y = self.rv.pdf(x)
+        plt.plot(x,y)
+        plt.show()
 
 class PoissonSampler(BaseSampler):
 
-    def __init__(self, random_seed) -> None:
+    def __init__(self, mu=5., random_seed=None) -> None:
         super().__init__(random_seed=random_seed)
-
-    def sample(self, n=1, mu=5., plot=False):
-        assert(n > 0)
-        rv = poisson(mu)
+        self.mu = mu
+        self.rv = poisson(mu)
         if self.random_seed is not None:
-            rv.random_state = self.rv_state
-        
-        if plot:
-            x = np.arange(poisson.ppf(0.01, mu), poisson.ppf(0.99, mu))
-            _, ax = plt.subplots(1, 1)
-            ax.plot(x, poisson.pmf(x, mu), 'bo', ms=8, label='poisson pmf')
-            ax.vlines(x, 0, poisson.pmf(x, mu), colors='b', lw=5, alpha=0.5)
-            plt.show()
-
-        return rv.rvs(size=n)
+            self.rv.random_state = self.rv_state
+    
+    def plot(self):
+        x = np.arange(poisson.ppf(0.01, self.mu), poisson.ppf(0.99, self.mu))
+        _, ax = plt.subplots(1, 1)
+        ax.plot(x, poisson.pmf(x, self.mu), 'bo', ms=8, label='poisson pmf')
+        ax.vlines(x, 0, poisson.pmf(x, self.mu), colors='b', lw=5, alpha=0.5)
+        plt.show()
         
 
 if __name__ == '__main__':
     # a = Sampler(random_seed=20200430)
     # print(a.beta(10, debug=False))
-    sampler = PoissonSampler(random_seed=1)
-    print(sampler.sample(n=10, mu=20., plot=True))
-    print(sampler.sample(n=10))
+    sampler = BetaSampler(random_seed=1)
+    print(sampler.plot())
