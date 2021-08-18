@@ -13,8 +13,8 @@ from Data import IdentityDataTransformer
 class WordCountingEnv(gym.Env):
 
     def __init__(self, n_machines= 5,
-                       n_spouts  = 2,
-                       data_incoming_rate = 20.,
+                       n_spouts  = 20,
+                       data_incoming_rate = 5.,
                        seed      = 20210723,
                        bandwidth = 100,
                     ) -> None:
@@ -46,8 +46,8 @@ class WordCountingEnv(gym.Env):
         size = n_machines*len(self.topology.executor_flat)
         self.action_space = Box(low=0.001, high=1., shape=(size,))
         # NOTICE: we are assuming a easier fixed incoming rate here
-        ob_low = np.array([0.]*size + [self.data_incoming_rate/10]*n_spouts)
-        ob_high = np.array([1.]*size + [self.data_incoming_rate/10]*n_spouts)
+        ob_low = np.array([0.]*size + [self.data_incoming_rate]*n_spouts)
+        ob_high = np.array([1.]*size + [self.data_incoming_rate]*n_spouts)
         self.observation_space = Box(low=ob_low, high=ob_high)
 
 
@@ -97,12 +97,12 @@ class WordCountingEnv(gym.Env):
             'spout': ['spout', self.n_spouts, [
                 {"incoming_rate":self.data_incoming_rate, "batch":100}]*self.n_spouts
             ],
-            'WordCount': ['bolt', 9, {
+            'WordCount': ['bolt', 40, {
                     'd_transform': IdentityDataTransformer(),
                     'batch':100,
                     'random_seed':None,
                 }],
-            'Database': ['bolt', 9, {
+            'Database': ['bolt', 40, {
                     'd_transform': IdentityDataTransformer(),
                     'batch':100,
                     'random_seed':None,
