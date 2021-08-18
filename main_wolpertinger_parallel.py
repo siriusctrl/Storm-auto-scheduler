@@ -20,22 +20,26 @@ from our_Wolpertinger import Wolpertinger as our_wolp
 def eval_policy(policy, eval_env, eval_episodes=1):
     avg_reward = 0.
     step_count = 0
+    res = {}
     for _ in range(eval_episodes):
         state, done = eval_env.reset(), False
         while not done:
             action, _ = policy.select_action(np.array(state), noise=False)
-            state, reward, done, _ = eval_env.step(action)
+            state, reward, done, info = eval_env.step(action)
             avg_reward += reward
             step_count += 1
             if step_count >= 10:
                 break
+
+            for key in info.keys():
+                res[key] = res.get(key, []) + [info[key]]
 
     avg_reward /= eval_episodes
 
     print("---------------------------------------")
     print(f"Evaluation over {eval_episodes} episodes: {avg_reward:.3f} steps:{avg_reward/step_count:.3f}")
     print("---------------------------------------")
-    return avg_reward
+    return res
 
 
 if __name__ == "__main__":
@@ -129,7 +133,7 @@ if __name__ == "__main__":
     episode_reward = 0
     episode_timesteps = 0
     episode_num = 0
-    total_step_collection = []
+    total_step_collection = {}
 
     for t in range(int(args.max_timesteps // args.n_env)):
         # episode_timesteps += t*args.n_env
@@ -171,7 +175,11 @@ if __name__ == "__main__":
             # print(actions[index])
             episode_reward += reward
             batch_reward += reward
-            total_step_collection.append(reward)
+            for key in info.keys():
+                if key in total_step_collection:
+                    total_step_collection[key].append(info[key])
+                else:
+                    total_step_collection[key] = [info[key]]
 
         print(f'batch:{t+1}/{int(args.max_timesteps // args.n_env)} avg reward is {batch_reward/args.n_env}')
 
