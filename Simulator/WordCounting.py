@@ -9,12 +9,12 @@ from scipy.special import softmax
 from Topology import Topology
 
 from Data import IdentityDataTransformer
+from Sampler import BetaSampler, PoissonSampler, IdentitySampler
 
 class WordCountingEnv(gym.Env):
 
     def __init__(self, n_machines= 10,
                        n_spouts  = 20,
-                       data_incoming_rate = 5.,
                        seed      = 20210723,
                        bandwidth = 100,
                     ) -> None:
@@ -34,7 +34,6 @@ class WordCountingEnv(gym.Env):
         self.n_spouts = n_spouts
         self.random_seed = seed
 
-        self.data_incoming_rate = data_incoming_rate
         self.topology:Topology = None
         self.bandwidth = bandwidth
         self.edge_batch = 100
@@ -42,8 +41,8 @@ class WordCountingEnv(gym.Env):
         self.action_space = Box(low=0.001, high=1., shape=(3*n_machines,))
         size = 3*n_machines
         # TODO: we assume fixed data incoming rate here
-        ob_low = np.array([0.]*size + [self.data_incoming_rate]*n_spouts)
-        ob_high = np.array([1.]*size + [self.data_incoming_rate]*n_spouts)
+        ob_low = np.array([0.]*size + [0.]*n_spouts)
+        ob_high = np.array([1.]*size + [20.]*n_spouts)
         self.observation_space = Box(low=ob_low, high=ob_high)
 
         self.seed()
@@ -56,13 +55,12 @@ class WordCountingEnv(gym.Env):
         # new_assignments = softmax(new_assignments, axis=1)
         totoal = reshaped_assignments.sum(axis=1)
         reshaped_assignments = (reshaped_assignments.T / totoal).T
-        # print(new_assignments)
         self.topology.update_assignments(reshaped_assignments)
         self.warm()
         metrics = self.once()
         # the observation is the current deployment(after softmax) + data incoming rate
         new_state = reshaped_assignments.flatten()
-        new_state = np.concatenate((new_state, np.array([self.data_incoming_rate]*self.n_spouts)))
+        new_state = np.concatenate((new_state, metrics['avg_incoming_rate']))
         # NOTICE: this is different than the original paper where new_state is the state after normalization
         return new_state, metrics['latency'], False, {**metrics}
 
@@ -76,8 +74,8 @@ class WordCountingEnv(gym.Env):
     def once(self):
         return self.topology.update_states(time=1000, track=True)
     
-    def warm(self):
-        self.topology.update_states(time=5000, track=False)
+    def warm(self, time=5000):
+        self.topology.update_states(time=time, track=False)
 
     def seed(self):
         # the np_random is the numpy RandomState
@@ -88,7 +86,11 @@ class WordCountingEnv(gym.Env):
     def build_topology(self, debug=False):
         exe_info = {
             'spout': ['spout', self.n_spouts, [
-                {"incoming_rate":self.data_incoming_rate, "batch":100}]*self.n_spouts
+                {   "rate_sampler":IdentitySampler(5.),
+                    "batch":100,
+                    "random_seed":self.random_seed+offset,
+                }
+                for offset in range(self.n_spouts)]
             ],
             'WordCount': ['bolt', 40, {
                     'd_transform': IdentityDataTransformer(),
@@ -130,7 +132,7 @@ class WordCountingEnv(gym.Env):
 if __name__ == '__main__':
     # env = WordCountingEnv(n_machines=10, n_spouts=20, data_incoming_rate=5)
     env = WordCountingEnv()
-    print("data incoming rate is", env.data_incoming_rate)
+    # print("data incoming rate is", env.data_incoming_rate)
     # env.warm()
     # print(env.once())
     # env.warm()
