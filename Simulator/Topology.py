@@ -230,8 +230,6 @@ class Topology():
 
             metrics['avg_incoming_rate'] = avg_incoming_rate
 
-            print(avg_incoming_rate)
-
             return metrics
         else:
             # This should only use for debug or data collection for cold start
