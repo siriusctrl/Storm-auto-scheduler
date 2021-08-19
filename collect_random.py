@@ -109,7 +109,7 @@ if __name__ == "__main__":
             # if done_bool == True:
             #     print(episode_timesteps, args.max_episodic_length)
             # Store in replay buffer
-            replay_buffer.add(states[index], actions[index], next_state, reward, done_bool)
+            replay_buffer.add(states[index], actions[index], next_state, reward, True)
             # print(info['pre_action'])
             # print(actions[index])
             episode_reward += reward
