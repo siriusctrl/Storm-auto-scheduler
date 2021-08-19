@@ -86,7 +86,7 @@ class WordCountingEnv(gym.Env):
     def build_topology(self, debug=False):
         exe_info = {
             'spout': ['spout', self.n_spouts, [
-                {   "rate_sampler":IdentitySampler(5.),
+                {   "rate_sampler":PoissonSampler(mu=5),
                     "batch":100,
                     "random_seed":self.random_seed+offset,
                 }
