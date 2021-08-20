@@ -93,14 +93,27 @@ class WordCountingEnv(gym.Env):
         return [seed]
 
     def build_topology(self, debug=False):
-        exe_info = {
-            'spout': ['spout', self.n_spouts, [
-                {   "rate_sampler":IdentitySampler(5.), 
-                    "batch":100,
+        low = [
+                {   "rate_sampler":IdentitySampler(3.), 
+                    "batch":50,
                     "random_seed":self.random_seed+offset,
                 }
-                for offset in range(self.n_spouts)]
-            ],
+                for offset in range(self.n_spouts//3)]
+        high = [
+                {   "rate_sampler":IdentitySampler(5.), 
+                    "batch":50,
+                    "random_seed":self.random_seed+offset+len(low),
+                }
+                for offset in range(self.n_spouts//3)]
+        med = [
+                {   "rate_sampler":IdentitySampler(7.), 
+                    "batch":50,
+                    "random_seed":self.random_seed+offset+len(low)+len(high),
+                }
+                for offset in range(self.n_spouts-len(low)-len(high))]
+
+        exe_info = {
+            'spout': ['spout', self.n_spouts, high+med+low],
             'WordCount': ['bolt', 40, {
                     'd_transform': IdentityDataTransformer(),
                     'batch':100,
