@@ -86,21 +86,21 @@ class WordCountingEnv(gym.Env):
     def build_topology(self, debug=False):
         low = [
                 {   "rate_sampler":PoissonSampler(3., random_seed=self.random_seed+offset), 
-                    "batch":30,
+                    "batch":100,
                     "random_seed":self.random_seed+offset,
                     "subset":True,
                 }
                 for offset in range(self.n_spouts//3)]
         high = [
                 {   "rate_sampler":PoissonSampler(5., random_seed=self.random_seed+offset+len(low)), 
-                    "batch":50,
+                    "batch":100,
                     "random_seed":self.random_seed+offset+len(low),
                     "subset":True,
                 }
                 for offset in range(self.n_spouts//3)]
         med = [
                 {   "rate_sampler":PoissonSampler(7., random_seed=self.random_seed+offset+len(low)+len(high)), 
-                    "batch":70,
+                    "batch":100,
                     "random_seed":self.random_seed+offset+len(low)+len(high),
                     "subset":True,
                 }
@@ -181,7 +181,8 @@ if __name__ == '__main__':
     # ac[1:2,1] = 10
     # ac[2:3,2] = 10
     # ac[:,0] = 10
-    print(ac)
-    print(env.step(ac))
-    for _ in range(20):
-        print(env.once())
+    # print(ac)
+    # print(env.step(ac))
+    env.step(ac)
+    # for _ in range(20):
+    #     print(env.once())

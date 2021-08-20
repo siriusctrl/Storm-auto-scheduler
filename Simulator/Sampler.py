@@ -8,7 +8,7 @@ class BaseSampler():
     def __init__(self, random_seed=None) -> None:
         self.random_seed = random_seed
         self.rv = None
-        if random_seed:
+        if random_seed is not None:
             np.random.seed(random_seed)
             self.rv_state = np.random.RandomState(seed=random_seed)
 
