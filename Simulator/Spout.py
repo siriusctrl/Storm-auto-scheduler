@@ -19,7 +19,8 @@ class Spout():
                     topology,
                     rate_sampler,
                     batch:int,
-                    random_seed=None
+                    subset=False,
+                    random_seed=None,
                 ) -> None:
         
         self.name = 'spout'
@@ -42,6 +43,8 @@ class Spout():
         assert(batch >= 1)
         self.batch = batch
 
+        self.subset = subset
+
         self.generate_counter = 0
         self.working = False
 
@@ -53,23 +56,31 @@ class Spout():
         # add this line to prevent geting downstreams before the system setup
         yield self.env.timeout(0)
 
+        # TODO: sample a subset of downstreams bolt
         if self.downstreams is None:
             self.downstreams = self.topology.get_downstreams(self)
-
-
+            if self.subset:
+                self.downstreams = random.sample(self.downstreams, len(self.downstreams)//3)
 
         while True:
             self.working = True
-            rate = max(self.rate_sampler.sample(), 1)
-            self.rate_history.append(rate)
-            interval = self.batch / rate
+
+            # NOTICE: we sample the data incoming rate for every milisecond until reach batch
+            cumulater = 0
+            interval = 0
+            while cumulater < self.batch:
+                rate = self.rate_sampler.sample()
+                self.rate_history.append(rate)
+                cumulater += rate
+                interval += 1
+
             if Config.debug:
                 print(self.__repr__(), 'interval=', interval)
             try:
                 # word_list = np.random.poisson(2.7, size=self.batch)
                 # word_list = word_list[word_list > 1]
                 # TODO: later wrap this data generation pattern
-                word_list = self.rng.poisson(2.7, size=self.batch) + 2
+                word_list = self.rng.poisson(2.7, size=int(cumulater)) + 2
                 dest:Bolt = choice(self.downstreams)
                 
                 new_word_list = []
@@ -93,7 +104,8 @@ class Spout():
                         print(self, 'generate data at', self.env.now)
                     else:
                         print(f'{self} generate tracked data at {self.env.now} with counter {self.topology.tracking_counter}')
-
+                
+                yield self.env.timeout(interval)
                 bridge.queue += new_word_list
                 # NOTICE : interrupt is also a event, instead of function call, so the effect
                 # of the state chaning (from non-working to working) will be delayed
@@ -101,8 +113,7 @@ class Spout():
                 # interrupt event that may cuase error and slow down the simulation
                 if (not bridge.working) and (len(bridge.queue) == len(new_word_list)):
                     bridge.action.interrupt()
-
-                yield self.env.timeout(interval)
+                
                 self.topology.total_income += len(new_word_list)
             except simpy.Interrupt:
                 if Config.update_flag or Config.debug:

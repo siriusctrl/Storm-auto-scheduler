@@ -84,14 +84,30 @@ class WordCountingEnv(gym.Env):
         return [seed]
 
     def build_topology(self, debug=False):
-        exe_info = {
-            'spout': ['spout', self.n_spouts, [
-                {   "rate_sampler":PoissonSampler(mu=5),
+        low = [
+                {   "rate_sampler":PoissonSampler(3., random_seed=self.random_seed+offset), 
                     "batch":100,
                     "random_seed":self.random_seed+offset,
+                    "subset":True,
                 }
-                for offset in range(self.n_spouts)]
-            ],
+                for offset in range(self.n_spouts//3)]
+        high = [
+                {   "rate_sampler":PoissonSampler(5., random_seed=self.random_seed+offset+len(low)), 
+                    "batch":100,
+                    "random_seed":self.random_seed+offset+len(low),
+                    "subset":True,
+                }
+                for offset in range(self.n_spouts//3)]
+        med = [
+                {   "rate_sampler":PoissonSampler(7., random_seed=self.random_seed+offset+len(low)+len(high)), 
+                    "batch":100,
+                    "random_seed":self.random_seed+offset+len(low)+len(high),
+                    "subset":True,
+                }
+                for offset in range(self.n_spouts-len(low)-len(high))]
+
+        exe_info = {
+            'spout': ['spout', self.n_spouts, high+med+low],
             'WordCount': ['bolt', 40, {
                     'd_transform': IdentityDataTransformer(),
                     'batch':100,
@@ -165,7 +181,8 @@ if __name__ == '__main__':
     # ac[1:2,1] = 10
     # ac[2:3,2] = 10
     # ac[:,0] = 10
-    print(ac)
-    print(env.step(ac))
-    for _ in range(20):
-        print(env.once())
+    # print(ac)
+    # print(env.step(ac))
+    env.step(ac)
+    # for _ in range(20):
+    #     print(env.once())

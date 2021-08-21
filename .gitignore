@@ -131,3 +131,4 @@ dmypy.json
 # profiler
 *.pyp
 models/
+offline/random_wolp_2.pkl
