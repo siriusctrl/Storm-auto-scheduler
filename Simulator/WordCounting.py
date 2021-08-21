@@ -108,7 +108,7 @@ class WordCountingEnv(gym.Env):
 
         exe_info = {
             'spout': ['spout', self.n_spouts, high+med+low],
-            'WordCount': ['bolt', 40, {
+            'WordCount': ['bolt', 20, {
                     'd_transform': IdentityDataTransformer(),
                     'batch':100,
                     'random_seed':None,
