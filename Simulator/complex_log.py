@@ -14,7 +14,7 @@ from Sampler import BetaSampler, PoissonSampler, IdentitySampler
 class WordCountingEnv(gym.Env):
 
     def __init__(self, n_machines= 10,
-                       n_spouts  = 20,
+                       n_spouts  = 10,
                        seed      = 20210723,
                        bandwidth = 100,
                     ) -> None:
@@ -40,20 +40,20 @@ class WordCountingEnv(gym.Env):
 
         self.seed()
         self.build_topology()
-
+        
         size = len(self.topology.executor_groups)*n_machines
         self.action_space = Box(low=0.001, high=1., shape=(size,))
         # TODO: we assume fixed data incoming rate here
         ob_low = np.array([0.]*size + [0.]*n_spouts)
-        ob_high = np.array([1.]*size + [20.]*n_spouts)
+        ob_high = np.array([1.]*size + [5.]*n_spouts)
         self.observation_space = Box(low=ob_low, high=ob_high)
 
-
+        
     
     def step(self, new_assignments):
         assert(new_assignments is not None)
         # make sure assigment for each type of bolt sum to approximately 1
-        reshaped_assignments = new_assignments.reshape(((len(self.topology.executor_groups)), self.n_machines)).clip(0.001, 1.)
+        reshaped_assignments = new_assignments.reshape((len(self.topology.executor_groups), self.n_machines)).clip(0.001, 1.)
         # new_assignments = softmax(new_assignments, axis=1)
         totoal = reshaped_assignments.sum(axis=1)
         reshaped_assignments = (reshaped_assignments.T / totoal).T
@@ -94,14 +94,14 @@ class WordCountingEnv(gym.Env):
                 }
                 for offset in range(self.n_spouts//3)]
         high = [
-                {   "rate_sampler":PoissonSampler(5., random_seed=self.random_seed+offset+len(low)), 
+                {   "rate_sampler":PoissonSampler(7., random_seed=self.random_seed+offset+len(low)), 
                     "batch":100,
                     "random_seed":self.random_seed+offset+len(low),
                     "subset":True,
                 }
                 for offset in range(self.n_spouts//3)]
         med = [
-                {   "rate_sampler":PoissonSampler(7., random_seed=self.random_seed+offset+len(low)+len(high)), 
+                {   "rate_sampler":PoissonSampler(5., random_seed=self.random_seed+offset+len(low)+len(high)), 
                     "batch":100,
                     "random_seed":self.random_seed+offset+len(low)+len(high),
                     "subset":True,
@@ -110,22 +110,40 @@ class WordCountingEnv(gym.Env):
 
         exe_info = {
             'spout': ['spout', self.n_spouts, high+med+low],
-            'WordCount': ['bolt', 20, {
+            'A': ['bolt', 20, {
                     'd_transform': IdentityDataTransformer(),
                     'batch':100,
                     'random_seed':None,
                 }],
-            'Database': ['bolt', 40, {
+            'B': ['bolt', 20, {
+                    'd_transform': IdentityDataTransformer(),
+                    'batch':100,
+                    'random_seed':None,
+                }],
+            'C': ['bolt', 20, {
+                    'd_transform': IdentityDataTransformer(),
+                    'batch':100,
+                    'random_seed':None,
+                }],
+            'D': ['bolt', 15, {
+                    'd_transform': IdentityDataTransformer(),
+                    'batch':100,
+                    'random_seed':None,
+                }],
+            'E': ['bolt', 15, {
                     'd_transform': IdentityDataTransformer(),
                     'batch':100,
                     'random_seed':None,
                 }],
             'graph': [
                 # we first define a list of nodes
-                ['spout', 'WordCount', 'Database'],
+                ['spout', 'A', 'B', 'C', 'D', 'E'],
                 # then, we have edge represent in tuples
-                ('spout', 'WordCount'),
-                ('WordCount', 'Database')
+                ('spout', 'A'),
+                ('A', 'B'),
+                ('B', 'D'),
+                ('A', 'C'),
+                ('C', 'E'),
             ]
         }
 
@@ -177,14 +195,14 @@ if __name__ == '__main__':
     """
     Test the effect of bad allocations
     """
-    ac = env.action_space.high.reshape((3, env.n_machines))
+    ac = env.action_space.high.reshape((6, env.n_machines))
     # ac[:,-1] = 0
     # ac[0:1,0] = 10
     # ac[1:2,1] = 10
     # ac[2:3,2] = 10
     # ac[:,0] = 10
     # print(ac)
-    # print(env.step(ac))
-    env.step(ac)
+    print(env.step(ac))
+    # env.step(ac)
     # for _ in range(20):
     #     print(env.once())

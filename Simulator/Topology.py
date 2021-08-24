@@ -190,13 +190,15 @@ class Topology():
 
             # turn off tracking as we already generate enough data for tracking
             self.tracking = False
-
             b_count = 0
             # we will only update the system for at most 10*time to prevent extreme situation
             while b_count != 2:
                 if Config.progress_check or Config.debug:
                     print(
                         f'{self.collection_counter*100/self.tracking_counter:.2f} collected {b_count}')
+                # perform early breaking if we received all the tracking data
+                if self.collection_counter == self.tracking_counter:
+                    break
                 next_batch = int(round(self.env.now, 0)) + time*5
                 self.env.run(until=next_batch)
                 b_count += 1
