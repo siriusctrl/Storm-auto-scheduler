@@ -11,7 +11,7 @@ from Topology import Topology
 from Data import IdentityDataTransformer
 from Sampler import BetaSampler, PoissonSampler, IdentitySampler
 
-class WordCountingEnv(gym.Env):
+class ComplexLogEnv(gym.Env):
 
     def __init__(self, n_machines= 10,
                        n_spouts  = 10,
@@ -167,7 +167,7 @@ class WordCountingEnv(gym.Env):
 
 if __name__ == '__main__':
     # env = WordCountingEnv(n_machines=10, n_spouts=20, data_incoming_rate=5)
-    env = WordCountingEnv()
+    env = ComplexLogEnv()
     # print("data incoming rate is", env.data_incoming_rate)
     # env.warm()
     # print(env.once())
@@ -195,7 +195,7 @@ if __name__ == '__main__':
     """
     Test the effect of bad allocations
     """
-    ac = env.action_space.high.reshape((6, env.n_machines))
+    ac = env.action_space.sample()
     # ac[:,-1] = 0
     # ac[0:1,0] = 10
     # ac[1:2,1] = 10

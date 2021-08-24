@@ -13,7 +13,7 @@ from Sampler import BetaSampler, PoissonSampler, IdentitySampler
 
 class WordCountingEnv(gym.Env):
 
-    def __init__(self, n_machines= 10,
+    def __init__(self, n_machines= 8,
                        n_spouts  = 20,
                        seed      = 20210723,
                        bandwidth = 100,
@@ -94,14 +94,14 @@ class WordCountingEnv(gym.Env):
                 }
                 for offset in range(self.n_spouts//3)]
         high = [
-                {   "rate_sampler":PoissonSampler(5., random_seed=self.random_seed+offset+len(low)), 
+                {   "rate_sampler":PoissonSampler(7., random_seed=self.random_seed+offset+len(low)), 
                     "batch":100,
                     "random_seed":self.random_seed+offset+len(low),
                     "subset":True,
                 }
                 for offset in range(self.n_spouts//3)]
         med = [
-                {   "rate_sampler":PoissonSampler(7., random_seed=self.random_seed+offset+len(low)+len(high)), 
+                {   "rate_sampler":PoissonSampler(5., random_seed=self.random_seed+offset+len(low)+len(high)), 
                     "batch":100,
                     "random_seed":self.random_seed+offset+len(low)+len(high),
                     "subset":True,
@@ -110,7 +110,7 @@ class WordCountingEnv(gym.Env):
 
         exe_info = {
             'spout': ['spout', self.n_spouts, high+med+low],
-            'WordCount': ['bolt', 20, {
+            'WordCount': ['bolt', 40, {
                     'd_transform': IdentityDataTransformer(),
                     'batch':100,
                     'random_seed':None,
@@ -184,7 +184,7 @@ if __name__ == '__main__':
     # ac[2:3,2] = 10
     # ac[:,0] = 10
     # print(ac)
-    # print(env.step(ac))
-    env.step(ac)
+    print(env.step(ac))
+    # env.step(ac)
     # for _ in range(20):
     #     print(env.once())
