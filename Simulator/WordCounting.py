@@ -13,7 +13,7 @@ from Sampler import BetaSampler, PoissonSampler, IdentitySampler
 
 class WordCountingEnv(gym.Env):
 
-    def __init__(self, n_machines= 8,
+    def __init__(self, n_machines= 10,
                        n_spouts  = 20,
                        seed      = 20210723,
                        bandwidth = 100,
@@ -133,7 +133,7 @@ class WordCountingEnv(gym.Env):
 
         self.topology = Topology(self.n_machines, exe_info, random_seed=self.random_seed)
         self.topology.build_executors()
-        self.topology.build_homo_machines()
+        self.topology.build_heter_machines([0.6]*3+[1]*3+[1.4]*4)
         self.topology.build_machine_graph(edges)
         self.topology.round_robin_init(shuffle=False)
 
