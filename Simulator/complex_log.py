@@ -152,7 +152,8 @@ class ComplexLogEnv(gym.Env):
 
         self.topology = Topology(self.n_machines, exe_info, random_seed=self.random_seed)
         self.topology.build_executors()
-        self.topology.build_homo_machines()
+        # self.topology.build_homo_machines()
+        self.topology.build_heter_machines([0.7]*3+[1]*4+[1.3]*3)
         self.topology.build_machine_graph(edges)
         self.topology.round_robin_init(shuffle=False)
 
