@@ -16,6 +16,12 @@ class Data():
         self.tracked = tracked
         self.target = target
         self.source = None
+    
+    def replicate(self):
+        new_one = Data(self.size, self.enter_time, self.id, self.tracked, self.target)
+        new_one.finish_time = self.finish_time
+        new_one.source = self.source
+        return new_one
         
     def __repr__(self):
         # return f'data {self.size} {self.enter_time} s={self.source} t={self.target} {self.tracked}'

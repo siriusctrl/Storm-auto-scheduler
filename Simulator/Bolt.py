@@ -3,9 +3,9 @@ import random
 from random import choice, choices
 import simpy
 from simpy import Environment
-from collections import deque
 
 from Config import Config
+from copy import deepcopy
 
 class Bolt():
     """
@@ -104,23 +104,25 @@ class Bolt():
                         if Config.debug:
                             print(f'{self} is waiting for resources')
                         yield req
-                        # the resources has been acquired from here
                         
+                        # the job processing will take place here
                         processing_speed = m.capacity * m.standard
-
                         pdata_list, cum_time = [], 0
                         psize = min(self.batch, len(self.queue))
                         for i in range(psize):
-                            job = self.queue[i]
-                            new_data_list, pt = self.d_transform.perform(job, processing_speed)
+                            single_tuple = self.queue[i]
+                            new_data_list, pt = self.d_transform.perform(single_tuple, processing_speed)
+                            # if single_tuple.tracked and (len(new_data_list) > 1):
+                            #     print('more record')
+                            #     self.topology.total_income += len(new_data_list)-1
                             cum_time += pt
                             pdata_list += new_data_list
 
+                        # count the total acquisition time
+                        yield self.env.timeout(cum_time)
+
                         if Config.debug or Config.bolt:
                             print(f'{self} is processing {psize} job at {self.env.now} last {cum_time}')
-
-                        # the job processing will take place here
-                        yield self.env.timeout(cum_time)
 
                         if Config.debug or Config.bolt:
                             print(f'{self} {self.queue} {len(self.queue)} before batch slicing')
@@ -131,18 +133,15 @@ class Bolt():
 
                         if Config.debug or Config.bolt:
                             print(f'{self} {self.queue} {len(self.queue)} after batch slicing')
-
-                        if job.tracked and (len(new_data_list) > 1):
-                            # we are breaking the tracked data into more pieces
-                            # TODO: we should track all the intermediate generation of data
-                            pass
                         
                         assert(len(pdata_list) == psize)
 
-                        # TODO: to become faster, consider processing everything in list
-                        for data in pdata_list:
+                        # count the real number of bolts we sent to downstream bolts
+                        total_replicate = 0
+                        for d_index in range(len(pdata_list)):
                             if self.downstreams == []:
-                                # this is the end bolt on topology, do some wrap up
+                                data = pdata_list[d_index]
+                                # this is the end of the current topology
                                 if Config.debug or Config.bolt:
                                     print(f'End bolt {self} finish a task {data} at {self.env.now}')
 
@@ -152,18 +151,30 @@ class Bolt():
                                 
                                 self.topology.total_finish += 1
                             else:
-                                # TODO: define generic rule for output destination
-                                destination = choice(self.downstreams)
-                                data.target = destination
-                                data.source = self
+                                for i in range(len(self.downstreams)):
+                                    destination = choice(self.downstreams[i])
+                                    # print(self, pdata_list[d_index], len(self.downstreams))
+                                    if i == (len(self.downstreams)-1):
+                                        data = pdata_list[d_index]
+                                    else:
+                                        data = pdata_list[d_index].replicate()
+                                        if data.tracked:
+                                            self.topology.tracking_counter += 1
+                                            self.topology.tracking_list.append(data)
+                                            total_replicate += 1
+                                    data.target = destination
+                                    data.source = self
 
-                                bridge = self.topology.get_network(self, destination)
-                                bridge.queue.append(data)
-                                if Config.debug or Config.bolt:
-                                    print(f'{self} sending data to {destination} at {self.env.now}')
-                                
-                                if (not bridge.working) and (len(bridge.queue) == 1):
-                                    bridge.action.interrupt()
+                                    bridge = self.topology.get_network(self, destination)
+                                    bridge.queue.append(data)
+                                    if Config.debug or Config.bolt:
+                                        print(f'{self} sending data to {destination} at {self.env.now}')
+                                    
+                                    if (not bridge.working) and (len(bridge.queue) == 1):
+                                        bridge.action.interrupt()
+
+                        if (Config.debug or Config.bolt) and (total_replicate > 0):
+                            print(f'{self} split data, {total_replicate} times more')
                 except simpy.Interrupt:
                     if Config.debug or Config.update_flag:
                         print(f'{self} get interrrupted while doing job at {self.env.now}')

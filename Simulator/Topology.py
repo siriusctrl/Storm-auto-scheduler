@@ -265,15 +265,22 @@ class Topology():
         """
         try:
             if type(source) is str:
-                successors = list(self.executor_graph.successors(source))[0]
+                # print(source, self.executor_graph.successors(source))
+                successors = list(self.executor_graph.successors(source))
             else:
+                # print(source, list(self.executor_graph.successors(source.name)))
                 successors = list(
-                    self.executor_graph.successors(source.name))[0]
+                    self.executor_graph.successors(source.name))
         except IndexError:
             # this indicate we reached the end bolt
             return []
 
-        return self.name_to_executors[successors]
+        res = []
+        for succ in successors:
+            res.append(self.name_to_executors[succ])
+
+        # print(res)
+        return res
 
     def get_network(self, source, target) -> Edge:
         sm = self.executor_to_machines[source]
@@ -386,11 +393,18 @@ class Topology():
             m = Machine(i, self, self.env, capacity=capacity_list[0])
             self.machine_list.append(m)
 
-    def build_sample(self, debug=False):
+    def build_sample(self):
         self._build_sample_executors()
         self._build_sample_machines()
         self.round_robin_init()
-        if debug:
+        if Config.debug:
+            print(self.name_to_executors)
+    
+    def build_sample_complex(self):
+        self._build_sample_executors_complex()
+        self._build_sample_machines()
+        self.round_robin_init()
+        if Config.debug:
             print(self.name_to_executors)
 
     def _build_sample_machines(self):
@@ -435,6 +449,53 @@ class Topology():
         self.executor_info = sample_info
         self.build_executors()
 
+    def _build_sample_executors_complex(self):
+        sample_info = {
+            'spout': ['spout', 2, [
+                {"rate_sampler":PoissonSampler(mu=20, random_seed=self.random_seed+offset), 
+                "batch":20, 
+                "random_seed":self.random_seed+offset} for offset in range(2)]
+            ],
+            'A': ['bolt', 5, {
+                    'd_transform': IdentityDataTransformer(),
+                    'batch':20,
+                    'random_seed':None,
+                }],
+            'B': ['bolt', 5, {
+                    'd_transform': IdentityDataTransformer(),
+                    'batch':20,
+                    'random_seed':None,
+                }],
+            'C': ['bolt', 5, {
+                    'd_transform': IdentityDataTransformer(),
+                    'batch':20,
+                    'random_seed':None,
+                }],
+            'D': ['bolt', 5, {
+                    'd_transform': IdentityDataTransformer(),
+                    'batch':20,
+                    'random_seed':None,
+                }],
+            'E': ['bolt', 5, {
+                    'd_transform': IdentityDataTransformer(),
+                    'batch':20,
+                    'random_seed':None,
+                }],
+            'graph': [
+                # we first define a list of nodes
+                ['spout', 'A', 'B', 'C', 'D', 'E'],
+                # then, we have edge represent in tuples
+                ('spout', 'A'),
+                ('A', 'B'),
+                ('B', 'D'),
+                ('A', 'C'),
+                ('C', 'E'),
+            ]
+        }
+
+        self.executor_info = sample_info
+        self.build_executors()
+
     def draw_machines(self):
         pos = nx.kamada_kawai_layout(self.machine_graph)
         # draw edges and weights
@@ -469,7 +530,7 @@ class Topology():
 if __name__ == '__main__':
     # test = Topology(4, {})
     test = Topology(4, {}, random_seed=100)
-    test.build_sample(debug=False)
+    test.build_sample_complex()
     
 
     """
@@ -507,7 +568,7 @@ if __name__ == '__main__':
     """
     test.update_states(time=10, track=True)
     test.update_states(time=0.1, track=False)
-    test.update_assignments([[0.3, 0.3, 0.2, 0.2]]*4)
+    test.update_assignments([[0.3, 0.3, 0.2, 0.2]]*6)
     test.update_states(time=0.105, track=False)
 
     """

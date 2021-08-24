@@ -60,7 +60,8 @@ class Spout():
         if self.downstreams is None:
             self.downstreams = self.topology.get_downstreams(self)
             if self.subset:
-                self.downstreams = random.sample(self.downstreams, len(self.downstreams)//3)
+                for i in range(len(self.downstreams)):
+                    self.downstreams[i] = random.sample(self.downstreams[i], len(self.downstreams[i])//3)
 
         while True:
             self.working = True
@@ -81,38 +82,42 @@ class Spout():
                 # word_list = word_list[word_list > 1]
                 # TODO: later wrap this data generation pattern
                 word_list = self.rng.poisson(2.7, size=int(cumulater)) + 2
-                dest:Bolt = choice(self.downstreams)
-                
-                new_word_list = []
-                for w in word_list:
-                    new = Data(w, self.env.now, f'{self.id}.{self.generate_counter}')
-                    self.generate_counter += 1
-
-                    if self.topology.tracking:
-                        new.tracked = True
-                        self.topology.tracking_counter += 1
-                        self.topology.tracking_list.append(new)
-                    
-                    new.target = dest
-                    new.source = self
-                    new_word_list.append(new)
-
-                bridge = self.topology.get_network(self, dest)
-
-                if Config.debug:
-                    if not self.topology.tracking:
-                        print(self, 'generate data at', self.env.now)
-                    else:
-                        print(f'{self} generate tracked data at {self.env.now} with counter {self.topology.tracking_counter}')
                 
                 yield self.env.timeout(interval)
-                bridge.queue += new_word_list
-                # NOTICE : interrupt is also a event, instead of function call, so the effect
-                # of the state chaning (from non-working to working) will be delayed
-                # without this queue == 1, the program will invoke multiple unnecessary
-                # interrupt event that may cuase error and slow down the simulation
-                if (not bridge.working) and (len(bridge.queue) == len(new_word_list)):
-                    bridge.action.interrupt()
+
+                # NOTICE: if more than one donwstream set, we replicate the data and send another copy
+                for set_num in range(len(self.downstreams)):
+                    dest:Bolt = choice(self.downstreams[set_num])
+                    
+                    new_word_list = []
+                    for w in word_list:
+                        new = Data(w, self.env.now, f'{self.id}.{self.generate_counter}')
+                        self.generate_counter += 1
+
+                        if self.topology.tracking:
+                            new.tracked = True
+                            self.topology.tracking_counter += 1
+                            self.topology.tracking_list.append(new)
+                        
+                        new.target = dest
+                        new.source = self
+                        new_word_list.append(new)
+
+                    bridge = self.topology.get_network(self, dest)
+
+                    if Config.debug:
+                        if not self.topology.tracking:
+                            print(self, 'generate data at', self.env.now)
+                        else:
+                            print(f'{self} generate tracked data at {self.env.now} with counter {self.topology.tracking_counter}')
+                
+                    bridge.queue += new_word_list
+                    # NOTICE : interrupt is also a event, instead of function call, so the effect
+                    # of the state chaning (from non-working to working) will be delayed
+                    # without this queue == 1, the program will invoke multiple unnecessary
+                    # interrupt event that may cuase error and slow down the simulation
+                    if (not bridge.working) and (len(bridge.queue) == len(new_word_list)):
+                        bridge.action.interrupt()
                 
                 self.topology.total_income += len(new_word_list)
             except simpy.Interrupt:
