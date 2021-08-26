@@ -541,7 +541,7 @@ if __name__ == '__main__':
     # for i in test.machine_list:
     #     print(i.capacity)
     # test.draw_machines()
-    # test.draw_executors()
+    test.draw_executors()
 
     """
     Name to executor example
@@ -568,10 +568,10 @@ if __name__ == '__main__':
     """
     Test new assignment updates
     """
-    test.update_states(time=10, track=True)
-    test.update_states(time=0.1, track=False)
-    test.update_assignments([[0.3, 0.3, 0.2, 0.2]]*6)
-    test.update_states(time=0.105, track=False)
+    # test.update_states(time=10, track=True)
+    # test.update_states(time=0.1, track=False)
+    # test.update_assignments([[0.3, 0.3, 0.2, 0.2]]*6)
+    # test.update_states(time=0.105, track=False)
 
     """
     Tracking info
