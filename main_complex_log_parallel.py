@@ -130,11 +130,17 @@ if __name__ == "__main__":
         if t*args.n_env < args.start_timesteps:
             actions = [eval_env.action_space.sample() for _ in range(args.n_env)]
         else:
-            for state in states:
-                actions.append((
-                    policy.select_action(np.array(state))
-                    + np.random.normal(0, max_action * args.expl_noise, size=action_dim)
-                ).clip(min_action, max_action))
+            if t*args.n_env < 3000:
+                for state in states:
+                    actions.append((
+                        policy.select_action(np.array(state))
+                        + np.random.normal(0, max_action * args.expl_noise, size=action_dim)
+                    ).clip(min_action, max_action))
+            else:
+                # remove action noise after certain amount of time
+                for state in states:
+                    actions.append((policy.select_action(np.array(state))).clip(min_action, max_action))
+
         
         # next_states, reward, done, info = parallel_env.step_multiple(actions)
         res = parallel_env.step_multiple(actions)

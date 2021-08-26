@@ -165,7 +165,7 @@ class ComplexLogEnv(gym.Env):
             print(self.topology.executor_to_machines)
 
     def build_homo_edge(self, num, bandwidth, batch):
-        return [(i, j, bandwidth, batch) for i in range(num) for j in range(num)]
+        return [(i, j, bandwidth, batch) for i in range(num) for j in range(num) if i != j]
 
 if __name__ == '__main__':
     # env = WordCountingEnv(n_machines=10, n_spouts=20, data_incoming_rate=5)

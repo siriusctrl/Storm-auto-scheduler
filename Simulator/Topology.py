@@ -223,7 +223,8 @@ class Topology():
                 print(f'final latency is {latency}')
                 print(f'simulation end at {self.env.now}')
 
-            metrics['relative_thoughput'] = self.total_finish/self.total_income
+            metrics['throughput'] = self.total_finish
+            metrics['relative_throughput'] = self.total_finish/self.total_income
             metrics['latency'] = latency
 
             avg_incoming_rate = []
