@@ -130,7 +130,7 @@ if __name__ == "__main__":
         if t*args.n_env < args.start_timesteps:
             actions = [eval_env.action_space.sample() for _ in range(args.n_env)]
         else:
-            if t*args.n_env < 3000:
+            if True:
                 for state in states:
                     actions.append((
                         policy.select_action(np.array(state))

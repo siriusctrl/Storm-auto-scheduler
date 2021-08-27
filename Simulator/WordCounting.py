@@ -82,6 +82,7 @@ class WordCountingEnv(gym.Env):
     def seed(self):
         # the np_random is the numpy RandomState
         self.np_random, seed = seeding.np_random(self.random_seed)
+        # np.random.seed(seed)
         # the return the seed is the seed we specify
         return [seed]
 
@@ -192,5 +193,5 @@ if __name__ == '__main__':
     # print(ac)
     print(env.step(ac))
     # env.step(ac)
-    for _ in range(2):
-        print(env.once())
+    # for _ in range(5):
+    #     print(env.once())
