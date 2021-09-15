@@ -10,7 +10,8 @@ sys.path.append(os.path.join(os.getcwd(), 'Simulator'))
 
 import pickle
 
-from WordCounting import WordCountingEnv
+from WordCounting import WordCountingEnv as word_normal
+from WordCounting_small import WordCountingEnv as word_small
 from ParallelWrapper import ParalllelWrapper
 
 from SimpleBuffer import ReplayBuffer
@@ -65,10 +66,12 @@ if __name__ == "__main__":
     parser.add_argument("--load_model", default="")                 # Model load file name, "" doesn't load, "default" uses file_name
     parser.add_argument("--max_episodic_length", default=50, type=int)              
     parser.add_argument("--n_env", default=10, type=int)
-    parser.add_argument("--extra_name", default="")            
+    parser.add_argument("--extra_name", default="")       
+    parser.add_argument("--reschedule_cost", default=False, type=bool)
+    parser.add_argument("--env_size", default='samll')     
     args = parser.parse_args()
 
-    file_name = f"parallel_{args.policy}_cSim_condense_{args.extra_name}_{args.seed}"
+    file_name = f"parallel_{args.policy}_cSim_condense_{args.env_size}_{args.extra_name}_{args.seed}"
     print("---------------------------------------")
     print(f"Policy: {args.policy}, Env: cSim, Seed: {args.seed}, Parallel condense")
     print("---------------------------------------")
@@ -79,8 +82,14 @@ if __name__ == "__main__":
     if args.save_model and not os.path.exists("./models"):
         os.makedirs("./models")
 
-    parallel_env = ParalllelWrapper([WordCountingEnv(seed=args.seed) for _ in range(args.n_env)], args.n_env)
-    eval_env = WordCountingEnv(seed=args.seed+100)
+    if args.env_size == 'small':
+        parallel_env = ParalllelWrapper([word_small(seed=args.seed) for _ in range(args.n_env)], args.n_env)
+        eval_env = word_small(seed=args.seed+100)
+    elif args.env_size == 'normal':
+        parallel_env = ParalllelWrapper([word_normal(seed=args.seed) for _ in range(args.n_env)], args.n_env)
+        eval_env = word_normal(seed=args.seed+100)
+    else:
+        raise ValueError(f'Unknown env size {args.env_size}')
     # env.seed(args.seed)
     # env.action_space.seed(args.seed)
     torch.manual_seed(args.seed)
@@ -143,6 +152,8 @@ if __name__ == "__main__":
         batch_reward = 0
         for index in range(len(res)):
             next_state, reward, done, info = res[index]
+            if args.reschedule_cost is True:
+                reward += info['reschedule_cost']
             next_states.append(next_state)
             done_bool = done if episode_timesteps < args.max_episodic_length else True
             # if done_bool == True:

@@ -180,6 +180,7 @@ class Topology():
             self.tracking_list = []
             self.total_income = 0
             self.total_finish = 0
+            starting_time = self.env.now
             metrics = {}
 
             next_batch = int(round(self.env.now, 0)) + time
@@ -224,6 +225,7 @@ class Topology():
                 print(f'simulation end at {self.env.now}')
 
             metrics['throughput'] = self.total_finish
+            metrics['unit_throughput'] = self.total_finish / (self.env.now-starting_time)
             metrics['relative_throughput'] = self.total_finish/self.total_income
             metrics['latency'] = latency
 
@@ -413,8 +415,8 @@ class Topology():
     def _build_sample_machines(self):
         self.n_machines = 4
         self.build_homo_machines()
-        edges = [(0, 1, 1e4, 100), (0, 2, 1e4, 100), (0, 3, 1e4, 100),
-                 (1, 2, 1e4, 100), (1, 3, 1e4, 100), (2, 3, 1e4, 100)]
+        edges = [(0, 1, 1e3, 100), (0, 2, 1e3, 100), (0, 3, 1e3, 100),
+                 (1, 2, 1e3, 100), (1, 3, 1e3, 100), (2, 3, 1e3, 100)]
         self.build_machine_graph(edges)
 
     def _build_sample_executors(self):
@@ -533,6 +535,7 @@ class Topology():
 if __name__ == '__main__':
     # test = Topology(4, {})
     test = Topology(4, {}, random_seed=100)
+    # test.build_sample()
     test.build_sample_complex()
     
 

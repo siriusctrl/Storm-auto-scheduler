@@ -6,18 +6,17 @@ from gym.spaces import Box
 
 import numpy as np
 from scipy.special import softmax
-from simpy.core import T
 from Topology import Topology
 
 from Data import IdentityDataTransformer
 from Sampler import BetaSampler, PoissonSampler, IdentitySampler
 
-class ComplexLogEnv(gym.Env):
+class WordCountingEnv(gym.Env):
 
-    def __init__(self, n_machines= 10,
-                       n_spouts  = 10,
+    def __init__(self, n_machines= 5,
+                       n_spouts  = 5,
                        seed      = 20210723,
-                       bandwidth = 120,
+                       bandwidth = 100,
                     ) -> None:
         """
         Construct all the necessary attributes for the word couting topology
@@ -37,35 +36,37 @@ class ComplexLogEnv(gym.Env):
 
         self.topology:Topology = None
         self.bandwidth = bandwidth
-        self.edge_batch = 100
+        self.edge_batch = 40
 
         self.seed()
         self.build_topology()
-        
+
         size = len(self.topology.executor_groups)*n_machines
         self.action_space = Box(low=0.001, high=1., shape=(size,))
         # TODO: we assume fixed data incoming rate here
         ob_low = np.array([0.]*size + [0.]*n_spouts)
-        ob_high = np.array([1.]*size + [5.]*n_spouts)
+        ob_high = np.array([1.]*size + [20.]*n_spouts)
         self.observation_space = Box(low=ob_low, high=ob_high)
+        self.assignment_cache = np.zeros(((len(self.topology.executor_groups)), self.n_machines))
 
-        
     
     def step(self, new_assignments):
         assert(new_assignments is not None)
         # make sure assigment for each type of bolt sum to approximately 1
-        reshaped_assignments = new_assignments.reshape((len(self.topology.executor_groups), self.n_machines)).clip(0.001, 1.)
+        reshaped_assignments = new_assignments.reshape(((len(self.topology.executor_groups)), self.n_machines)).clip(0.001, 1.)
         # new_assignments = softmax(new_assignments, axis=1)
-        totoal = reshaped_assignments.sum(axis=1)
-        reshaped_assignments = (reshaped_assignments.T / totoal).T
+        total = reshaped_assignments.sum(axis=1)
+        reshaped_assignments = (reshaped_assignments.T / total).T
+        rescheduling_cost = np.linalg.norm(self.assignment_cache - reshaped_assignments)*len(self.topology.executor_groups)
         self.topology.update_assignments(reshaped_assignments)
         self.warm()
         metrics = self.once()
+        metrics['reschedule_cost'] = rescheduling_cost
         # the observation is the current deployment(after softmax) + data incoming rate
         new_state = reshaped_assignments.flatten()
         new_state = np.concatenate((new_state, metrics['avg_incoming_rate']))
         # NOTICE: this is different than the original paper where new_state is the state after normalization
-        return new_state, metrics['latency'], False, {**metrics}
+        return new_state, metrics['latency'], False, metrics
 
     def reset(self):
         self.topology.reset_assignments()
@@ -83,83 +84,50 @@ class ComplexLogEnv(gym.Env):
     def seed(self):
         # the np_random is the numpy RandomState
         self.np_random, seed = seeding.np_random(self.random_seed)
+        # np.random.seed(seed)
         # the return the seed is the seed we specify
         return [seed]
 
-    def build_topology(self, debug=False):
-        low = [
-                {   "rate_sampler":PoissonSampler(3., random_seed=self.random_seed+offset), 
-                    "batch":100,
-                    "random_seed":self.random_seed+offset,
+    def build_topology(self, debug=False): 
+        all_spout = [
+                {   "rate_sampler":IdentitySampler(10.), 
+                    "batch":40,
+                    "random_seed":self.random_seed,
                     "subset":True,
-                }
-                for offset in range(self.n_spouts//3)]
-        high = [
-                {   "rate_sampler":PoissonSampler(7., random_seed=self.random_seed+offset+len(low)), 
-                    "batch":100,
-                    "random_seed":self.random_seed+offset+len(low),
-                    "subset":True,
-                }
-                for offset in range(self.n_spouts//3)]
-        med = [
-                {   "rate_sampler":PoissonSampler(5., random_seed=self.random_seed+offset+len(low)+len(high)), 
-                    "batch":100,
-                    "random_seed":self.random_seed+offset+len(low)+len(high),
-                    "subset":True,
-                }
-                for offset in range(self.n_spouts-len(low)-len(high))]
+                } for _ in range(self.n_spouts)]
 
         exe_info = {
-            'spout': ['spout', self.n_spouts, high+med+low],
-            'A': ['bolt', 20, {
+            'spout': ['spout', self.n_spouts, all_spout],
+            'WordCount': ['bolt', 25, {
                     'd_transform': IdentityDataTransformer(),
-                    'batch':100,
+                    'batch':40,
                     'random_seed':None,
                 }],
-            'B': ['bolt', 20, {
+            'Database': ['bolt', 20, {
                     'd_transform': IdentityDataTransformer(),
-                    'batch':100,
-                    'random_seed':None,
-                }],
-            'C': ['bolt', 20, {
-                    'd_transform': IdentityDataTransformer(),
-                    'batch':100,
-                    'random_seed':None,
-                }],
-            'D': ['bolt', 15, {
-                    'd_transform': IdentityDataTransformer(),
-                    'batch':100,
-                    'random_seed':None,
-                }],
-            'E': ['bolt', 15, {
-                    'd_transform': IdentityDataTransformer(),
-                    'batch':100,
+                    'batch':40,
                     'random_seed':None,
                 }],
             'graph': [
                 # we first define a list of nodes
-                ['spout', 'A', 'B', 'C', 'D', 'E'],
+                ['spout', 'WordCount', 'Database'],
                 # then, we have edge represent in tuples
-                ('spout', 'A'),
-                ('A', 'B'),
-                ('B', 'D'),
-                ('A', 'C'),
-                ('C', 'E'),
+                ('spout', 'WordCount'),
+                ('WordCount', 'Database')
             ]
         }
 
         edges = self.build_homo_edge(self.n_machines, self.bandwidth, self.edge_batch)
-        selection = np.random.choice(list(range(len(edges))), size=(self.n_machines*(self.n_machines-1))//2, replace=False)
-        for i in selection:
-            s, d, _, da = edges[i]
-            edges[i] = (s, d, 80, da)
+        # selection = np.random.choice(list(range(len(edges))), size=(self.n_machines*(self.n_machines-1))//2, replace=False)
+        # for i in selection:
+        #     s, d, _, da = edges[i]
+        #     edges[i] = (s, d, 40, da)
 
         print(edges)
 
         self.topology = Topology(self.n_machines, exe_info, random_seed=self.random_seed)
         self.topology.build_executors()
-        # self.topology.build_homo_machines()
-        self.topology.build_heter_machines([0.7]*3+[1]*4+[1.3]*3)
+        self.topology.build_homo_machines(0.8)
         self.topology.build_machine_graph(edges)
         self.topology.round_robin_init(shuffle=False)
 
@@ -175,7 +143,7 @@ class ComplexLogEnv(gym.Env):
 
 if __name__ == '__main__':
     # env = WordCountingEnv(n_machines=10, n_spouts=20, data_incoming_rate=5)
-    env = ComplexLogEnv()
+    env = WordCountingEnv()
     # print("data incoming rate is", env.data_incoming_rate)
     # env.warm()
     # print(env.once())
@@ -203,7 +171,7 @@ if __name__ == '__main__':
     """
     Test the effect of bad allocations
     """
-    ac = env.action_space.sample()
+    ac = env.action_space.high.reshape((3, env.n_machines))
     # ac[:,-1] = 0
     # ac[0:1,0] = 10
     # ac[1:2,1] = 10
@@ -212,5 +180,5 @@ if __name__ == '__main__':
     # print(ac)
     print(env.step(ac))
     # env.step(ac)
-    for _ in range(2):
+    for _ in range(5):
         print(env.once())

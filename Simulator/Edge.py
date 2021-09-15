@@ -50,6 +50,7 @@ class Edge():
                     
                     if self.bandwidth > 0:
                         yield self.env.timeout(cum_size / self.bandwidth)
+                        # print(f'{self} has {len(self.queue)} jobs {psize} will be processed in {cum_size / self.bandwidth}')
 
                     # self.queue = self.queue[psize:]
                     # del is faster than previous line

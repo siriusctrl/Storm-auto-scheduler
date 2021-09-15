@@ -193,5 +193,5 @@ if __name__ == '__main__':
     # print(ac)
     print(env.step(ac))
     # env.step(ac)
-    # for _ in range(5):
-    #     print(env.once())
+    for _ in range(5):
+        print(env.once())
