@@ -58,6 +58,8 @@ class WordCountingEnv(gym.Env):
         total = reshaped_assignments.sum(axis=1)
         reshaped_assignments = (reshaped_assignments.T / total).T
         rescheduling_cost = np.linalg.norm(self.assignment_cache - reshaped_assignments)*len(self.topology.executor_groups)
+        # update the cache
+        self.assignment_cache = reshaped_assignments
         self.topology.update_assignments(reshaped_assignments)
         self.warm()
         metrics = self.once()
@@ -181,4 +183,5 @@ if __name__ == '__main__':
     print(env.step(ac))
     # env.step(ac)
     for _ in range(5):
-        print(env.once())
+        # print(env.once())
+        print(env.step(ac))
