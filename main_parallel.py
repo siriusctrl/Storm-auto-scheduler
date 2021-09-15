@@ -153,7 +153,7 @@ if __name__ == "__main__":
         for index in range(len(res)):
             next_state, reward, done, info = res[index]
             if args.reschedule_cost is True:
-                reward += info['reschedule_cost']
+                reward -= info['reschedule_cost']
             next_states.append(next_state)
             done_bool = done if episode_timesteps < args.max_episodic_length else True
             # if done_bool == True:
