@@ -37,6 +37,7 @@ class ParalllelWrapper():
         return res
     
     def reset(self):
+        print('system has been reset')
         p_list = []
 
         for i in range(len(self.envs)):
@@ -54,7 +55,7 @@ class ParalllelWrapper():
         res.sort(key=lambda x:x[-1])
         res = [i[0] for i in res]
 
-        return res
+        return [r[0] for r in res]
             
     @staticmethod
     def call_step(env, a, index):

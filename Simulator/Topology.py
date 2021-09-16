@@ -86,7 +86,7 @@ class Topology():
         
 
     def update_assignments(self, new_assignments, assignemt_type='condensed'):
-        self.assignment_cache = new_assignments
+        # self.assignment_cache = new_assignments
         self.reset_assignments()
 
         ##############################################################
@@ -100,11 +100,12 @@ class Topology():
         if assignemt_type == 'condensed':
             assert(len(new_assignments) == len(self.executor_groups))
             assert(len(new_assignments[0]) == len(self.machine_list))
+            self.assignment_cache = []
             for i in range(len(new_assignments)):
                 # new assignment example: [0.4 0.3 0.4]
                 num_vec = self.assignment_calibration(len(self.executor_groups[i]), new_assignments[i])
                 prefix = 0
-
+                self.assignment_cache.append(num_vec)
                 if Config.debug or Config.reset:
                     print(self.executor_groups[i], num_vec)
 

@@ -47,8 +47,7 @@ class WordCountingEnv(gym.Env):
         ob_low = np.array([0.]*size + [0.]*n_spouts)
         ob_high = np.array([1.]*size + [20.]*n_spouts)
         self.observation_space = Box(low=ob_low, high=ob_high)
-        self.assignment_cache = np.zeros(((len(self.topology.executor_groups)), self.n_machines))
-
+        self.topology.assignment_cache = np.zeros(((len(self.topology.executor_groups)), self.n_machines))
     
     def step(self, new_assignments):
         assert(new_assignments is not None)
@@ -57,14 +56,12 @@ class WordCountingEnv(gym.Env):
         # new_assignments = softmax(new_assignments, axis=1)
         total = reshaped_assignments.sum(axis=1)
         reshaped_assignments = (reshaped_assignments.T / total).T
-        rescheduling_cost = np.linalg.norm(self.assignment_cache - reshaped_assignments)*len(self.topology.executor_groups)
-        # update the cache
-        self.assignment_cache = reshaped_assignments
         self.topology.update_assignments(reshaped_assignments)
         self.warm()
         metrics = self.once()
-        metrics['reschedule_cost'] = rescheduling_cost
-        # the observation is the current deployment(after softmax) + data incoming rate
+        metrics['cur'] = np.array(self.topology.assignment_cache)
+        # metrics['reschedule_cost'] = np.linalg.norm(np.array(self.ac) - np.array(self.topology.assignment_cache))
+        # the observation is the current deployment(after normalized) + data incoming rate
         new_state = reshaped_assignments.flatten()
         new_state = np.concatenate((new_state, metrics['avg_incoming_rate']))
         # NOTICE: this is different than the original paper where new_state is the state after normalization
@@ -75,7 +72,7 @@ class WordCountingEnv(gym.Env):
         # self.topology.round_robin_init(shuffle=True)
         # return self.once()
         random_action = self.action_space.sample()
-        return self.step(random_action)[0]
+        return self.step(random_action)
     
     def once(self):
         return self.topology.update_states(time=1000, track=True)
@@ -184,4 +181,5 @@ if __name__ == '__main__':
     # env.step(ac)
     for _ in range(5):
         # print(env.once())
+        ac = env.action_space.sample().reshape((3, env.n_machines))
         print(env.step(ac))

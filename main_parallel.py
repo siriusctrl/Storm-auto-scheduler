@@ -130,7 +130,7 @@ if __name__ == "__main__":
     episode_reward = 0
     episode_timesteps = 0
     episode_num = 0
-    total_step_collection = {}
+    total_step_collection = {'pre':[[] for _ in range(args.n_env)]}
 
     for t in range(int(args.max_timesteps // args.n_env)):
         # episode_timesteps += t*args.n_env
@@ -152,8 +152,21 @@ if __name__ == "__main__":
         batch_reward = 0
         for index in range(len(res)):
             next_state, reward, done, info = res[index]
+            if total_step_collection['pre'][index] == []:
+                info['reschedule_cost'] = np.linalg.norm(np.zeros(info['cur'].shape) - np.array(info['cur']))
+            else:
+                info['reschedule_cost'] = np.linalg.norm(total_step_collection['pre'][index][-1] - info['cur'])
+                # print('pre:', total_step_collection['pre'][index][-1])
+                # print('cur:', info['cur'])
+            total_step_collection['pre'][index].append(info['cur'])
+            del info['cur']
             if args.reschedule_cost is True:
                 reward -= info['reschedule_cost']
+            else:
+                if index == 0:
+                    print('no reschedule_cost')
+            # print(reward)
+            # print(info)
             next_states.append(next_state)
             done_bool = done if episode_timesteps < args.max_episodic_length else True
             # if done_bool == True:
