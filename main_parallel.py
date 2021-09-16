@@ -68,7 +68,8 @@ if __name__ == "__main__":
     parser.add_argument("--n_env", default=10, type=int)
     parser.add_argument("--extra_name", default="")       
     parser.add_argument("--reschedule_cost", default=False, type=bool)
-    parser.add_argument("--env_size", default='samll')     
+    parser.add_argument("--env_size", default='samll')
+    parser.add_argument("--reschedule_weights", default=1, type=int)
     args = parser.parse_args()
 
     file_name = f"parallel_{args.policy}_cSim_condense_{args.env_size}_{args.extra_name}_{args.seed}"
@@ -161,7 +162,7 @@ if __name__ == "__main__":
             total_step_collection['pre'][index].append(info['cur'])
             del info['cur']
             if args.reschedule_cost is True:
-                reward -= info['reschedule_cost']
+                reward -= info['reschedule_cost'] * args.reschedule_weights
             else:
                 if index == 0:
                     print('no reschedule_cost')
@@ -201,13 +202,14 @@ if __name__ == "__main__":
             episode_num += 1
 
         if (t+1) % int(args.eval_freq/args.n_env) == 0:
-            evaluations.append(eval_policy(policy, eval_env))
+            # evaluations.append(eval_policy(policy, eval_env))
             # np.save(f"./results/{file_name}", evaluations)
 
             with open(f"./results/{file_name}_step.pkl", 'wb') as f:
                 pickle.dump(total_step_collection, f)
-            with open(f"./results/{file_name}_eval.pkl", 'wb') as f:
-                pickle.dump(evaluations, f)
+                print('results saved')
+            # with open(f"./results/{file_name}_eval.pkl", 'wb') as f:
+            #     pickle.dump(evaluations, f)
 
             if args.save_model:
                 policy.save(f"./models/{file_name}")
