@@ -27,7 +27,7 @@ def eval_policy(policy, eval_env, eval_episodes=1):
     step_count = 0
     res = {}
     for _ in range(eval_episodes):
-        state, done = eval_env.reset(), False
+        state, done = eval_env.reset()[0], False
         while not done:
             action = policy.select_action(np.array(state))
             state, reward, done, info = eval_env.step(action)
