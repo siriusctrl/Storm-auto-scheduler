@@ -135,6 +135,8 @@ if __name__ == "__main__":
     episode_num = 0
     total_step_collection = {'pre':[[] for _ in range(args.n_env)]}
 
+    print(states)
+
     for t in range(int(args.max_timesteps // args.n_env)):
         # episode_timesteps += t*args.n_env
         episode_timesteps += 1
@@ -166,7 +168,8 @@ if __name__ == "__main__":
             total_step_collection['pre'][index].append(info['cur'])
             del info['cur']
             next_states.append(next_state)
-            done_bool = done if episode_timesteps < args.max_episodic_length else True
+            # done_bool = done if episode_timesteps < args.max_episodic_length else True
+            done_bool = done
             # if done_bool == True:
             #     print(episode_timesteps, args.max_episodic_length)
             # Store in replay buffer
@@ -213,6 +216,3 @@ if __name__ == "__main__":
 
             if args.save_model:
                 policy.save(f"./models/{file_name}")
-
-
-

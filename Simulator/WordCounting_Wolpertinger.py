@@ -71,7 +71,7 @@ class WordCountingEnv(gym.Env):
         # self.topology.round_robin_init(shuffle=True)
         # return self.once()
         random_action = self.random_action()[0]
-        return self.step(random_action)[0]
+        return self.step(random_action)
     
     def once(self):
         return self.topology.update_states(time=1000, track=True)
