@@ -61,6 +61,7 @@ class WordCountingEnv(gym.Env):
         self.topology.update_assignments(reshaped_assignments, 'one-hot')
         self.warm()
         metrics = self.once()
+        metrics['cur'] = new_assignments
         # the observation is the current deployment(after softmax) + data incoming rate
         new_state = np.concatenate((new_assignments.flatten(), metrics['avg_incoming_rate']))
         return new_state, metrics['latency'], False, {**metrics}
@@ -93,35 +94,23 @@ class WordCountingEnv(gym.Env):
         return [seed]
 
     def build_topology(self, debug=False):
-        low = [
-                {   "rate_sampler":IdentitySampler(3.), 
-                    "batch":50,
-                    "random_seed":self.random_seed+offset,
-                }
-                for offset in range(self.n_spouts//3)]
-        high = [
-                {   "rate_sampler":IdentitySampler(5.), 
-                    "batch":50,
-                    "random_seed":self.random_seed+offset+len(low),
-                }
-                for offset in range(self.n_spouts//3)]
-        med = [
-                {   "rate_sampler":IdentitySampler(7.), 
-                    "batch":50,
-                    "random_seed":self.random_seed+offset+len(low)+len(high),
-                }
-                for offset in range(self.n_spouts-len(low)-len(high))]
+        all_spout = [
+        {   "rate_sampler":IdentitySampler(10.), 
+            "batch":40,
+            "random_seed":self.random_seed,
+            "subset":True,
+        } for _ in range(self.n_spouts)]
 
         exe_info = {
-            'spout': ['spout', self.n_spouts, high+med+low],
-            'WordCount': ['bolt', 40, {
+            'spout': ['spout', self.n_spouts, all_spout],
+            'WordCount': ['bolt', 25, {
                     'd_transform': IdentityDataTransformer(),
-                    'batch':100,
+                    'batch':40,
                     'random_seed':None,
                 }],
-            'Database': ['bolt', 40, {
+            'Database': ['bolt', 20, {
                     'd_transform': IdentityDataTransformer(),
-                    'batch':100,
+                    'batch':40,
                     'random_seed':None,
                 }],
             'graph': [
@@ -137,7 +126,7 @@ class WordCountingEnv(gym.Env):
 
         self.topology = Topology(self.n_machines, exe_info, random_seed=self.random_seed)
         self.topology.build_executors()
-        self.topology.build_homo_machines()
+        self.topology.build_homo_machines(0.8)
         self.topology.build_machine_graph(edges)
         self.topology.round_robin_init(shuffle=False)
 

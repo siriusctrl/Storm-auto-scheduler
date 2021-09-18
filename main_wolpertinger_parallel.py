@@ -1,5 +1,4 @@
 import numpy as np
-from numpy.lib.polynomial import polyint
 import torch
 import argparse
 import os
@@ -61,10 +60,11 @@ if __name__ == "__main__":
     parser.add_argument("--load_model", default="")                 # Model load file name, "" doesn't load, "default" uses file_name
     parser.add_argument("--max_episodic_length", default=50, type=int)              
     parser.add_argument("--n_env", default=5, type=int)
-    parser.add_argument("--eval_only", default=False, type=bool)            
+    parser.add_argument("--eval_only", default=False, type=bool)
+    parser.add_argument("--extra_name", default="")       
     args = parser.parse_args()
 
-    file_name = f"{args.model}_Wolpertinger_cSim_{args.seed}"
+    file_name = f"{args.model}_Wolpertinger_cSim_{args.extra_name}_{args.seed}"
     print("---------------------------------------")
     print(f"Policy: {args.model}, Env: cSim, Seed: {args.seed}")
     print("---------------------------------------")
@@ -133,7 +133,7 @@ if __name__ == "__main__":
     episode_reward = 0
     episode_timesteps = 0
     episode_num = 0
-    total_step_collection = {}
+    total_step_collection = {'pre':[[] for _ in range(args.n_env)]}
 
     for t in range(int(args.max_timesteps // args.n_env)):
         # episode_timesteps += t*args.n_env
@@ -159,6 +159,12 @@ if __name__ == "__main__":
         # print(f"res={len(res)}, action={len(actions)}, proto={len(proto_actions)}")
         for index in range(len(res)):
             next_state, reward, done, info = res[index]
+            if total_step_collection['pre'][index] == []:
+                info['reschedule_cost'] = np.linalg.norm(np.zeros(info['cur'].shape) - np.array(info['cur']))
+            else:
+                info['reschedule_cost'] = np.linalg.norm(total_step_collection['pre'][index][-1] - info['cur'])
+            total_step_collection['pre'][index].append(info['cur'])
+            del info['cur']
             next_states.append(next_state)
             done_bool = done if episode_timesteps < args.max_episodic_length else True
             # if done_bool == True:
@@ -198,12 +204,12 @@ if __name__ == "__main__":
 
 
         if (t+1) % int(args.eval_freq/args.n_env) == 0:
-            evaluations.append(eval_policy(policy, eval_env))
+            # evaluations.append(eval_policy(policy, eval_env))
             # np.save(f"./results/{file_name}", evaluations)
             with open(f"./results/{file_name}_step.pkl", 'wb') as f:
                 pickle.dump(total_step_collection, f)
-            with open(f"./results/{file_name}_eval.pkl", 'wb') as f:
-                pickle.dump(evaluations, f)
+            # with open(f"./results/{file_name}_eval.pkl", 'wb') as f:
+            #     pickle.dump(evaluations, f)
 
             if args.save_model:
                 policy.save(f"./models/{file_name}")
