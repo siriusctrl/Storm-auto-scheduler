@@ -12,6 +12,7 @@ import pickle
 
 from WordCounting import WordCountingEnv as word_normal
 from WordCounting_small import WordCountingEnv as word_small
+from complex_log import ComplexLogEnv as complex_log
 from ParallelWrapper import ParalllelWrapper
 
 from SimpleBuffer import ReplayBuffer
@@ -89,6 +90,9 @@ if __name__ == "__main__":
     elif args.env_size == 'normal':
         parallel_env = ParalllelWrapper([word_normal(seed=args.seed) for _ in range(args.n_env)], args.n_env)
         eval_env = word_normal(seed=args.seed+100)
+    elif args.env_size == 'complex':
+        parallel_env = ParalllelWrapper([complex_log(seed=args.seed) for _ in range(args.n_env)], args.n_env)
+        eval_env = complex_log(seed=args.seed+100)
     else:
         raise ValueError(f'Unknown env size {args.env_size}')
     # env.seed(args.seed)
