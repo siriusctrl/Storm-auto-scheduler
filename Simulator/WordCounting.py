@@ -60,6 +60,7 @@ class WordCountingEnv(gym.Env):
         self.topology.update_assignments(reshaped_assignments)
         self.warm()
         metrics = self.once()
+        metrics['cur'] = np.array(self.topology.assignment_cache)
         # the observation is the current deployment(after softmax) + data incoming rate
         new_state = reshaped_assignments.flatten()
         new_state = np.concatenate((new_state, metrics['avg_incoming_rate']))
