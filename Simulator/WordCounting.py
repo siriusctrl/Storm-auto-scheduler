@@ -60,6 +60,7 @@ class WordCountingEnv(gym.Env):
         self.topology.update_assignments(reshaped_assignments)
         self.warm()
         metrics = self.once()
+        metrics['cur'] = np.array(self.topology.assignment_cache)
         # the observation is the current deployment(after softmax) + data incoming rate
         new_state = reshaped_assignments.flatten()
         new_state = np.concatenate((new_state, metrics['avg_incoming_rate']))
@@ -71,7 +72,7 @@ class WordCountingEnv(gym.Env):
         # self.topology.round_robin_init(shuffle=True)
         # return self.once()
         random_action = self.action_space.sample()
-        return self.step(random_action)[0]
+        return self.step(random_action)
     
     def once(self):
         return self.topology.update_states(time=1000, track=True)

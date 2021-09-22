@@ -171,12 +171,17 @@ if __name__ == '__main__':
     Test the effect of bad allocations
     """
     ac = env.random_action()[0]
+    # print(ac)
+    sp = (len(env.topology.executor_flat), env.n_machines)
+    print(ac.reshape(sp))
+    print(np.argmax(ac.reshape(sp), axis=1))
+    print(env.step(ac))
     # ac[:,-1] = 0
     # ac[0:1,0] = 10
     # ac[1:2,1] = 10
     # ac[2:3,2] = 10
     # ac[:,0] = 10
     # print(ac)
-    print(env.step(ac))
-    for _ in range(1):
-        print(env.once())
+    # print(env.step(ac))
+    # for _ in range(1):
+    #     print(env.once())

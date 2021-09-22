@@ -1,1 +1,1 @@
-python main_parallel.py --n_env=15 --policy=TD3 --max_timesteps=6000 --reschedule_cost=True --env_size=small --start_timesteps=600 --seed=10 --extra_name=reschedule --max_episodic_length=10000 --reschedule_weights=1
+python main_parallel.py --n_env=15 --policy=TD3 --max_timesteps=6000 --env_size=normal --start_timesteps=90 --seed=10 --extra_name=reschedule --max_episodic_length=10000 --reschedule_cost=True --reschedule_weights=1
