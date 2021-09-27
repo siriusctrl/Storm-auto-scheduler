@@ -16,8 +16,8 @@ class Actor(nn.Module):
             nn.Tanh(),
             nn.Linear(32, action_dim),
             # NOTICE: we would like the output to be (0,1) in our simulator
-            nn.Sigmoid()
-            # nn.Tanh()
+            # nn.Sigmoid()
+            nn.Tanh()
         )
         
     
