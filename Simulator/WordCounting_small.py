@@ -16,7 +16,8 @@ class WordCountingEnv(gym.Env):
     def __init__(self, n_machines= 5,
                        n_spouts  = 5,
                        seed      = 20210723,
-                       bandwidth = 100,
+                    #    bandwidth = 100,
+                       bandwidth = 160,
                     ) -> None:
         """
         Construct all the necessary attributes for the word couting topology
@@ -117,16 +118,17 @@ class WordCountingEnv(gym.Env):
         }
 
         edges = self.build_homo_edge(self.n_machines, self.bandwidth, self.edge_batch)
-        # selection = np.random.choice(list(range(len(edges))), size=(self.n_machines*(self.n_machines-1))//2, replace=False)
-        # for i in selection:
-        #     s, d, _, da = edges[i]
-        #     edges[i] = (s, d, 40, da)
+        selection = np.random.choice(list(range(len(edges))), size=(self.n_machines*(self.n_machines-1))//2, replace=False)
+        for i in selection:
+            s, d, _, da = edges[i]
+            edges[i] = (s, d, 40, da)
 
         print(edges)
 
         self.topology = Topology(self.n_machines, exe_info, random_seed=self.random_seed)
         self.topology.build_executors()
-        self.topology.build_homo_machines(0.8)
+        # self.topology.build_homo_machines(0.8)
+        self.topology.build_heter_machines([0.6]*2+[0.8]*1+[1]*2)
         self.topology.build_machine_graph(edges)
         self.topology.round_robin_init(shuffle=False)
 
