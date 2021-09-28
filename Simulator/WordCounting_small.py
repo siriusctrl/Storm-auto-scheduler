@@ -17,7 +17,7 @@ class WordCountingEnv(gym.Env):
                        n_spouts  = 5,
                        seed      = 20210723,
                     #    bandwidth = 100,
-                       bandwidth = 160,
+                       bandwidth = 120,
                     ) -> None:
         """
         Construct all the necessary attributes for the word couting topology
@@ -121,7 +121,7 @@ class WordCountingEnv(gym.Env):
         selection = np.random.choice(list(range(len(edges))), size=(self.n_machines*(self.n_machines-1))//2, replace=False)
         for i in selection:
             s, d, _, da = edges[i]
-            edges[i] = (s, d, 40, da)
+            edges[i] = (s, d, 80, da)
 
         print(edges)
 
