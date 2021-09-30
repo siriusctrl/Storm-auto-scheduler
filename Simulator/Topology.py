@@ -135,11 +135,11 @@ class Topology():
 
             for i in range(len(new_assignments)):
                 index = np.argmax(new_assignments[i])
-                print(index)
+                # print(index)
                 self.add_executor_to_machines(self.executor_flat[i], self.machine_list[index])
                 self.add_machine_to_executors(self.executor_flat[i], self.machine_list[index])
-            print(self.machine_to_executors)
-            print(self.executor_to_machines)
+            # print(self.machine_to_executors)
+            # print(self.executor_to_machines)
         else:
             raise ValueError(f'Unknown assignemt type {assignemt_type}')
 
