@@ -1,1 +1,1 @@
-python main_parallel.py --n_env=15 --policy=TD3 --max_timesteps=6000 --env_size=small --start_timesteps=90 --seed=10 --max_episodic_length=10000 --extra_name=reschedule_poission_hetero --reschedule_cost=True --reschedule_weights=1
+python main_parallel.py --n_env=15 --policy=TD3 --max_timesteps=6000 --env_size=normal --start_timesteps=90 --seed=10 --max_episodic_length=10000 --extra_name=reschedule --reschedule_cost=True --reschedule_weights=1
