@@ -8,8 +8,10 @@ import pickle
 import sys
 sys.path.append(os.path.join(os.getcwd(), 'Simulator'))
 
-from WordCounting_Wolpertinger import WordCountingEnv as wolp_word
-from WordCounting import WordCountingEnv as con_word
+from WordCounting_Wolpertinger import WordCountingEnv as wc_wolp
+from WordCounting import WordCountingEnv as wc_large
+from WordCounting_small import WordCountingEnv as wc_small
+from complex_log import ComplexLogEnv as complex_large
 from ParallelWrapper import ParalllelWrapper
 
 from SimpleBuffer import ReplayBuffer
@@ -43,11 +45,15 @@ if __name__ == "__main__":
     parser.add_argument("--seed", default=0, type=int)              # Sets Gym, PyTorch and Numpy seeds         
     parser.add_argument("--n_env", default=5, type=int)
     parser.add_argument("--max_timesteps", default=10000, type=int)
-    parser.add_argument("--max_episodic_length", default=50, type=int) 
-    parser.add_argument('--which', default='wolp')     
+    parser.add_argument("--max_episodic_length", default=10000, type=int) 
+    parser.add_argument('--which', default='wolp')
+    parser.add_argument("--extra_name", default="")     
     args = parser.parse_args()
 
-    file_name = f"random_{args.which}_{args.seed}"
+    if args.extra_name != "":
+        file_name = f"random_{args.which}_{args.extra_name}_{args.seed}"
+    else:
+        file_name = f"random_{args.which}_{args.seed}"
     print("---------------------------------------")
     print(f"Random Transactions of {args.which} Seed: {args.seed}")
     print("---------------------------------------")
@@ -56,11 +62,17 @@ if __name__ == "__main__":
         os.makedirs("./offline")
 
     if args.which == 'wolp':
-        parallel_env = ParalllelWrapper([wolp_word(seed=args.seed) for _ in range(args.n_env)], args.n_env)
-        eval_env = wolp_word(seed=args.seed+100)
-    elif args.which == 'con':
-        parallel_env = ParalllelWrapper([con_word(seed=args.seed) for _ in range(args.n_env)], args.n_env)
-        eval_env = con_word(seed=args.seed+100)
+        parallel_env = ParalllelWrapper([wc_wolp(seed=args.seed) for _ in range(args.n_env)], args.n_env)
+        eval_env = wc_wolp(seed=args.seed+100)
+    elif args.which == 'small':
+        parallel_env = ParalllelWrapper([wc_small(seed=args.seed) for _ in range(args.n_env)], args.n_env)
+        eval_env = wc_small(seed=args.seed+100)
+    elif args.which == 'large':
+        parallel_env = ParalllelWrapper([wc_large(seed=args.seed) for _ in range(args.n_env)], args.n_env)
+        eval_env = wc_large(seed=args.seed+100)
+    elif args.which == 'complex':
+        parallel_env = ParalllelWrapper([complex_large(seed=args.seed) for _ in range(args.n_env)], args.n_env)
+        eval_env = complex_large(seed=args.seed+100)
     else:
         raise ValueError(args.which)
 
@@ -91,10 +103,8 @@ if __name__ == "__main__":
             if args.which == 'wolp':
                 ac, proto_ac = eval_env.random_action()
                 proto_actions.append(proto_ac)
-            elif args.which == 'con':
-                ac = eval_env.action_space.sample()
             else:
-                raise ValueError()
+                ac = eval_env.action_space.sample()
             actions.append(ac)
         
         # next_states, reward, done, info = parallel_env.step_multiple(actions)
