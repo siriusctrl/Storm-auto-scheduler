@@ -131,7 +131,7 @@ if __name__ == "__main__":
     
 
     evaluations = []
-    states, done = parallel_env.reset(), False
+    # states, done = parallel_env.reset(), False
     episode_reward = 0
     episode_timesteps = 0
     episode_num = 0
