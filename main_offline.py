@@ -71,7 +71,7 @@ if __name__ == "__main__":
     parser.add_argument("--save_freq", default=10, type=int)
     args = parser.parse_args()
 
-    file_name = f".{args.env_size}_{args.extra_name}_{args.seed}"
+    file_name = f"{args.env_size}_{args.extra_name}_{args.seed}"
     print("---------------------------------------")
     print(f"Policy: {args.policy}, Env: cSim, Seed: {args.seed}, offline parallel condense")
     print("---------------------------------------")
@@ -169,7 +169,6 @@ if __name__ == "__main__":
         print(f'batch:{t+1}/{int(args.max_timesteps // 100)} avg reward is {batch_reward/args.n_env}')
 
         if (t+1) % int(args.save_freq) == 0:
-
             with open(f"./results/offline_{file_name}.pkl", 'wb') as f:
                 pickle.dump(total_step_collection, f)
                 print('results saved')
