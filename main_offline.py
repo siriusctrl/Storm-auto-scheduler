@@ -94,7 +94,7 @@ if __name__ == "__main__":
     else:
         raise ValueError(f'Unknown env size {args.env_size}')
 
-    with open(f'/offline/random_{file_name}.pkl', 'rb') as f:
+    with open(f'./offline/random_{file_name}.pkl', 'rb') as f:
         replay_buffer = pickle.load(f)
     # env.seed(args.seed)
     # env.action_space.seed(args.seed)
