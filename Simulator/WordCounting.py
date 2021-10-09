@@ -16,8 +16,8 @@ class WordCountingEnv(gym.Env):
     def __init__(self, n_machines= 10,
                        n_spouts  = 20,
                        seed      = 20210723,
-                       bandwidth = 100,
-                    #    bandwidth = 160,
+                    #    bandwidth = 100,
+                       bandwidth = 160,
                     ) -> None:
         """
         Construct all the necessary attributes for the word couting topology
@@ -119,8 +119,8 @@ class WordCountingEnv(gym.Env):
                 } for _ in range(self.n_spouts)]
 
         exe_info = {
-            # 'spout': ['spout', self.n_spouts, high+med+low],
-            'spout': ['spout', self.n_spouts, all_spouts],
+            'spout': ['spout', self.n_spouts, high+med+low],
+            # 'spout': ['spout', self.n_spouts, all_spouts],
             'WordCount': ['bolt', 40, {
                     'd_transform': IdentityDataTransformer(),
                     'batch':100,
@@ -142,17 +142,17 @@ class WordCountingEnv(gym.Env):
 
         edges = self.build_homo_edge(self.n_machines, self.bandwidth, self.edge_batch)
         # code to build hetero network
-        # selection = np.random.choice(list(range(len(edges))), size=(self.n_machines*(self.n_machines-1))//2, replace=False)
-        # for i in selection:
-        #     s, d, _, da = edges[i]
-        #     edges[i] = (s, d, 40, da)
+        selection = np.random.choice(list(range(len(edges))), size=(self.n_machines*(self.n_machines-1))//2, replace=False)
+        for i in selection:
+            s, d, _, da = edges[i]
+            edges[i] = (s, d, 40, da)
 
         # print(edges)
 
         self.topology = Topology(self.n_machines, exe_info, random_seed=self.random_seed)
         self.topology.build_executors()
-        # self.topology.build_heter_machines([0.6]*3+[1]*3+[1.4]*4)
-        self.topology.build_homo_machines(1)
+        self.topology.build_heter_machines([0.6]*3+[1]*3+[1.4]*4)
+        # self.topology.build_homo_machines(1)
         self.topology.build_machine_graph(edges)
         self.topology.round_robin_init(shuffle=False)
 
