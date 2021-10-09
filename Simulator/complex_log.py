@@ -18,7 +18,7 @@ class ComplexLogEnv(gym.Env):
                        n_spouts  = 10,
                        seed      = 20210723,
                        bandwidth = 120,
-                    #    bandwidth = 120,
+                    #    bandwidth = 100,
                     ) -> None:
         """
         Construct all the necessary attributes for the word couting topology
@@ -119,8 +119,8 @@ class ComplexLogEnv(gym.Env):
                 for offset in range(self.n_spouts-len(low)-len(high))]
 
         exe_info = {
-            # 'spout': ['spout', self.n_spouts, high+med+low],
-            'spout': ['spout', self.n_spouts, all_spouts],
+            'spout': ['spout', self.n_spouts, high+med+low],
+            # 'spout': ['spout', self.n_spouts, all_spouts],
             'A': ['bolt', 20, {
                     'd_transform': IdentityDataTransformer(),
                     'batch':100,
@@ -159,17 +159,17 @@ class ComplexLogEnv(gym.Env):
         }
 
         edges = self.build_homo_edge(self.n_machines, self.bandwidth, self.edge_batch)
-        # selection = np.random.choice(list(range(len(edges))), size=(self.n_machines*(self.n_machines-1))//2, replace=False)
-        # for i in selection:
-        #     s, d, _, da = edges[i]
-        #     edges[i] = (s, d, 80, da)
+        selection = np.random.choice(list(range(len(edges))), size=(self.n_machines*(self.n_machines-1))//2, replace=False)
+        for i in selection:
+            s, d, _, da = edges[i]
+            edges[i] = (s, d, 80, da)
 
-        # print(edges)
+        print(edges)
 
         self.topology = Topology(self.n_machines, exe_info, random_seed=self.random_seed)
         self.topology.build_executors()
-        self.topology.build_homo_machines(1)
-        # self.topology.build_heter_machines([0.7]*3+[1]*4+[1.3]*3)
+        # self.topology.build_homo_machines(1)
+        self.topology.build_heter_machines([0.7]*3+[1]*4+[1.3]*3)
         self.topology.build_machine_graph(edges)
         self.topology.round_robin_init(shuffle=False)
 
